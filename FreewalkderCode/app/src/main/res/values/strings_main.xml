@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- privacy -->
+    <string name="privacy_dialog_title">声明与条款</string>
+    <string name="privacy_dialog_msg">为了您能够使用所有功能，FW需要连接网络、蓝牙，获取定位信息，使用麦克风、调用录音，并会收集、处理和使用您的个人信息，请仔细阅读如下协议内容：\n\n%1$s 和 %2$s \n\n 选择下方“同意并继续”表示您同意以上内容</string>
+    <string name="privacy_keyword_user_agreement">用户协议</string>
+    <string name="privacy_keyword_privacy">隐私协议</string>
+    <string name="privacy_dialog_confirm">同意并继续</string>
+    <string name="privacy_dialog_cancel">不同意</string>
+
+    <string name="privacy_activity_title">声明与条款</string>
+    <string name="privacy_activity_privacy_msg_1">&#8195;&#8195;本《隐私协议》就您提供的任何资料，告知您所拥有的选择和我们处理该等资料的的常规。\n\n&#8195;&#8195;使用我们的服务可能涉及在我们的服务（包括我们的网站和流动应用）收集和使用您的资料（在下文「我们所收集的资料及如何收集资料」有所定义）。明白我们如何收集和使用您的资料、您可如何控制收集和使用程序对您是很重要的，因此请仔细阅读本《隐私协议》。\n</string>
+    <string name="privacy_activity_privacy_msg_2_title">我们如何使用您的资料</string>
+    <string name="privacy_activity_privacy_msg_2">&#8195;&#8195;我们可将您的资料用作下列用途：\n\n&#8195;&#8195;向您提供我们的服务；\n&#8195;&#8195;在我们提供服务时用作客户服务、保安、诈骗侦测、存档和后备用途；\n&#8195;&#8195;向您提供宣传资料（在「广告宣传」一节有较详尽的讨论）；\n&#8195;&#8195;为更了解您如何接入和使用我们的服务、为尝试改善我们的服务及回应客户的意愿和喜好，包括语言设定、位置设定、个人化的支援服务和指示，或就您和其他使用我们服务的客户给予其他回应；\n有助我们建立新服务，改善我们现有服务；\n评估有关我们服务的宣传和其他促销及推广活动的效力，并加以改善；\n为软件认证或管理软件升级；\n及让您参与有关我们产品和服务的调查及其他活动。</string>
+    <string name="privacy_activity_user_agreement_msg">hello</string>
+
+</resources>

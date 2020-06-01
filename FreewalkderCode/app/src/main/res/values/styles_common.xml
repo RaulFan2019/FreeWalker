@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- divider -->
+    <style name="Divider">
+        <item name="android:background">@color/bg_divider</item>
+    </style>
+
+    <style name="DividerH" parent="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+    </style>
+
+    <style name="DividerV" parent="Divider">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!-- Title -->
+    <style name="TitleLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TitleBackButton">
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:foreground">@drawable/btn_back</item>
+        <item name="android:background">?android:attr/actionBarItemBackground</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">18dp</item>
+    </style>
+
+    <style name="TitleRightBtnLy">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TitleRightButton">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:background">?android:attr/actionBarItemBackground</item>
+    </style>
+
+    <style name="TitleTitleTv">
+        <item name="android:textColor">@color/tv_mostly</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitleBottomLine" parent="DividerH">
+        <item name="android:layout_gravity">bottom</item>
+    </style>
+
+    <!-- button -->
+    <style name="BtnLarge">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_marginStart">30dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+        <item name="android:background">@drawable/btn_large</item>
+        <item name="android:textColor">@drawable/btn_large</item>
+    </style>
+
+</resources>

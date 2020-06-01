@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- privacy -->
+    <style name="PrivacyActivityExChangeLl">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="PrivacyActivityExChangeTv">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">#F5F5F5</item>
+        <item name="android:textColor">@color/tv_secondly</item>
+    </style>
+    <style name="PrivacyActivityExChangeLine">
+        <item name="android:layout_width">10dp</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/accent</item>
+    </style>
+
+</resources>

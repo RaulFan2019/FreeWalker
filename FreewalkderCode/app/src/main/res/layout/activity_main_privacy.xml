@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- title -->
+    <RelativeLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/privacy_activity_title" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton"/>
+
+        <View style="@style/TitleBottomLine"/>
+    </RelativeLayout>
+
+
+    <!-- exchange -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:id="@+id/ll_title_user_agreement"
+            style="@style/PrivacyActivityExChangeLl">
+
+            <TextView
+                android:id="@+id/tv_title_user_agreement"
+                style="@style/PrivacyActivityExChangeTv"
+                android:text="@string/privacy_keyword_user_agreement"/>
+
+            <View
+                android:id="@+id/line_title_user_agreement"
+                style="@style/PrivacyActivityExChangeLine"/>
+        </LinearLayout>
+
+        <View
+            style="@style/DividerV"
+            android:layout_height="15dp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_title_privacy"
+            style="@style/PrivacyActivityExChangeLl">
+            <TextView
+                android:id="@+id/tv_title_privacy"
+                style="@style/PrivacyActivityExChangeTv"
+                android:text="@string/privacy_keyword_privacy"/>
+            <View
+                android:id="@+id/line_title_privacy"
+                style="@style/PrivacyActivityExChangeLine"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/include_main_privacy_user_agreement"/>
+        <include layout="@layout/include_main_privacy_privacy"/>
+
+    </FrameLayout>
+</LinearLayout>

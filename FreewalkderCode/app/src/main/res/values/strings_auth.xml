@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="auth_title_forget_pwd">忘记密码</string>
+
+    <string name="auth_hint_input_mobile">请输入手机号</string>
+    <string name="auth_hint_input_pwd">请输入密码</string>
+    <string name="auth_hint_input_verification">请输入验证码</string>
+    <string name="auth_hint_input_register_mobile">请输入注册时的手机号</string>
+    <string name="auth_hint_input_set_new_pwd">请设置新密码</string>
+    
+    <string name="auth_action_forget_pwd">忘记密码？</string>
+    <string name="auth_action_register">注册</string>
+    <string name="auth_action_login">登录</string>
+    <string name="auth_action_send_verification">发送验证码</string>
+    <string name="auth_action_back_to_login">返回登录</string>
+
+    <string name="auth_tip_privacy">登录则表示您遵守同意FW的\n%1$s&#8195;和&#8195;%2$s</string>
+    <string name="auth_tip_input_pwd">密码需要8-20个字符，且包含字母和数字</string>
+
+</resources>

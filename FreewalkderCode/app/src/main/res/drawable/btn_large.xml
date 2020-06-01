@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/bg_btn_large_disable" android:color="@color/tv_secondly" android:state_enabled="false" />
+    <item android:drawable="@drawable/bg_btn_large_normal" android:color="@color/tv_white" android:state_enabled="true"/>
+
+</selector>

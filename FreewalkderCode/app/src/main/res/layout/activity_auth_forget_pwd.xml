@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- title -->
+    <RelativeLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/auth_title_forget_pwd" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton"/>
+
+        <View style="@style/TitleBottomLine"/>
+    </RelativeLayout>
+
+    <!-- 输入开始 -->
+    <LinearLayout
+        style="@style/AuthInputLl"
+        android:layout_marginTop="34dp">
+
+        <View style="@style/AuthInputIcon"
+            android:background="@drawable/icon_mobile"/>
+        <EditText
+            android:id="@+id/et_mobile"
+            style="@style/AuthInputEt"
+            android:inputType="phone"
+            android:hint="@string/auth_hint_input_register_mobile"/>
+    </LinearLayout>
+    <View
+        style="@style/AuthInputLine"/>
+
+    <LinearLayout
+        style="@style/AuthInputLl"
+        android:layout_marginTop="30dp">
+
+        <View style="@style/AuthInputIcon"
+            android:background="@drawable/icon_verification"/>
+        <EditText
+            android:id="@+id/et_verification"
+            style="@style/AuthInputEt"
+            android:hint="@string/auth_hint_input_verification"/>
+
+        <TextView
+            android:id="@+id/tv_send_verification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tv_accent"
+            android:textSize="15dp"
+            android:text="@string/auth_action_send_verification"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/AuthInputLine"/>
+
+    <LinearLayout
+        style="@style/AuthInputLl"
+        android:layout_marginTop="30dp">
+
+        <View style="@style/AuthInputIcon"
+            android:background="@drawable/icon_pwd"/>
+        <EditText
+            android:id="@+id/et_pwd"
+            style="@style/AuthInputEt"
+            android:inputType="textPassword"
+            android:hint="@string/auth_hint_input_set_new_pwd"/>
+
+        <View
+            android:id="@+id/v_eyes"
+            style="@style/AuthInputIcon"
+            android:background="@drawable/icon_eyes_off"/>
+
+    </LinearLayout>
+    <View
+        style="@style/AuthInputLine"/>
+
+    <!-- 输入结束 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="15dp"
+        android:textSize="12dp"
+        android:textColor="@color/tv_secondly"
+        android:drawableLeft="@drawable/icon_notice"
+        android:drawablePadding="8.5dp"
+        android:text="@string/auth_tip_input_pwd"/>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        style="@style/BtnLarge"
+        android:layout_marginTop="72dp"
+        android:enabled="false"
+        android:text="@string/app_action_confirm"/>
+
+</LinearLayout>
