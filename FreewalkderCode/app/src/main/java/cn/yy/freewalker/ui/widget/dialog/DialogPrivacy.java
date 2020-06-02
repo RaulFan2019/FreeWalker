@@ -142,23 +142,4 @@ public class DialogPrivacy {
         mListener = listener;
     }
 
-
-    /**
-     * 设置dialog位于屏幕底部
-     */
-    private void setViewLocation(Activity activity){
-        DisplayMetrics dm = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int height = dm.heightPixels;
-
-        Window window = activity.getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.x = 0;
-        lp.y = height;
-        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        // 设置显示位置
-        activity.onWindowAttributesChanged(lp);
-    }
-
 }

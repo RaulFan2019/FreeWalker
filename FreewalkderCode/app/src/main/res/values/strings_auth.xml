@@ -18,4 +18,27 @@
     <string name="auth_tip_privacy">登录则表示您遵守同意FW的\n%1$s&#8195;和&#8195;%2$s</string>
     <string name="auth_tip_input_pwd">密码需要8-20个字符，且包含字母和数字</string>
 
+    
+    <string name="auth_title_improve_user_info">Hi，请完善你的信息</string>
+    <string name="auth_tip_improve_user_info">填写正确的信息，有助于为你匹配到更多好友。</string>
+
+    <string name="auth_hint_improve_input_nickname">请输入你的昵称</string>
+    <string name="auth_hint_improve_select_sex">请选择你的性别</string>
+    <string name="auth_hint_improve_select_age">请选择你的年龄</string>
+    <string name="auth_hint_improve_select_like">请选择你的喜欢</string>
+    <string name="auth_hint_improve_select_profession">请选择你的职业</string>
+    <string name="auth_hint_improve_select_height">请选择你的身高</string>
+    <string name="auth_hint_improve_select_weight">请选择你的体重</string>
+
+    <string name="auth_dialog_title_improve_select_photo_mode">请选择获取照片的方式</string>
+    <string name="auth_dialog_tx_improve_photo_mode_camera">相机</string>
+    <string name="auth_dialog_tx_improve_photo_mode_storage">相册</string>
+
+    <string name="auth_error_permission_photo_mode_storage">进入相册需要权限</string>
+    <string name="auth_error_permission_photo_mode_camera">拍照需要权限</string>
+
+    <string name="auth_action_improve_submit">提交</string>
+
+
+
 </resources>

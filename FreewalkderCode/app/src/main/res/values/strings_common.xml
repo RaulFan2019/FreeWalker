@@ -7,6 +7,6 @@
 
 
     <string name="app_action_confirm">确定</string>
-
+    <string name="app_action_cancel">取消</string>
 
 </resources>

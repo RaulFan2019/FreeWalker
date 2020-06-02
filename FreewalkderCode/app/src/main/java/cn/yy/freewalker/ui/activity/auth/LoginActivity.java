@@ -77,7 +77,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                 break;
             //点击注册
             case R.id.btn_register:
-                startActivity(RegisterActivity.class);
+                startActivity(ImproveUserInfoActivity.class);
                 finish();
                 break;
             //点击登录

@@ -14,6 +14,7 @@ import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.auth.LoginActivity;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogPrivacy;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan

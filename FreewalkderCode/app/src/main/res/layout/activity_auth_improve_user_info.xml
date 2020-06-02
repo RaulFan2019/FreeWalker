@@ -1,7 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/auth_title_improve_user_info"
+            android:textColor="@color/tv_mostly"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/auth_tip_improve_user_info"
+            android:textColor="@color/tv_secondly"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="180dp"
+            android:layout_height="26.5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14.5dp"
+            android:background="@drawable/icon_avatar_upload" />
+
+
+        <!-- 头像 -->
+        <FrameLayout
+            android:id="@+id/btn_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4.5dp"
+            android:background="@drawable/bg_avatar_input">
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:background="@drawable/btn_add" />
+
+            <cn.yy.freewalker.ui.widget.common.CircularImage
+                android:id="@+id/img_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal|center_vertical" />
+        </FrameLayout>
+
+        <!-- 昵称 -->
+        <LinearLayout style="@style/AuthImproveLl">
+
+            <EditText
+                android:id="@+id/et_nickname"
+                style="@style/AuthImproveEt"
+                android:enabled="true"
+                android:hint="@string/auth_hint_improve_input_nickname"/>
+
+        </LinearLayout>
+
+        <View style="@style/AuthImproveLine"/>
+
+        <!-- 性别 -->
+        <LinearLayout
+            android:id="@+id/ll_sex"
+            style="@style/AuthImproveLl">
+
+            <EditText
+                android:id="@+id/et_sex"
+                style="@style/AuthImproveEt"
+                android:hint="@string/auth_hint_improve_select_sex"/>
+
+            <View
+                style="@style/AuthImproveIcon"/>
+        </LinearLayout>
+
+        <View style="@style/AuthImproveLine"/>
+
+        <!-- 年龄 -->
+        <LinearLayout
+            android:id="@+id/ll_age"
+            style="@style/AuthImproveLl">
+
+            <EditText
+                android:id="@+id/et_age"
+                style="@style/AuthImproveEt"
+                android:hint="@string/auth_hint_improve_select_age"/>
+
+            <View
+                style="@style/AuthImproveIcon"/>
+        </LinearLayout>
+
+        <View style="@style/AuthImproveLine"/>
+
+        <!-- 喜欢 -->
+        <LinearLayout
+            android:id="@+id/ll_like"
+            style="@style/AuthImproveLl">
+
+            <EditText
+                android:id="@+id/et_like"
+                style="@style/AuthImproveEt"
+                android:hint="@string/auth_hint_improve_select_like"/>
+
+            <View
+                style="@style/AuthImproveIcon"/>
+        </LinearLayout>
+
+        <View style="@style/AuthImproveLine"/>
+
+        <!-- 职业 -->
+        <LinearLayout
+            android:id="@+id/ll_profession"
+            style="@style/AuthImproveLl">
+
+            <EditText
+                android:id="@+id/et_profession"
+                style="@style/AuthImproveEt"
+                android:hint="@string/auth_hint_improve_select_profession"/>
+
+            <View
+                style="@style/AuthImproveIcon"/>
+        </LinearLayout>
+
+        <View style="@style/AuthImproveLine"/>
+
+        <!-- 身高 -->
+        <LinearLayout
+            android:id="@+id/ll_height"
+            style="@style/AuthImproveLl">
+
+            <EditText
+                android:id="@+id/et_height"
+                style="@style/AuthImproveEt"
+                android:hint="@string/auth_hint_improve_select_height"/>
+
+            <View
+                style="@style/AuthImproveIcon"/>
+        </LinearLayout>
+
+        <View style="@style/AuthImproveLine"/>
+
+        <!-- 体重 -->
+        <LinearLayout
+            android:id="@+id/ll_weight"
+            style="@style/AuthImproveLl">
+
+            <EditText
+                android:id="@+id/et_weight"
+                style="@style/AuthImproveEt"
+                android:hint="@string/auth_hint_improve_select_weight"/>
+
+            <View
+                style="@style/AuthImproveIcon"/>
+        </LinearLayout>
+
+        <View style="@style/AuthImproveLine"/>
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/BtnLarge"
+            android:layout_marginTop="30dp"
+            android:enabled="false"
+            android:text="@string/auth_action_improve_submit"/>
+
+    </LinearLayout>
+</ScrollView>
