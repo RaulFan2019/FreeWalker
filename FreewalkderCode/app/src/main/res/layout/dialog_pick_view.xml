@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_dialog">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_dialog_privacy_title">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/tv_secondly"
+            android:textSize="15dp"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
+            android:text="@string/privacy_dialog_title"/>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:text="@string/app_action_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/tv_accent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"/>
+
+    </RelativeLayout>
+
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.cncoderx.wheelview.Wheel3DView
+        android:id="@+id/wheel3d"
+        android:layout_width="match_parent"
+        android:layout_height="131dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        app:wheelItemCount="5"
+        app:wheelItemWidth="160dp"
+        app:wheelItemHeight="40dp"
+        app:wheelTextSize="14dp"
+        app:wheelTextColor="@color/tv_secondly"
+        app:wheelSelectedTextColor="@color/tv_mostly"
+        app:wheelDividerColor="@android:color/transparent"
+        app:wheelHighlightColor="#f5f5f5"/>
+
+</LinearLayout>

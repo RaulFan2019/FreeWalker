@@ -58,120 +58,146 @@
         </FrameLayout>
 
         <!-- 昵称 -->
-        <LinearLayout style="@style/AuthImproveLl">
+        <LinearLayout
+            style="@style/AuthImproveLl"
+            android:layout_marginTop="15dp">
 
             <EditText
                 android:id="@+id/et_nickname"
                 style="@style/AuthImproveEt"
                 android:enabled="true"
-                android:hint="@string/auth_hint_improve_input_nickname"/>
+                android:hint="@string/auth_hint_improve_input_nickname" />
 
         </LinearLayout>
 
-        <View style="@style/AuthImproveLine"/>
+        <View style="@style/AuthImproveLine" />
 
         <!-- 性别 -->
-        <LinearLayout
-            android:id="@+id/ll_sex"
-            style="@style/AuthImproveLl">
+        <FrameLayout style="@style/AuthImproveFl">
 
-            <EditText
-                android:id="@+id/et_sex"
-                style="@style/AuthImproveEt"
-                android:hint="@string/auth_hint_improve_select_sex"/>
+            <LinearLayout style="@style/AuthImproveLl">
+
+                <EditText
+                    android:id="@+id/et_sex"
+                    style="@style/AuthImproveEt"
+                    android:hint="@string/auth_hint_improve_select_sex" />
+
+                <View style="@style/AuthImproveIcon" />
+            </LinearLayout>
 
             <View
-                style="@style/AuthImproveIcon"/>
-        </LinearLayout>
+                android:id="@+id/v_sex"
+                style="@style/AuthImproveClickV" />
+        </FrameLayout>
 
-        <View style="@style/AuthImproveLine"/>
+        <View style="@style/AuthImproveLine" />
 
         <!-- 年龄 -->
-        <LinearLayout
-            android:id="@+id/ll_age"
-            style="@style/AuthImproveLl">
+        <FrameLayout style="@style/AuthImproveFl">
 
-            <EditText
-                android:id="@+id/et_age"
-                style="@style/AuthImproveEt"
-                android:hint="@string/auth_hint_improve_select_age"/>
+            <LinearLayout style="@style/AuthImproveLl">
+
+                <EditText
+                    android:id="@+id/et_age"
+                    style="@style/AuthImproveEt"
+                    android:hint="@string/auth_hint_improve_select_age" />
+
+                <View style="@style/AuthImproveIcon" />
+            </LinearLayout>
 
             <View
-                style="@style/AuthImproveIcon"/>
-        </LinearLayout>
+                android:id="@+id/v_age"
+                style="@style/AuthImproveClickV" />
+        </FrameLayout>
 
-        <View style="@style/AuthImproveLine"/>
+        <View style="@style/AuthImproveLine" />
 
         <!-- 喜欢 -->
-        <LinearLayout
-            android:id="@+id/ll_like"
-            style="@style/AuthImproveLl">
+        <FrameLayout style="@style/AuthImproveFl">
 
-            <EditText
-                android:id="@+id/et_like"
-                style="@style/AuthImproveEt"
-                android:hint="@string/auth_hint_improve_select_like"/>
+            <LinearLayout style="@style/AuthImproveLl">
+
+                <EditText
+                    android:id="@+id/et_like"
+                    style="@style/AuthImproveEt"
+                    android:hint="@string/auth_hint_improve_select_like" />
+
+                <View style="@style/AuthImproveIcon" />
+            </LinearLayout>
 
             <View
-                style="@style/AuthImproveIcon"/>
-        </LinearLayout>
+                android:id="@+id/v_like"
+                style="@style/AuthImproveClickV" />
+        </FrameLayout>
 
-        <View style="@style/AuthImproveLine"/>
+        <View style="@style/AuthImproveLine" />
 
         <!-- 职业 -->
-        <LinearLayout
-            android:id="@+id/ll_profession"
-            style="@style/AuthImproveLl">
+        <FrameLayout style="@style/AuthImproveFl">
 
-            <EditText
-                android:id="@+id/et_profession"
-                style="@style/AuthImproveEt"
-                android:hint="@string/auth_hint_improve_select_profession"/>
+            <LinearLayout style="@style/AuthImproveLl">
+
+                <EditText
+                    android:id="@+id/et_profession"
+                    style="@style/AuthImproveEt"
+                    android:hint="@string/auth_hint_improve_select_profession" />
+
+                <View style="@style/AuthImproveIcon" />
+            </LinearLayout>
 
             <View
-                style="@style/AuthImproveIcon"/>
-        </LinearLayout>
+                android:id="@+id/v_profession"
+                style="@style/AuthImproveClickV" />
+        </FrameLayout>
 
-        <View style="@style/AuthImproveLine"/>
+        <View style="@style/AuthImproveLine" />
 
         <!-- 身高 -->
-        <LinearLayout
-            android:id="@+id/ll_height"
-            style="@style/AuthImproveLl">
+        <FrameLayout style="@style/AuthImproveFl">
 
-            <EditText
-                android:id="@+id/et_height"
-                style="@style/AuthImproveEt"
-                android:hint="@string/auth_hint_improve_select_height"/>
+            <LinearLayout style="@style/AuthImproveLl">
+
+                <EditText
+                    android:id="@+id/et_height"
+                    style="@style/AuthImproveEt"
+                    android:hint="@string/auth_hint_improve_select_height" />
+
+                <View style="@style/AuthImproveIcon" />
+            </LinearLayout>
 
             <View
-                style="@style/AuthImproveIcon"/>
-        </LinearLayout>
+                android:id="@+id/v_height"
+                style="@style/AuthImproveClickV" />
+        </FrameLayout>
 
-        <View style="@style/AuthImproveLine"/>
+        <View style="@style/AuthImproveLine" />
 
         <!-- 体重 -->
-        <LinearLayout
-            android:id="@+id/ll_weight"
-            style="@style/AuthImproveLl">
+        <FrameLayout style="@style/AuthImproveFl">
 
-            <EditText
-                android:id="@+id/et_weight"
-                style="@style/AuthImproveEt"
-                android:hint="@string/auth_hint_improve_select_weight"/>
+            <LinearLayout style="@style/AuthImproveLl">
+
+                <EditText
+                    android:id="@+id/et_weight"
+                    style="@style/AuthImproveEt"
+                    android:hint="@string/auth_hint_improve_select_weight" />
+
+                <View style="@style/AuthImproveIcon" />
+            </LinearLayout>
 
             <View
-                style="@style/AuthImproveIcon"/>
-        </LinearLayout>
+                android:id="@+id/v_weight"
+                style="@style/AuthImproveClickV" />
+        </FrameLayout>
 
-        <View style="@style/AuthImproveLine"/>
+        <View style="@style/AuthImproveLine" />
 
         <Button
             android:id="@+id/btn_submit"
             style="@style/BtnLarge"
             android:layout_marginTop="30dp"
             android:enabled="false"
-            android:text="@string/auth_action_improve_submit"/>
+            android:text="@string/auth_action_improve_submit" />
 
     </LinearLayout>
 </ScrollView>

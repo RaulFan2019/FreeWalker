@@ -36,7 +36,9 @@ import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
+import cn.yy.freewalker.ui.widget.dialog.DialogPickView;
 import cn.yy.freewalker.ui.widget.dialog.DialogSingleSelect;
+import cn.yy.freewalker.ui.widget.dialog.DialogTagSelect;
 
 
 /**
@@ -78,12 +80,25 @@ public class ImproveUserInfoActivity extends BaseActivity {
 
     /* data */
     private List<String> listPhotoMode = new ArrayList<>();     //照片选择模式
+    private ArrayList<String> listAgeSelect = new ArrayList<>();//年龄选择列表
+    private List<String> listSexSelect = new ArrayList<>();     //性别选择
 
-    private Uri mAvatarPhotoUri;
-    private String mAvatarPhotoPath;
-    private File mAvatarFile;
+    private List<String> listLikeSelect = new ArrayList<>();     //喜欢选择
+    private ArrayList<String> listProfessionSelect = new ArrayList<>();//职业选择
+    private ArrayList<String> listHeightSelect = new ArrayList<>();//年龄选择列表
+    private ArrayList<String> listWeightSelect = new ArrayList<>();//年龄选择列表
 
+    private Uri mAvatarPhotoUri;                                //头像uri
+    private String mAvatarPhotoPath;                            //头像文件地址
+    private File mAvatarFile;                                   //头像文件
 
+    private String mNickName;                                   //昵称
+    private String mSex;                                        //性别
+    private String mAge;                                        //年龄
+    private String mLike;                                       //喜欢
+    private String mProfession;                                 //职业
+    private String mHeight;                                     //身高
+    private String mWeight;                                     //体重
 
     @Override
     protected int getLayoutId() {
@@ -91,25 +106,32 @@ public class ImproveUserInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.btn_avatar, R.id.ll_sex, R.id.ll_age, R.id.ll_like, R.id.ll_profession,
-            R.id.ll_height, R.id.ll_weight, R.id.btn_submit})
+    @OnClick({R.id.btn_avatar, R.id.v_sex, R.id.v_age, R.id.v_like, R.id.v_profession,
+            R.id.v_height, R.id.v_weight, R.id.btn_submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //点击头像
             case R.id.btn_avatar:
                 onAvatarClick();
                 break;
-            case R.id.ll_sex:
+            //选择性别
+            case R.id.v_sex:
+                onSexSelectClick();
                 break;
-            case R.id.ll_age:
+            case R.id.v_age:
+                onAgeSelectClick();
                 break;
-            case R.id.ll_like:
+            case R.id.v_like:
+                onLikeSelectClick();
                 break;
-            case R.id.ll_profession:
+            case R.id.v_profession:
+                onProfessionSelectClick();
                 break;
-            case R.id.ll_height:
+            case R.id.v_height:
+                onHeightSelectClick();
                 break;
-            case R.id.ll_weight:
+            case R.id.v_weight:
+                onWeightSelectClick();
                 break;
             case R.id.btn_submit:
                 break;
@@ -141,7 +163,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
                         Bitmap bitmap = BitmapFactory.decodeFile(mAvatarPhotoPath);
                         //给头像设置图片源
                         imgAvatar.setImageBitmap(bitmap);
-
+                        inputIsComplete();
                     }
                 }
                 break;
@@ -155,6 +177,47 @@ public class ImproveUserInfoActivity extends BaseActivity {
         listPhotoMode.add(getString(R.string.auth_dialog_tx_improve_photo_mode_camera));
         listPhotoMode.add(getString(R.string.auth_dialog_tx_improve_photo_mode_storage));
         listPhotoMode.add(getString(R.string.app_action_cancel));
+        //sex
+        listSexSelect.add(getString(R.string.auth_tx_sex_male));
+        listSexSelect.add(getString(R.string.auth_tx_sex_female));
+        listSexSelect.add(getString(R.string.auth_tx_sex_other));
+
+        //age
+        for (int i = 1; i < 100; i++) {
+            listAgeSelect.add(i + "");
+        }
+        //like
+        listLikeSelect.add(getString(R.string.auth_tx_like_male));
+        listLikeSelect.add(getString(R.string.auth_tx_like_female));
+        listLikeSelect.add(getString(R.string.auth_tx_like_all));
+        listLikeSelect.add(getString(R.string.auth_tx_like_other));
+
+        //职业选择
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_1));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_2));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_3));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_4));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_5));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_6));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_7));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_8));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_9));
+        listProfessionSelect.add(getString(R.string.auth_tx_profession_10));
+
+
+        //height
+        listHeightSelect.add("150 ~ 160");
+        listHeightSelect.add("160 ~ 170");
+        listHeightSelect.add("170 ~ 180");
+        listHeightSelect.add("180 ~ 190");
+        listHeightSelect.add("190 ~ 200");
+        //weight
+        listWeightSelect.add("30 ~ 40");
+        listWeightSelect.add("40 ~ 50");
+        listWeightSelect.add("50 ~ 60");
+        listWeightSelect.add("60 ~ 70");
+        listWeightSelect.add("70 ~ 80");
+        listWeightSelect.add("80 ~ 90");
     }
 
     @Override
@@ -189,6 +252,102 @@ public class ImproveUserInfoActivity extends BaseActivity {
                 } else if (pos == 1) {
                     checkPermissionByPhotoStorage();
                 }
+            }
+        });
+    }
+
+
+    /**
+     * 选择性别
+     */
+    private void onSexSelectClick() {
+        mDialogBuilder.showSingleSelectDialog(ImproveUserInfoActivity.this,
+                getString(R.string.auth_dialog_title_improve_select_sex),
+                listSexSelect);
+        mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
+            @Override
+            public void onConfirmBtnClick(int pos) {
+                mSex = listSexSelect.get(pos);
+                etSex.setText(mSex);
+            }
+        });
+    }
+
+
+    /**
+     * 选择年龄
+     */
+    private void onAgeSelectClick() {
+        mDialogBuilder.showPickViewDialog(ImproveUserInfoActivity.this,
+                getString(R.string.auth_dialog_title_improve_select_age), listAgeSelect, 20);
+        mDialogBuilder.setPickViewDialogListener(new DialogPickView.onConfirmListener() {
+            @Override
+            public void onConfirm(int index) {
+                mAge = listAgeSelect.get(index);
+                etAge.setText(mAge);
+            }
+        });
+    }
+
+
+    /**
+     * 选择职业
+     */
+    private void onLikeSelectClick() {
+        mDialogBuilder.showSingleSelectDialog(ImproveUserInfoActivity.this,
+                getString(R.string.auth_dialog_title_improve_select_like),
+                listLikeSelect);
+        mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
+            @Override
+            public void onConfirmBtnClick(int pos) {
+                mLike = listLikeSelect.get(pos);
+                etLike.setText(mLike);
+            }
+        });
+    }
+
+    /**
+     * 选择喜欢
+     */
+    private void onProfessionSelectClick() {
+        mDialogBuilder.showTagSelectDialog(ImproveUserInfoActivity.this,
+                getString(R.string.auth_dialog_title_improve_select_profession),
+                listProfessionSelect);
+        mDialogBuilder.setTagSelectDialogListener(new DialogTagSelect.onConfirmListener() {
+            @Override
+            public void onConfirm(int index) {
+                //TODO
+            }
+        });
+    }
+
+
+    /**
+     * 选择身高
+     */
+    private void onHeightSelectClick() {
+        mDialogBuilder.showPickViewDialog(ImproveUserInfoActivity.this,
+                getString(R.string.auth_dialog_title_improve_select_height), listHeightSelect, 2);
+        mDialogBuilder.setPickViewDialogListener(new DialogPickView.onConfirmListener() {
+            @Override
+            public void onConfirm(int index) {
+                mHeight = listHeightSelect.get(index);
+                etHeight.setText(mHeight);
+            }
+        });
+    }
+
+    /**
+     * 选择体重
+     */
+    private void onWeightSelectClick() {
+        mDialogBuilder.showPickViewDialog(ImproveUserInfoActivity.this,
+                getString(R.string.auth_dialog_title_improve_select_weight), listWeightSelect, 3);
+        mDialogBuilder.setPickViewDialogListener(new DialogPickView.onConfirmListener() {
+            @Override
+            public void onConfirm(int index) {
+                mWeight = listWeightSelect.get(index);
+                etWeight.setText(mWeight);
             }
         });
     }
@@ -252,7 +411,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
     /**
      * 拍照
      */
-    private void doCamera(){
+    private void doCamera() {
 
         try {
             Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -274,7 +433,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
                 mAvatarPhotoPath = mAvatarFile.getPath();
                 mAvatarPhotoUri = Uri.fromFile(mAvatarFile);
                 if (Build.VERSION.SDK_INT >= 24) {
-                    mAvatarPhotoUri = FileProvider.getUriForFile(this,"cn.yy.freewalker.fileProvider", mAvatarFile);
+                    mAvatarPhotoUri = FileProvider.getUriForFile(this, "cn.yy.freewalker.fileProvider", mAvatarFile);
                 } else {
                     mAvatarPhotoUri = Uri.fromFile(mAvatarFile);
                 }
@@ -324,4 +483,25 @@ public class ImproveUserInfoActivity extends BaseActivity {
         startActivityForResult(intent, RESULT_CUT_PHOTO);
     }
 
+
+    /**
+     * 检查是否输入完全
+     */
+    private void inputIsComplete() {
+
+        mNickName = etNickname.getText().toString();
+
+        if (mAvatarPhotoPath != null
+                && mNickName != null
+                && mSex != null
+                && mAge != null
+                && mLike != null
+                && mProfession != null
+                && mHeight != null
+                && mWeight != null) {
+            btnSubmit.setEnabled(true);
+        } else {
+            btnSubmit.setEnabled(false);
+        }
+    }
 }
