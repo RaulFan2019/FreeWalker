@@ -44,7 +44,5 @@
         android:padding="15dp"
         app:horizontal_spacing="5dp"
         app:max_selected_count="1"
-        app:vertical_spacing="5dp"
-        app:tag_bg_color="@color/bg_tag_normal"
-        app:tag_bg_checked_color="@color/bg_tag_selected"/>
+        app:vertical_spacing="5dp"/>
 </LinearLayout>

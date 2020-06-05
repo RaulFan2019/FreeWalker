@@ -9,8 +9,10 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +28,7 @@ import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.main.PrivacyActivity;
+import cn.yy.freewalker.ui.widget.common.ToastView;
 
 /**
  * @author Raul.Fan
@@ -33,6 +37,10 @@ import cn.yy.freewalker.ui.activity.main.PrivacyActivity;
  */
 public class RegisterActivity extends BaseActivity implements TextWatcher {
 
+    /* contains */
+    private static final int MSG_GET_CAPTCHA_OK = 0x01;               //请求验证码成功
+    private static final int MSG_GET_CAPTCHA_ERROR = 0x02;            //请求验证码失败
+    private static final int MSG_CAPTCHA_COUNT_DOWN = 0x03;           //验证码倒计时
 
 
     /* views */
@@ -57,6 +65,10 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     /* data */
     private boolean mIsShowPwd = false;
 
+    private String mAccount;                                      //账号
+    private int mCaptchaCount;                                    //倒数计时
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_auth_register;
@@ -68,20 +80,20 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
         switch (view.getId()) {
             //发送验证码
             case R.id.tv_send_verification:
-                //TODO
+                requestSendVerification();
                 break;
             //密码眼睛
             case R.id.v_eyes:
                 mIsShowPwd = !mIsShowPwd;
-                if (mIsShowPwd){
+                if (mIsShowPwd) {
                     etPwd.setInputType(InputType.TYPE_CLASS_TEXT);
-                }else {
+                } else {
                     etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
                 break;
             //点击注册
             case R.id.btn_register:
-                //TODO
+                requestRegister();
                 break;
             //返回登录
             case R.id.btn_login:
@@ -129,7 +141,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
                                     @Override
                                     public void onClick(View widget) {
                                         Intent intent = new Intent(RegisterActivity.this, PrivacyActivity.class);
-                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE,PrivacyActivity.PRIVACY_TYPE_USER_AGREEMENT);
+                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE, PrivacyActivity.PRIVACY_TYPE_USER_AGREEMENT);
                                         startActivity(intent);
                                     }
                                 },
@@ -142,7 +154,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
                                     @Override
                                     public void onClick(View widget) {
                                         Intent intent = new Intent(RegisterActivity.this, PrivacyActivity.class);
-                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE,PrivacyActivity.PRIVACY_TYPE_PRIVACY);
+                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE, PrivacyActivity.PRIVACY_TYPE_PRIVACY);
                                         startActivity(intent);
                                     }
                                 },
@@ -179,4 +191,50 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     public void afterTextChanged(Editable s) {
 
     }
+
+
+    /**
+     * 请求获取验证码
+     */
+    private void requestSendVerification() {
+        //检查账号
+        mAccount = etMobile.getText().toString();
+        //判断账号是否为空
+        if (TextUtils.isEmpty(mAccount)) {
+            new ToastView(RegisterActivity.this, getString(R.string.auth_error_account_empty), -1);
+            return;
+        }
+        //TODO
+        tvSendVerification.setClickable(false);
+        mCaptchaCount = 60;
+        updateCaptchaView();
+        mHandler.sendEmptyMessageDelayed(MSG_CAPTCHA_COUNT_DOWN, 1000);
+    }
+
+
+    /**
+     * 请求注册
+     */
+    private void requestRegister() {
+        //TODO
+
+        new ToastView(RegisterActivity.this, getString(R.string.auth_toast_login_ok), R.drawable.icon_finished);
+        startActivity(ImproveUserInfoActivity.class);
+    }
+
+    /**
+     * 更新验证码UI
+     */
+    private void updateCaptchaView() {
+        if (mCaptchaCount > 0) {
+            String second = mCaptchaCount + "";
+            String text = String.format(getString(R.string.auth_action_send_verification_again), second);
+            tvSendVerification.setText(text);
+            mHandler.sendEmptyMessageDelayed(MSG_CAPTCHA_COUNT_DOWN, 1000);
+        } else {
+            tvSendVerification.setText(getString(R.string.auth_action_send_verification));
+            tvSendVerification.setClickable(true);
+        }
+    }
+
 }

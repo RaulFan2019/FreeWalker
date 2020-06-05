@@ -2,13 +2,16 @@ package cn.yy.freewalker.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.cncoderx.wheelview.OnWheelChangedListener;
 import com.cncoderx.wheelview.WheelView;
+import com.jacksen.taggroup.ITag;
 import com.jacksen.taggroup.ITagBean;
+import com.jacksen.taggroup.OnTagClickListener;
 import com.jacksen.taggroup.SuperTagGroup;
 import com.jacksen.taggroup.SuperTagUtil;
 
@@ -60,7 +63,7 @@ public class DialogTagSelect {
         tvConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) {
+                if (mListener != null && selectIndex != -1) {
                     mListener.onConfirm(selectIndex);
                 }
                 mDialog.dismiss();
@@ -76,16 +79,28 @@ public class DialogTagSelect {
      */
     public void show(final String title, final ArrayList<String> listData) {
         tvTitle.setText(title);
-
+        tagGroup.removeAllViews();
         for (int i = 0; i < listData.size(); i++) {
             ITagBean.Builder builder = new ITagBean.Builder();
             ITagBean tagBean = builder.setTag(listData.get(i))
                     .setCornerRadius(SuperTagUtil.dp2px(mContext, 17.0f))
                     .setHorizontalPadding(SuperTagUtil.dp2px(mContext, 10))
-                    .setTextColor(mContext.getResources().getColor(R.color.tv_tag_normal))
                     .create();
             tagGroup.appendTag(tagBean);
         }
+
+        tagGroup.setOnTagClickListener(new OnTagClickListener() {
+            @Override
+            public boolean onTagClick(int position, ITag tag) {
+                selectIndex = position;
+                return false;
+            }
+
+            @Override
+            public void onSelected(SparseArray<View> selectedViews) {
+
+            }
+        });
 
         mDialog.show();
         mDialog.getWindow().setGravity(Gravity.BOTTOM);

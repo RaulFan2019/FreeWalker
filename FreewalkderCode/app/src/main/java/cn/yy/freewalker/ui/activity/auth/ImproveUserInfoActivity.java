@@ -33,6 +33,7 @@ import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.FileConfig;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.activity.main.MainActivity;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
@@ -134,6 +135,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
                 onWeightSelectClick();
                 break;
             case R.id.btn_submit:
+                startActivity(MainActivity.class);
                 break;
         }
     }
@@ -285,6 +287,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
             public void onConfirm(int index) {
                 mAge = listAgeSelect.get(index);
                 etAge.setText(mAge);
+                inputIsComplete();
             }
         });
     }
@@ -302,6 +305,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
             public void onConfirmBtnClick(int pos) {
                 mLike = listLikeSelect.get(pos);
                 etLike.setText(mLike);
+                inputIsComplete();
             }
         });
     }
@@ -316,7 +320,9 @@ public class ImproveUserInfoActivity extends BaseActivity {
         mDialogBuilder.setTagSelectDialogListener(new DialogTagSelect.onConfirmListener() {
             @Override
             public void onConfirm(int index) {
-                //TODO
+                mProfession = listProfessionSelect.get(index);
+                etProfession.setText(mProfession);
+                inputIsComplete();
             }
         });
     }
@@ -333,6 +339,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
             public void onConfirm(int index) {
                 mHeight = listHeightSelect.get(index);
                 etHeight.setText(mHeight);
+                inputIsComplete();
             }
         });
     }
@@ -348,6 +355,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
             public void onConfirm(int index) {
                 mWeight = listWeightSelect.get(index);
                 etWeight.setText(mWeight);
+                inputIsComplete();
             }
         });
     }

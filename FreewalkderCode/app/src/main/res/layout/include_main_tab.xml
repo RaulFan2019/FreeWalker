@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="79dp"
+    android:layout_gravity="bottom"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:paddingTop="10dp">
+
+
+    <LinearLayout
+        android:id="@+id/ll_device"
+        style="@style/TabRootLayout">
+
+        <View
+            android:id="@+id/iv_device"
+            style="@style/TabRootLayout_Iv"
+            android:background="@drawable/icon_main_tab_device_normal" />
+
+        <TextView
+            android:id="@+id/tv_device"
+            style="@style/TabRootLayout_Tv"
+            android:text="@string/main_tab_device" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_chat"
+        style="@style/TabRootLayout">
+
+        <View
+            android:id="@+id/iv_chat"
+            style="@style/TabRootLayout_Iv"
+            android:background="@drawable/icon_main_tab_chat_normal" />
+
+        <TextView
+            android:id="@+id/tv_chat"
+            style="@style/TabRootLayout_Tv"
+            android:text="@string/main_tab_chat" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_nearby"
+        style="@style/TabRootLayout">
+
+        <View
+            android:id="@+id/iv_nearby"
+            style="@style/TabRootLayout_Iv"
+            android:background="@drawable/icon_main_tab_nearby_normal" />
+
+        <TextView
+            android:id="@+id/tv_nearby"
+            style="@style/TabRootLayout_Tv"
+            android:text="@string/main_tab_nearby" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_me"
+        style="@style/TabRootLayout">
+
+        <View
+            android:id="@+id/iv_me"
+            style="@style/TabRootLayout_Iv"
+            android:background="@drawable/icon_main_tab_me_normal" />
+
+        <TextView
+            android:id="@+id/tv_me"
+            style="@style/TabRootLayout_Tv"
+            android:text="@string/main_tab_me" />
+    </LinearLayout>
+
+
+</LinearLayout>

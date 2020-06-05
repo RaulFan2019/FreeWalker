@@ -14,5 +14,12 @@
     <string name="privacy_activity_privacy_msg_2_title">我们如何使用您的资料</string>
     <string name="privacy_activity_privacy_msg_2">&#8195;&#8195;我们可将您的资料用作下列用途：\n\n&#8195;&#8195;向您提供我们的服务；\n&#8195;&#8195;在我们提供服务时用作客户服务、保安、诈骗侦测、存档和后备用途；\n&#8195;&#8195;向您提供宣传资料（在「广告宣传」一节有较详尽的讨论）；\n&#8195;&#8195;为更了解您如何接入和使用我们的服务、为尝试改善我们的服务及回应客户的意愿和喜好，包括语言设定、位置设定、个人化的支援服务和指示，或就您和其他使用我们服务的客户给予其他回应；\n有助我们建立新服务，改善我们现有服务；\n评估有关我们服务的宣传和其他促销及推广活动的效力，并加以改善；\n为软件认证或管理软件升级；\n及让您参与有关我们产品和服务的调查及其他活动。</string>
     <string name="privacy_activity_user_agreement_msg">hello</string>
+    
+    
+    <!-- main -->
+    <string name="main_tab_device">设备</string>
+    <string name="main_tab_chat">聊天</string>
+    <string name="main_tab_nearby">附近的人</string>
+    <string name="main_tab_me">我的</string>
 
 </resources>

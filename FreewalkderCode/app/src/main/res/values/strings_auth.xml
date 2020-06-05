@@ -13,11 +13,17 @@
     <string name="auth_action_register">注册</string>
     <string name="auth_action_login">登录</string>
     <string name="auth_action_send_verification">发送验证码</string>
+    <string name="auth_action_send_verification_again">再次获取剩余%1$s秒</string>
     <string name="auth_action_back_to_login">返回登录</string>
 
     <string name="auth_tip_privacy">登录则表示您遵守同意FW的\n%1$s&#8195;和&#8195;%2$s</string>
     <string name="auth_tip_input_pwd">密码需要8-20个字符，且包含字母和数字</string>
 
+    <string name="auth_toast_login_ok">登录成功</string>
+    <string name="auth_toast_register_ok">注册成功</string>
+
+    <string name="auth_error_account_empty">手机号不能为空</string>
+    <string name="auth_error_account_invalid">手机号格式不正确</string>
     
     <string name="auth_title_improve_user_info">Hi，请完善你的信息</string>
     <string name="auth_tip_improve_user_info">填写正确的信息，有助于为你匹配到更多好友。</string>
@@ -66,5 +72,7 @@
     <string name="auth_error_permission_photo_mode_camera">拍照需要权限</string>
 
     <string name="auth_action_improve_submit">提交</string>
+
+
 
 </resources>

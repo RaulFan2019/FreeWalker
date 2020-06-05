@@ -61,5 +61,6 @@ dependencies {
     //滚轮控件
     implementation project(':WheelView')
     //tag View
-    implementation 'com.jacksen:supertaggroup:1.1'
+//    implementation 'com.jacksen:supertaggroup:1.1'
+    implementation project(':tagview')
 }

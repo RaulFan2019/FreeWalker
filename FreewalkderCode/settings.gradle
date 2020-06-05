@@ -1,2 +1,2 @@
-include ':app', ':WheelView'
+include ':app', ':WheelView', ':tagview'
 rootProject.name='Freewalker'

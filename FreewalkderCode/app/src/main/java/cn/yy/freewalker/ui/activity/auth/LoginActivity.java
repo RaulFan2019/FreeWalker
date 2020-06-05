@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.activity.main.MainActivity;
 import cn.yy.freewalker.ui.activity.main.PrivacyActivity;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 
@@ -77,12 +78,13 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                 break;
             //点击注册
             case R.id.btn_register:
-                startActivity(ImproveUserInfoActivity.class);
+                startActivity(RegisterActivity.class);
                 finish();
                 break;
             //点击登录
             case R.id.btn_login:
                 //TODO
+                startActivity(MainActivity.class);
                 break;
             //点击查看密码
             case R.id.v_eyes:
