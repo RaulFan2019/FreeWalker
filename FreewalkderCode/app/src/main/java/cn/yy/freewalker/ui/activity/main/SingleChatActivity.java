@@ -11,8 +11,10 @@ import butterknife.BindView;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.adapter.ChatLeftTextBinder;
 import cn.yy.freewalker.adapter.ChatRightTextBinder;
+import cn.yy.freewalker.adapter.ChatUserInfoBinder;
 import cn.yy.freewalker.bean.ChatLeftTextBean;
 import cn.yy.freewalker.bean.ChatRightTextBean;
+import cn.yy.freewalker.bean.ChatUserInfoBean;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -43,8 +45,11 @@ public class SingleChatActivity extends BaseActivity {
     @Override
     protected void initData() {
         mChatAdapter = new MultiTypeAdapter();
+        mChatAdapter.register(ChatUserInfoBean.class,new ChatUserInfoBinder());
         mChatAdapter.register(ChatLeftTextBean.class,new ChatLeftTextBinder());
         mChatAdapter.register(ChatRightTextBean.class,new ChatRightTextBinder());
+
+        mChatItems.add(new ChatUserInfoBean("男","25","女","房地产/建筑"));
 
         mChatItems.add(new ChatLeftTextBean("你好",""));
         mChatAdapter.setItems(mChatItems);
