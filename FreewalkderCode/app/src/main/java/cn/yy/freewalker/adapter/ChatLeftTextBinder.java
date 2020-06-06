@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.adapter.holder.ChatTextHolder;
-import cn.yy.freewalker.bean.ChatTextBean;
+import cn.yy.freewalker.bean.ChatLeftTextBean;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -14,7 +14,7 @@ import me.drakeet.multitype.ItemViewBinder;
  * @version 1.0
  * @date 2020/6/4 上午12:08
  */
-public class ChatLeftTextBinder extends ItemViewBinder<ChatTextBean, ChatTextHolder> {
+public class ChatLeftTextBinder extends ItemViewBinder<ChatLeftTextBean, ChatTextHolder> {
     @NonNull
     @Override
     protected ChatTextHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
@@ -22,7 +22,7 @@ public class ChatLeftTextBinder extends ItemViewBinder<ChatTextBean, ChatTextHol
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ChatTextHolder holder, @NonNull ChatTextBean item) {
+    protected void onBindViewHolder(@NonNull ChatTextHolder holder, @NonNull ChatLeftTextBean item) {
         holder.setContentText(item.chatText);
         holder.setUserPhoto(item.photoUrl);
     }

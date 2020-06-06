@@ -5,11 +5,11 @@ package cn.yy.freewalker.bean;
  * @version 1.0
  * @date 2020/6/4 上午12:10
  */
-public class ChatTextBean {
+public class ChatLeftTextBean {
     public String chatText;
     public String photoUrl;
 
-    public ChatTextBean(String chatText, String photoUrl) {
+    public ChatLeftTextBean(String chatText, String photoUrl) {
         this.chatText = chatText;
         this.photoUrl = photoUrl;
     }

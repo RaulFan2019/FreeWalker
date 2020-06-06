@@ -86,7 +86,6 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
             case R.id.btn_login:
                 //TODO
                 startActivity(MainActivity.class);
-                startActivity(SingleChatActivity.class);
                 break;
             //点击查看密码
             case R.id.v_eyes:
