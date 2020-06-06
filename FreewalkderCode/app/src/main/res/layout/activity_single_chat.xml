@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/bg_chat_pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- title -->
+    <RelativeLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:id="@+id/tv_chat_user_title"/>
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton"/>
+
+        <View style="@style/TitleBottomLine"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_chat_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        style="@style/ChatInputNavLayout">
+        <ImageView
+            style="@style/ChatInputLeftBtn"
+            android:src="@drawable/btn_voice"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/bg_chat_input"
+            android:layout_height="match_parent"/>
+        <ImageView
+            style="@style/ChatInputLeftBtn"
+            android:src="@drawable/btn_emoji"
+            />
+        <ImageView
+            style="@style/ChatInputRightBtn"
+            android:src="@drawable/btn_location"/>
+    </LinearLayout>
+</LinearLayout>

@@ -55,6 +55,9 @@
         <activity android:name=".ui.activity.main.MainActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.activity.main.SingleChatActivity"
+            android:screenOrientation="portrait"/>
+
 
         <!-- auth -->
         <activity android:name=".ui.activity.auth.LoginActivity"

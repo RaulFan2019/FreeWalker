@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
     <!-- 主题色 -->
     <color name="primary">#FFFFFF</color>
@@ -29,4 +29,13 @@
     <color name="bg_tag_selected">#FF414F</color>
     <color name="tv_tag_normal">#596A83</color>
     <color name="tv_tag_selected">#FFFFFF</color>
+    <!-- 错误文字颜色 -->
+    <color name="tv_error">#CC3732</color>
+
+    <!-- button -->
+    <color name="btn_mostly_tv">#ffffff</color>
+    <color name="btn_white_tv">#323333</color>
+
+    <!--  背景色 -->
+    <color name="bg_chat_pager">#F0F1F2</color>
 </resources>
