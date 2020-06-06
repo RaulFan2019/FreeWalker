@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="device_title_list">设备列表</string>
+    
+    <string name="device_tip_no_bind">未连接任何设备\n请点击下方按钮添加新设备</string>
+    
+    <string name="device_tip_ask_unbind">确定解除与该设备的绑定？</string>
+    
+    <string name="device_action_add_new">添加新设备</string>
+    <string name="device_action_unbind_device">解除绑定</string>
+    <string name="device_action_unbind_in_dialog">解绑</string>
+
+    <string name="device_status_disconnect">未连接，点击切换</string>
+    <string name="device_status_connecting">正在连接</string>
+    <string name="device_status_worked">已连接</string>
+
+</resources>

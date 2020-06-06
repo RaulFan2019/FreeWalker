@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- title -->
+    <RelativeLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/device_title_list" />
+
+        <View style="@style/TitleBottomLine"/>
+    </RelativeLayout>
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="451dp">
+
+        <!-- none bind -->
+        <TextView
+            android:id="@+id/tv_none"
+            android:layout_width="match_parent"
+            android:layout_height="451dp"
+            android:gravity="center"
+            android:text="@string/device_tip_no_bind"
+            android:textSize="14dp"
+            android:textColor="@color/tv_secondly"
+            android:visibility="gone"/>
+
+        <!-- has Device -->
+        <cn.yy.freewalker.ui.widget.listview.ListViewUnbindDevice
+            android:id="@+id/lv_device"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:listSelector="@android:color/transparent"
+            android:divider="@drawable/divider_list_device"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_add"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="@drawable/bg_device_add">
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/icon_device_add"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tv_accent"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/device_action_add_new"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@drawable/bg_dialog">
+    android:background="@drawable/bg_dialog_bottom">
 
 
     <RelativeLayout

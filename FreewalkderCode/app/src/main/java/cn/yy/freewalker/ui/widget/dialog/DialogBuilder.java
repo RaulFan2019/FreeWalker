@@ -15,6 +15,7 @@ public class DialogBuilder {
     private DialogSingleSelect dialogSingleSelect;
     private DialogPickView dialogPickView;
     private DialogTagSelect dialogTagSelect;
+    private DialogChoice dialogChoice;
 
     /**
      * 显示隐私询问对话框
@@ -103,6 +104,25 @@ public class DialogBuilder {
 
     public void setTagSelectDialogListener(DialogTagSelect.onConfirmListener listener){
         dialogTagSelect.setListener(listener);
+    }
+
+    /**
+     * 显示选择对话框
+     * @param context
+     * @param title
+     * @param confirm
+     * @param cancel
+     */
+    public void showChoiceDialog(final Context context, final String title, final String confirm, final String cancel) {
+        if (dialogChoice == null) {
+            dialogChoice = new DialogChoice(context);
+        }
+        dialogChoice.show(title, confirm, cancel);
+    }
+
+
+    public void setChoiceDialogListener(DialogChoice.onBtnClickListener listener){
+        dialogChoice.setListener(listener);
     }
 
 }

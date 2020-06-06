@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void doMyCreate() {
-
+        selectTab(TAB_DEVICE);
     }
 
     @Override
