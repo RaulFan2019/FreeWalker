@@ -15,4 +15,9 @@
     <string name="device_status_connecting">正在连接</string>
     <string name="device_status_worked">已连接</string>
 
+    <string name="device_title_add">添加设备中</string>
+    <string name="device_tip_add">添加过程中请保证耳机处于开机状态</string>
+    <string name="device_tip_select_nearby">选择附近的FW</string>
+    <string name="device_tip_scan_none">没有扫描到我要连接的设备</string>
+
 </resources>

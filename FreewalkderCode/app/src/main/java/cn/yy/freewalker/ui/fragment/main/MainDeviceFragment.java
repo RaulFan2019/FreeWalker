@@ -20,6 +20,7 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.DeviceConfig;
 import cn.yy.freewalker.entity.adapter.BindDeviceAdapterEntity;
 import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
+import cn.yy.freewalker.ui.activity.device.ScanActivity;
 import cn.yy.freewalker.ui.adapter.DeviceListAdapter;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
@@ -63,7 +64,7 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
 
     @OnClick(R.id.btn_add)
     public void onViewClicked() {
-        //TODO
+        startActivity(ScanActivity.class);
     }
 
     /**
@@ -108,6 +109,7 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         if (listDevice.get(position).status == DeviceConfig.ConnectStates.DISCONNECT) {
 
             for (BindDeviceAdapterEntity entity : listDevice) {
@@ -117,6 +119,9 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
                     entity.status = DeviceConfig.ConnectStates.DISCONNECT;
                 }
             }
+            adapter.notifyDataSetChanged();
+        }else {
+            //TODO 跳转到设备详情
         }
     }
 
