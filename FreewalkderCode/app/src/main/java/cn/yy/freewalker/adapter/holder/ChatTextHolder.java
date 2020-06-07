@@ -1,16 +1,19 @@
 package cn.yy.freewalker.adapter.holder;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.qmuiteam.qmui.qqface.QMUIQQFaceView;
 
 import org.xutils.x;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.ui.widget.textview.QQFaceTextView;
 
 /**
  * @author zhao
@@ -21,8 +24,8 @@ public class ChatTextHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.iv_user_photo)
     ImageView mChatUserPhotoIv;
-    @BindView(R.id.tv_chat_content)
-    TextView mChatContentTv;
+    @BindView(R.id.qtv_chat_content)
+    QQFaceTextView mChatContentQtv;
 
     public ChatTextHolder(@NonNull View itemView) {
         super(itemView);
@@ -30,7 +33,7 @@ public class ChatTextHolder extends RecyclerView.ViewHolder {
     }
 
     public void setContentText(String text){
-        mChatContentTv.setText(text);
+        mChatContentQtv.setText(text);
     }
 
     public void setUserPhoto(String photoUrl){

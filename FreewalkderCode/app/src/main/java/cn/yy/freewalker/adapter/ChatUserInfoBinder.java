@@ -1,13 +1,15 @@
 package cn.yy.freewalker.adapter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import org.xutils.common.util.LogUtil;
+
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.adapter.holder.ChatTextHolder;
 import cn.yy.freewalker.adapter.holder.ChatUserInfoHolder;
-import cn.yy.freewalker.bean.ChatLeftTextBean;
 import cn.yy.freewalker.bean.ChatUserInfoBean;
 import me.drakeet.multitype.ItemViewBinder;
 
@@ -25,6 +27,7 @@ public class ChatUserInfoBinder extends ItemViewBinder<ChatUserInfoBean, ChatUse
 
     @Override
     protected void onBindViewHolder(@NonNull ChatUserInfoHolder holder, @NonNull ChatUserInfoBean item) {
+
         holder.mGenderTv.setText(item.gender);
         holder.mAgeTv.setText(item.age);
         holder.mLikeTv.setText(item.like);

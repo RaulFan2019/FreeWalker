@@ -32,7 +32,7 @@
         android:theme="@style/ThemeCommonLight">
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="cn.yy.freewalker.fileProvider"
             android:grantUriPermissions="true"
             android:exported="false">

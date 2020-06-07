@@ -21,11 +21,11 @@
         android:background="@drawable/bg_chat_left"
         android:padding="8dp">
 
-        <TextView
-            android:id="@+id/tv_chat_content"
+        <cn.yy.freewalker.ui.widget.textview.QQFaceTextView
+            android:id="@+id/qtv_chat_content"
             android:textSize="15sp"
+            android:textColor="@color/tv_mostly"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/tv_mostly"/>
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
 </LinearLayout>
