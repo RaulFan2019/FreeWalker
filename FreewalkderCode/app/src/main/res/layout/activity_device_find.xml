@@ -26,6 +26,7 @@
             android:background="@drawable/icon_device_big" />
 
         <cn.yy.freewalker.ui.widget.common.RippleView
+            android:id="@+id/ripple_scan"
             android:layout_width="270dp"
             android:layout_height="270dp"
             app:cColor="#33FF414F"
@@ -57,17 +58,20 @@
         android:layout_marginTop="10dp"/>
 
     <ListView
+        android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:divider="@drawable/divider_list_device_scan"/>
 
     <LinearLayout
+        android:id="@+id/ll_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="40dp"
-        android:gravity="center_vertical|center_horizontal">
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="gone">
         <View
             android:layout_width="15dp"
             android:layout_height="15dp"

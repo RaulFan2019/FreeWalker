@@ -20,4 +20,26 @@
     <string name="device_tip_select_nearby">选择附近的FW</string>
     <string name="device_tip_scan_none">没有扫描到我要连接的设备</string>
 
+    <string name="device_error_not_support">本设备不支持蓝牙</string>
+
+    <string name="device_title_open_bluetooth">蓝牙服务</string>
+    <string name="device_tip_bluetooth_not_opened_short">蓝牙未开启</string>
+    <string name="device_tip_bluetooth_not_opened">蓝牙未开启，无法连接设备\n请检查您的蓝牙设置</string>
+    <string name="device_action_open">立即开启</string>
+
+    <string name="device_title_open_location">位置服务</string>
+    <string name="device_tip_location_service">需要开启位置服务以扫描耳机，是否去开启？</string>
+    <string name="device_tip_location_opened_short">位置服务未开启</string>
+    <string name="device_tip_location_opened">Android6.0后，蓝牙扫描需要位置服务</string>
+    <string name="device_tip_location_permission">需要开启位置权限以扫描设备</string>
+    <string name="device_tip_location_permission_2">需要去设置页面开启位置权限以扫描设备</string>
+
+    <string name="device_title_dialog_scan_none">没有扫描到我的设备</string>
+    <string name="device_action_dialog_try_again">重试</string>
+    <string name="device_action_dialog_exit">暂不连接</string>
+    
+    <string name="device_toast_connecting">正在配对中..</string>
+    <string name="device_title_dialog_connect_fail">连接失败</string>
+    <string name="device_toast_connected">配对成功</string>
+
 </resources>

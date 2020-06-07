@@ -1,26 +1,20 @@
 package cn.yy.freewalker.ui.fragment.main;
 
-import android.os.Bundle;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.DeviceConfig;
 import cn.yy.freewalker.entity.adapter.BindDeviceAdapterEntity;
 import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
-import cn.yy.freewalker.ui.activity.device.ScanActivity;
+import cn.yy.freewalker.ui.activity.device.FindActivity;
 import cn.yy.freewalker.ui.adapter.DeviceListAdapter;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
@@ -64,7 +58,7 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
 
     @OnClick(R.id.btn_add)
     public void onViewClicked() {
-        startActivity(ScanActivity.class);
+        startActivity(FindActivity.class);
     }
 
     /**

@@ -58,7 +58,12 @@
             android:screenOrientation="portrait"/>
 
         <!-- device -->
-        <activity android:name=".ui.activity.device.ScanActivity"/>
+        <activity android:name=".ui.activity.device.FindActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.device.BluetoothOffActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.device.LocationOffActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- auth -->
         <activity android:name=".ui.activity.auth.LoginActivity"
