@@ -1,8 +1,8 @@
 package cn.yy.freewalker.ui.activity.main;
 
 import android.os.Message;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -51,7 +51,8 @@ public class SingleChatActivity extends BaseActivity {
 
         mChatItems.add(new ChatUserInfoBean("男","25","女","房地产/建筑"));
 
-        mChatItems.add(new ChatLeftTextBean("你好",""));
+        mChatItems.add(new ChatLeftTextBean("你好[微笑][微笑][微笑][微笑][微笑]",""));
+        mChatItems.add(new ChatRightTextBean("你好[呲牙]",""));
         mChatAdapter.setItems(mChatItems);
     }
 

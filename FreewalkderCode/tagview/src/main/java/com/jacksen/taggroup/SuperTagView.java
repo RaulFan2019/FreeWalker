@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,7 +15,7 @@ import android.widget.Checkable;
  * Created by jacksen on 2016.
  */
 
-public class SuperTagView extends android.support.v7.widget.AppCompatTextView implements Checkable {
+public class SuperTagView extends androidx.appcompat.widget.AppCompatTextView implements Checkable {
 
 
     private static final String TAG = "SuperTagView";

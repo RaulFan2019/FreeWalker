@@ -1,16 +1,13 @@
 package cn.yy.freewalker.ui.activity.main;
 
-import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;

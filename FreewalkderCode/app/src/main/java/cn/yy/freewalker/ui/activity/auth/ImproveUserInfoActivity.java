@@ -6,29 +6,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
+import androidx.core.content.FileProvider;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.FileConfig;
