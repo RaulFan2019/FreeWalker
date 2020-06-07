@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_ing"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:visibility="gone">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/tv_mostly"
+        android:textSize="18dp"
+        android:text="@string/device_tip_ota_ing"/>
+
+    <cn.yy.freewalker.ui.widget.common.CircleProgress
+        android:id="@+id/pb_ing"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="42dp"
+        app:antiAlias="true"
+        app:arcWidth="2dp"
+        app:bgArcColor="#33FF414F"
+        app:bgArcWidth="1dp"
+        app:maxValue="100"
+        app:startAngle="270"
+        app:sweepAngle="360"
+        app:textOffsetPercentInRadius="0.5"
+        app:unit="%"
+        app:unitSize="12dp"
+        app:unitColor="@color/accent"
+        app:value="0"
+        app:valueSize="18dp"
+        app:valueColor="@color/accent"/>
+
+
+    <TextView
+        android:layout_marginTop="31dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/tv_secondly"
+        android:textSize="14dp"
+        android:text="@string/device_tip_ota_warning"/>
 
 </LinearLayout>

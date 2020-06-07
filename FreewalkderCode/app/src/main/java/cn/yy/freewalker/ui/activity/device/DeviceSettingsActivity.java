@@ -53,7 +53,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
                 startActivity(DeviceSettingsNameActivity.class);
                 break;
             case R.id.ll_update:
-                //TODO
+                startActivity(DeviceOtaActivity.class);
                 break;
             case R.id.ll_channel:
                 //TODO

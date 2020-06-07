@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/ll_need"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+
+    <TextView
+        android:id="@+id/tv_need_new_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="66dp"
+        android:textColor="@color/tv_mostly"
+        android:gravity="center_horizontal"
+        android:textSize="18dp"/>
+
+    <View
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/icon_upgrade_big"/>
+
+
+    <TextView
+        android:id="@+id/tv_need_curr_version"
+        android:layout_marginTop="31dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/tv_secondly"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"/>
+
+    <Button
+        android:id="@+id/btn_ota"
+        style="@style/BtnLarge"
+        android:layout_width="200dp"
+        android:layout_marginTop="82dp"
+        android:text="@string/device_action_ota_now"/>
 
 </LinearLayout>
