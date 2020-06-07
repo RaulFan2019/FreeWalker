@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical">
+
+    <!-- title -->
+    <RelativeLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/device_title_settings" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton" />
+
+        <View style="@style/TitleBottomLine" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="249dp"
+            android:layout_height="89dp"
+            android:background="@drawable/icon_device_big_h" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <!-- 当前设备 -->
+        <LinearLayout
+            android:id="@+id/ll_device"
+            style="@style/DeviceSettingsLl">
+
+            <View
+                style="@style/DeviceSettingsIcon"
+                android:background="@drawable/icon_device_settings_device" />
+
+            <TextView
+                style="@style/DeviceSettingsTvTag"
+                android:text="@string/device_tx_settings_device" />
+
+            <TextView
+                android:id="@+id/tv_device"
+                style="@style/DeviceSettingsTvValue" />
+
+            <View style="@style/DeviceSettingsIconMore" />
+
+        </LinearLayout>
+
+        <View style="@style/DeviceSettingsDivider" />
+
+        <!-- 耳机名称 -->
+        <LinearLayout
+            android:id="@+id/ll_name"
+            style="@style/DeviceSettingsLl">
+
+            <View
+                style="@style/DeviceSettingsIcon"
+                android:background="@drawable/icon_device_settings_earphone" />
+
+            <TextView
+                style="@style/DeviceSettingsTvTag"
+                android:text="@string/device_tx_settings_earphone" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/DeviceSettingsTvValue" />
+
+            <View style="@style/DeviceSettingsIconMore" />
+
+        </LinearLayout>
+
+        <View style="@style/DeviceSettingsDivider" />
+
+        <!-- 固件升级 -->
+        <LinearLayout
+            android:id="@+id/ll_update"
+            style="@style/DeviceSettingsLl">
+
+            <View
+                style="@style/DeviceSettingsIcon"
+                android:background="@drawable/icon_device_settings_upgrate" />
+
+            <TextView
+                style="@style/DeviceSettingsTvTag"
+                android:text="@string/device_tx_settings_ota_update" />
+
+            <TextView style="@style/DeviceSettingsTvValue" />
+
+            <View style="@style/DeviceSettingsIconMore" />
+
+        </LinearLayout>
+
+        <View style="@style/DeviceSettingsDivider" />
+
+        <!-- 音量 -->
+        <LinearLayout style="@style/DeviceSettingsLl">
+
+            <View
+                style="@style/DeviceSettingsIcon"
+                android:background="@drawable/icon_device_settings_volume" />
+
+            <TextView
+                style="@style/DeviceSettingsTvTag"
+                android:text="@string/device_tx_settings_volume" />
+
+            <SeekBar
+                android:id="@+id/sb_volume"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="66dp"
+                android:max="10"
+                android:progressDrawable="@drawable/bg_seekbar"
+                android:thumb="@drawable/icon_seekbar_thumb"/>
+
+            <TextView
+                android:id="@+id/tv_volume"
+                style="@style/DeviceSettingsTvValue" />
+
+        </LinearLayout>
+
+        <View style="@style/DeviceSettingsDivider" />
+
+        <!-- 当前频道 -->
+        <LinearLayout
+            android:id="@+id/ll_channel"
+            style="@style/DeviceSettingsLl">
+
+            <View
+                style="@style/DeviceSettingsIcon"
+                android:background="@drawable/icon_device_settings_channel" />
+
+            <TextView
+                style="@style/DeviceSettingsTvTag"
+                android:text="@string/device_tx_settings_channel" />
+
+
+            <TextView
+                android:id="@+id/tv_channel"
+                style="@style/DeviceSettingsTvValue" />
+
+            <View style="@style/DeviceSettingsIconMore" />
+
+        </LinearLayout>
+
+        <View style="@style/DeviceSettingsDivider" />
+
+    </LinearLayout>
+
+</LinearLayout>

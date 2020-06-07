@@ -42,4 +42,12 @@
     <string name="device_title_dialog_connect_fail">连接失败</string>
     <string name="device_toast_connected">配对成功</string>
 
+    <string name="device_title_settings">我的设备</string>
+    
+    <string name="device_tx_settings_device">当前设备</string>
+    <string name="device_tx_settings_earphone">耳机名称</string>
+    <string name="device_tx_settings_ota_update">固件升级</string>
+    <string name="device_tx_settings_volume">音量</string>
+    <string name="device_tx_settings_channel">当前频道</string>
+
 </resources>

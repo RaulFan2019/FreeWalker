@@ -64,6 +64,12 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.device.LocationOffActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.device.DeviceSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.device.DeviceSettingsNameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.device.DeviceOtaActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- auth -->
         <activity android:name=".ui.activity.auth.LoginActivity"

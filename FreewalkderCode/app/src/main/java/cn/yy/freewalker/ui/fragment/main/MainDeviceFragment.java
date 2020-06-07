@@ -14,6 +14,7 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.DeviceConfig;
 import cn.yy.freewalker.entity.adapter.BindDeviceAdapterEntity;
 import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
+import cn.yy.freewalker.ui.activity.device.DeviceSettingsActivity;
 import cn.yy.freewalker.ui.activity.device.FindActivity;
 import cn.yy.freewalker.ui.adapter.DeviceListAdapter;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
@@ -115,7 +116,7 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
             }
             adapter.notifyDataSetChanged();
         }else {
-            //TODO 跳转到设备详情
+            startActivity(DeviceSettingsActivity.class);
         }
     }
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="DeviceSettingsLl">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+    </style>
+
+    <style name="DeviceSettingsIcon">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+    </style>
+
+    <style name="DeviceSettingsTvTag">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/tv_mostly</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:layout_marginStart">11.5dp</item>
+    </style>
+
+    <style name="DeviceSettingsTvValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/tv_secondly</item>
+    </style>
+
+    <style name="DeviceSettingsIconMore">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_marginStart">14dp</item>
+        <item name="android:background">@drawable/icon_more</item>
+    </style>
+
+    <style name="DeviceSettingsDivider" parent="DividerH">
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+    </style>
+
+</resources>
