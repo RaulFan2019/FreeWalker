@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,11 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;
-import cn.yy.freewalker.ui.adapter.DeviceScanAdapter;
+import cn.yy.freewalker.ui.adapter.DeviceScanListAdapter;
 import cn.yy.freewalker.ui.widget.common.RippleView;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
@@ -66,7 +64,7 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
     @BindView(R.id.ripple_scan)
     RippleView rpv;
 
-    DeviceScanAdapter adapter;
+    DeviceScanListAdapter adapter;
     DialogBuilder mDialogBuilder;
 
     /* local data */
@@ -122,7 +120,7 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
 
     @Override
     protected void initViews() {
-        adapter = new DeviceScanAdapter(listTestDeviceName);
+        adapter = new DeviceScanListAdapter(listTestDeviceName);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
     }

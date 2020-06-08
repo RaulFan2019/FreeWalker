@@ -16,6 +16,7 @@ public class DialogBuilder {
     private DialogPickView dialogPickView;
     private DialogTagSelect dialogTagSelect;
     private DialogChoice dialogChoice;
+    private DialogDeviceInputChannelPwd dialogDeviceInputChannelPwd;
 
     /**
      * 显示隐私询问对话框
@@ -123,6 +124,22 @@ public class DialogBuilder {
 
     public void setChoiceDialogListener(DialogChoice.onBtnClickListener listener){
         dialogChoice.setListener(listener);
+    }
+
+    /**
+     * 显示设备频道密码对话框
+     * @param context
+     */
+    public void showDeviceChannelPwdDialog(final Context context) {
+        if (dialogDeviceInputChannelPwd == null) {
+            dialogDeviceInputChannelPwd = new DialogDeviceInputChannelPwd(context);
+        }
+        dialogDeviceInputChannelPwd.show();
+    }
+
+
+    public void setDeviceChannelPwdDialogListener(DialogDeviceInputChannelPwd.onConfirmListener listener){
+        dialogDeviceInputChannelPwd.setListener(listener);
     }
 
 }

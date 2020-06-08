@@ -82,8 +82,8 @@ public class ImproveUserInfoActivity extends BaseActivity {
 
     private List<String> listLikeSelect = new ArrayList<>();     //喜欢选择
     private ArrayList<String> listProfessionSelect = new ArrayList<>();//职业选择
-    private ArrayList<String> listHeightSelect = new ArrayList<>();//年龄选择列表
-    private ArrayList<String> listWeightSelect = new ArrayList<>();//年龄选择列表
+    private ArrayList<String> listHeightSelect = new ArrayList<>();//身高选择列表
+    private ArrayList<String> listWeightSelect = new ArrayList<>();//体重选择列表
 
     private Uri mAvatarPhotoUri;                                //头像uri
     private String mAvatarPhotoPath;                            //头像文件地址
@@ -267,6 +267,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
             public void onConfirmBtnClick(int pos) {
                 mSex = listSexSelect.get(pos);
                 etSex.setText(mSex);
+                inputIsComplete();
             }
         });
     }

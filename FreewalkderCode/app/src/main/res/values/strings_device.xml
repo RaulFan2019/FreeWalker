@@ -2,11 +2,11 @@
 <resources>
 
     <string name="device_title_list">设备列表</string>
-    
+
     <string name="device_tip_no_bind">未连接任何设备\n请点击下方按钮添加新设备</string>
-    
+
     <string name="device_tip_ask_unbind">确定解除与该设备的绑定？</string>
-    
+
     <string name="device_action_add_new">添加新设备</string>
     <string name="device_action_unbind_device">解除绑定</string>
     <string name="device_action_unbind_in_dialog">解绑</string>
@@ -37,13 +37,13 @@
     <string name="device_title_dialog_scan_none">没有扫描到我的设备</string>
     <string name="device_action_dialog_try_again">重试</string>
     <string name="device_action_dialog_exit">暂不连接</string>
-    
+
     <string name="device_toast_connecting">正在配对中..</string>
     <string name="device_title_dialog_connect_fail">连接失败</string>
     <string name="device_toast_connected">配对成功</string>
 
     <string name="device_title_settings">我的设备</string>
-    
+
     <string name="device_tx_settings_device">当前设备</string>
     <string name="device_tx_settings_earphone">耳机名称</string>
     <string name="device_tx_settings_ota_update">固件升级</string>
@@ -61,4 +61,11 @@
     <string name="device_tip_ota_newest">%1$s\n当前已是最新版本</string>
 
     <string name="device_toast_ota_finish">升级成功</string>
+
+    <string name="device_tx_setting_channel_curr">- 当前频道 -</string>
+    <string name="device_tx_setting_channel_all">频道（1-30）</string>
+    <string name="device_action_setting_channel_pwd">密码设置</string>
+    <string name="device_action_setting_channel_auth">权限设置</string>
+    <string name="device_tip_setting_channel_pwd">用户须知：\n· 在同一频道下，您需与好友同时输入相同的密码，方可进入保密通信状态；\n· 密码为6个数字。</string>
+
 </resources>

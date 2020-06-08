@@ -16,11 +16,11 @@ import cn.yy.freewalker.R;
  * @email 35686324@qq.com
  * @date 2020/6/7 10:40
  */
-public class DeviceScanAdapter extends BaseAdapter {
+public class DeviceScanListAdapter extends BaseAdapter {
 
     private List<String> listData;
 
-    public DeviceScanAdapter(List<String> data) {
+    public DeviceScanListAdapter(List<String> data) {
         this.listData = data;
     }
 

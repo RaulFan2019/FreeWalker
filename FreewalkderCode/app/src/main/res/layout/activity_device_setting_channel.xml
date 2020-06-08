@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="219dp"
+        android:background="@drawable/bg_device_channel">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tv_mostly"
+                android:textSize="14dp"
+                android:text="@string/device_tx_setting_channel_curr"/>
+            <TextView
+                android:id="@+id/tv_channel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tv_mostly"
+                android:textSize="27dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="#77000000"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:id="@+id/btn_set_pwd"
+                style="@style/DeviceSettingsChannelBtn"
+                android:text="@string/device_action_setting_channel_pwd"/>
+
+            <View
+                style="@style/DividerV"
+                android:layout_height="15dp"
+                android:background="#E3E3E3"/>
+
+            <TextView
+                android:id="@+id/btn_set_auth"
+                style="@style/DeviceSettingsChannelBtn"
+                android:text="@string/device_action_setting_channel_auth"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- 频道列表 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textSize="12dp"
+        android:textColor="@color/tv_secondly"
+        android:background="@color/bg_base_gray"
+        android:paddingStart="15dp"
+        android:gravity="center_vertical"
+        android:text="@string/device_tx_setting_channel_all"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_channel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_marginTop="15dp"/>
+
+</LinearLayout>

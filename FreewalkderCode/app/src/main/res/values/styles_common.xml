@@ -58,7 +58,7 @@
     </style>
 
     <style name="TitleBottomLine" parent="DividerH">
-        <item name="android:layout_gravity">bottom</item>
+        <item name="android:layout_alignParentBottom">true</item>
     </style>
 
     <!-- button -->
@@ -71,4 +71,16 @@
         <item name="android:textColor">@drawable/btn_large</item>
     </style>
 
+    <!-- Input Pwd Box -->
+    <style name="PwdBoxTv">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/tv_mostly</item>
+        <item name="android:background">@drawable/bg_box_tv</item>
+    </style>
 </resources>

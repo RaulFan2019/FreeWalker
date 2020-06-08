@@ -45,4 +45,14 @@
         <item name="android:layout_marginEnd">15dp</item>
     </style>
 
+    <style name="DeviceSettingsChannelBtn">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
