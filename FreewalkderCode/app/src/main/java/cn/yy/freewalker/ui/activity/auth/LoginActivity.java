@@ -2,7 +2,6 @@ package cn.yy.freewalker.ui.activity.auth;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
@@ -17,16 +16,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.main.MainActivity;
 import cn.yy.freewalker.ui.activity.main.PrivacyActivity;
-import cn.yy.freewalker.ui.activity.main.SingleChatActivity;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 
 /**

@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.fragment.main.MainChatFragment;
 import cn.yy.freewalker.ui.fragment.main.MainDeviceFragment;
 import cn.yy.freewalker.ui.fragment.main.MainMeFragment;

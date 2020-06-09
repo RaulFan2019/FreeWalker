@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
+import cn.yy.freewalker.ui.widget.radarview.RadarView;
 
 /**
  * @author Raul.Fan
@@ -43,7 +44,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     MapView mapView;
     @BindView(R.id.btn_scan)
     LinearLayout btnScan;
-
+    @BindView(R.id.radar)
+    RadarView scanView;
 
     /* data */
     AMap mAMap;                                                     //地图

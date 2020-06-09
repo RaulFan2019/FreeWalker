@@ -1,14 +1,7 @@
-package cn.yy.freewalker.ui.activity.main;
+package cn.yy.freewalker.ui.activity.chat;
 
 import android.content.Context;
 import android.os.Message;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -18,33 +11,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.xutils.x;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.adapter.ChatFaceBinder;
 import cn.yy.freewalker.adapter.ChatLeftTextBinder;
 import cn.yy.freewalker.adapter.ChatRightTextBinder;
 import cn.yy.freewalker.adapter.ChatTimeBinder;
-import cn.yy.freewalker.adapter.ChatUserInfoBinder;
 import cn.yy.freewalker.adapter.FacePagerAdapter;
-import cn.yy.freewalker.bean.ChatFaceBean;
 import cn.yy.freewalker.bean.ChatLeftTextBean;
 import cn.yy.freewalker.bean.ChatRightTextBean;
 import cn.yy.freewalker.bean.ChatTimeBean;
-import cn.yy.freewalker.bean.ChatUserInfoBean;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
 import cn.yy.freewalker.ui.widget.common.KeyboardLayout;
-import cn.yy.freewalker.ui.widget.faceView.QDQQFaceManager;
-import cn.yy.freewalker.utils.DrawableU;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
