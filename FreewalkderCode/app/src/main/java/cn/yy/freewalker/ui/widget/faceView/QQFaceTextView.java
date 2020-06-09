@@ -1,4 +1,4 @@
-package cn.yy.freewalker.ui.widget.textview;
+package cn.yy.freewalker.ui.widget.faceView;
 
 import android.content.Context;
 import android.util.AttributeSet;

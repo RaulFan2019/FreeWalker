@@ -4,16 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.qmuiteam.qmui.qqface.QMUIQQFaceView;
 
 import org.xutils.x;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.ui.widget.textview.QQFaceTextView;
+import cn.yy.freewalker.ui.widget.faceView.QQFaceTextView;
 
 /**
  * @author zhao
