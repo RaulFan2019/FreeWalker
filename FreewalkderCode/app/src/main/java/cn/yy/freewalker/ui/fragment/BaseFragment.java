@@ -33,7 +33,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected MyHandler mHandler;
 
-
     protected class MyHandler extends Handler {
         private WeakReference<BaseFragment> mOuter;
 

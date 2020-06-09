@@ -41,6 +41,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+
+        <!-- 高德地图 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="2e0cfc3b3e8dc1d44393bec51ee78eb4"/>
+
         <!-- main -->
         <activity android:name=".ui.activity.main.WelcomeActivity"
             android:theme="@style/ThemeAppStartLoad">
