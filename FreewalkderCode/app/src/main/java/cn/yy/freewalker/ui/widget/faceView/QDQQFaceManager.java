@@ -1,4 +1,4 @@
-package cn.yy.freewalker.ui.widget.textview;
+package cn.yy.freewalker.ui.widget.faceView;
 
 /*
  * Tencent is pleased to support the open source community by making QMUI_Android available.
@@ -24,11 +24,10 @@ import android.util.SparseIntArray;
 import com.qmuiteam.qmui.qqface.IQMUIQQFaceManager;
 import com.qmuiteam.qmui.qqface.QQFace;
 
-import org.xutils.common.util.LogUtil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.yy.freewalker.R;
 
@@ -42,7 +41,8 @@ public class QDQQFaceManager implements IQMUIQQFaceManager {
     private static final List<QQFace> mQQFaceList = new ArrayList<>();
     private static final SparseIntArray sEmojisMap = new SparseIntArray(846);
     private static final SparseIntArray sSoftbanksMap = new SparseIntArray(471);
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection") private static final ArrayMap<String, String> mQQFaceFileNameList = new ArrayMap<>();//存储QQ表情对应的文件名,方便混淆后可以获取到原文件名
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    private static final ArrayMap<String, String> mQQFaceFileNameList = new ArrayMap<>();//存储QQ表情对应的文件名,方便混淆后可以获取到原文件名
 
     private static QDQQFaceManager sQDQQFaceManager = new QDQQFaceManager();
 
@@ -1687,5 +1687,13 @@ public class QDQQFaceManager implements IQMUIQQFaceManager {
             return 0;
         }
         return integer;
+    }
+
+    public HashMap<String, Integer> getQQFaceMap(){
+        return sQQFaceMap;
+    }
+
+    public List<QQFace> getQQFaceList(){
+        return mQQFaceList;
     }
 }

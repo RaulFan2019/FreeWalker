@@ -1,50 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/bg_chat_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!-- title -->
-    <RelativeLayout style="@style/TitleLayout">
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        style="@style/TitleLayout">
 
         <TextView
+            android:id="@+id/tv_chat_user_title"
             style="@style/TitleTitleTv"
-            android:id="@+id/tv_chat_user_title"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/btn_back"
             style="@style/TitleBackButton"/>
 
-        <View style="@style/TitleBottomLine"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:layout_width="22dp"
+            android:layout_height="18dp"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="12"
+            android:textSize="10sp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/bg_channel"
+            />
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_chat_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+    <LinearLayout
+        android:id="@+id/ll_user_info"
+        android:layout_below="@+id/rl_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:background="@drawable/bg_chat_user_info"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="14dp"
+            android:src="@drawable/icon_gender" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/tv_chat_user_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="男" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="19dp"
+            android:src="@drawable/icon_age" />
+
+        <TextView
+            android:id="@+id/tv_chat_user_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="25" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/icon_like" />
+
+        <TextView
+            android:id="@+id/tv_chat_user_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="女" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="18dp"
+            android:src="@drawable/icon_job" />
+
+        <TextView
+            android:id="@+id/tv_chat_user_job"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="13dp"
+            android:text="房地产/建筑" />
+    </LinearLayout>
+
+
+
 
     <LinearLayout
-        style="@style/ChatInputNavLayout">
-        <ImageView
-            style="@style/ChatInputLeftBtn"
-            android:src="@drawable/btn_voice"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="108dp"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chat_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:background="@drawable/bg_chat_input"
-            android:layout_height="match_parent"/>
-        <ImageView
-            style="@style/ChatInputLeftBtn"
-            android:src="@drawable/btn_emoji"
-            />
-        <ImageView
-            style="@style/ChatInputRightBtn"
-            android:src="@drawable/btn_location"/>
+        </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            style="@style/ChatInputNavLayout">
+            <ImageView
+                android:id="@+id/iv_input_type"
+                style="@style/ChatInputLeftBtn"
+                android:src="@drawable/btn_voice"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp">
+                <EditText
+                    android:id="@+id/et_input_text"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_chat_input"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tv_input_speak"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="@color/tv_secondly"
+                    android:text="按住说话"
+                    />
+            </RelativeLayout>
+
+
+            <ImageView
+                android:id="@+id/iv_input_face"
+                style="@style/ChatInputLeftBtn"
+                android:src="@drawable/btn_emoji"
+                />
+            <ImageView
+                style="@style/ChatInputRightBtn"
+                android:src="@drawable/btn_location"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_face_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_face_input"
+                android:layout_width="match_parent"
+                android:layout_height="282dp">
+            </androidx.viewpager.widget.ViewPager>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <cn.yy.freewalker.ui.widget.common.KeyboardLayout
+        android:id="@+id/kbl_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    
+    <TextView
+        android:id="@+id/tv_not_connect_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="#F2DFE1"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:textSize="12sp"
+        android:drawableStart="@drawable/bg_channel"
+        android:drawablePadding="5dp"
+        android:textColor="#FF414F"
+        android:layout_marginTop="60dp"
+        android:text="未连接蓝牙耳机，聊天功能暂不可用，请先连接耳机。"/>
+</RelativeLayout>

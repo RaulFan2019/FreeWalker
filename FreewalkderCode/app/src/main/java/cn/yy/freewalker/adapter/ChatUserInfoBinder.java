@@ -27,7 +27,6 @@ public class ChatUserInfoBinder extends ItemViewBinder<ChatUserInfoBean, ChatUse
 
     @Override
     protected void onBindViewHolder(@NonNull ChatUserInfoHolder holder, @NonNull ChatUserInfoBean item) {
-
         holder.mGenderTv.setText(item.gender);
         holder.mAgeTv.setText(item.age);
         holder.mLikeTv.setText(item.like);
