@@ -203,4 +203,8 @@ public class RadarView extends View {
     public void startScan() {
         this.startScan = true;
     }
+
+    public void stopScan(){
+        this.startScan = false;
+    }
 }

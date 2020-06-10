@@ -55,7 +55,7 @@
         android:layout_width="200dp"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="82dp"
+        android:layout_marginBottom="62dp"
         android:gravity="center_vertical|center_horizontal"
         android:foreground="?android:attr/selectableItemBackground">
 
@@ -74,12 +74,25 @@
 
     </LinearLayout>
 
-
     <cn.yy.freewalker.ui.widget.radarview.RadarView
         android:id="@+id/radar"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:visibility="invisible"/>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_radar"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        -->
+<!--        android:visibility="gone">-->
+
+<!--        -->
+
+<!--    </LinearLayout>-->
+
+
 
 
 </FrameLayout>
