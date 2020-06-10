@@ -1,11 +1,17 @@
 package cn.yy.freewalker.ui.activity.main;
 
+import android.os.Environment;
 import android.os.Message;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -101,6 +107,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void doMyCreate() {
         selectTab(TAB_DEVICE);
+        saveMapFile1();
+        saveMapFile2();
     }
 
     @Override
@@ -211,4 +219,65 @@ public class MainActivity extends BaseActivity {
             finish();
         }
     }
+
+    private void saveMapFile1(){
+        try {
+            // 先获取系统默认的文档存放根目录
+            File parent_path = Environment.getExternalStorageDirectory();
+            File dir = new File(parent_path.getAbsoluteFile(), "data");
+            if(!dir.exists()){
+                dir.mkdir();
+            }
+            File file = new File(dir.getAbsoluteFile(), "style.data");
+            if(file.exists()){
+                return;
+            }
+            //读取数据文件
+            InputStream open = this.getResources().getAssets().open("styleMap/style.data");
+
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            int len;
+            byte[] buf = new byte[1024];
+            while((len=open.read(buf))!=-1){
+                fos.write(buf,0,len);
+            }
+            fos.flush();
+            fos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveMapFile2(){
+        try {
+            // 先获取系统默认的文档存放根目录
+            File parent_path = Environment.getExternalStorageDirectory();
+            File dir = new File(parent_path.getAbsoluteFile(), "data");
+            if(!dir.exists()){
+                dir.mkdir();
+            }
+            File file = new File(dir.getAbsoluteFile(), "style_extra.data");
+            if(file.exists()){
+                return;
+            }
+            //读取数据文件
+            InputStream open = this.getResources().getAssets().open("styleMap/style_extra.data");
+
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            int len;
+            byte[] buf = new byte[1024];
+            while((len=open.read(buf))!=-1){
+                fos.write(buf,0,len);
+            }
+            fos.flush();
+            fos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

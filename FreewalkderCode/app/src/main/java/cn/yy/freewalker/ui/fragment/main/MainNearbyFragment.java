@@ -3,6 +3,7 @@ package cn.yy.freewalker.ui.fragment.main;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -119,9 +120,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                 break;
             //Add Test Data
             case MSG_SHOW_TEST_USER:
-                 showTestMarker();
-
-
+                showTestMarker();
                 break;
         }
     }
@@ -214,6 +213,14 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             mAMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_CENTER);
             mAMap.getUiSettings().setZoomControlsEnabled(false);
             mAMap.getUiSettings().setCompassEnabled(true);
+            mAMap.setCustomMapStyle(
+                    new com.amap.api.maps.model.CustomMapStyleOptions()
+                            .setEnable(true)
+                            .setStyleDataPath(Environment.getExternalStoragePublicDirectory("data").getPath() + "/style.data")
+                            .setStyleExtraPath(Environment.getExternalStoragePublicDirectory("data").getPath() + "style_extra.data")
+
+            );
+
             initMyLocation();
 
         }
@@ -235,30 +242,30 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     }
 
 
-    private void showTestMarker(){
+    private void showTestMarker() {
         if (mLocation != null) {
             AmapNearbyUserView nearbyUserView1 = new AmapNearbyUserView(getActivity());
-            nearbyUserView1.bindView(1,"贝吉塔","");
+            nearbyUserView1.bindView(1, "贝吉塔", "");
             mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
                     .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
                     .icon(BitmapDescriptorFactory.fromView(nearbyUserView1)));
 
             AmapNearbyUserView nearbyUserView2 = new AmapNearbyUserView(getActivity());
-            nearbyUserView2.bindView(0,"孙悟空","");
+            nearbyUserView2.bindView(0, "孙悟空", "");
             mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                    .position(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude()  + 0.001))
+                    .position(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude() + 0.001))
                     .icon(BitmapDescriptorFactory.fromView(nearbyUserView2)));
 
             AmapNearbyUserView nearbyUserView3 = new AmapNearbyUserView(getActivity());
-            nearbyUserView3.bindView(0,"短笛","");
+            nearbyUserView3.bindView(0, "短笛", "");
             mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                    .position(new LatLng(mLocation.getLatitude() + 0.002, mLocation.getLongitude()  - 0.002))
+                    .position(new LatLng(mLocation.getLatitude() + 0.002, mLocation.getLongitude() - 0.002))
                     .icon(BitmapDescriptorFactory.fromView(nearbyUserView3)));
 
             AmapNearbyUserView nearbyUserView4 = new AmapNearbyUserView(getActivity());
-            nearbyUserView4.bindView(0,"魔人布欧","");
+            nearbyUserView4.bindView(0, "魔人布欧", "");
             mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                    .position(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude()  + 0.002))
+                    .position(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude() + 0.002))
                     .icon(BitmapDescriptorFactory.fromView(nearbyUserView4)));
         }
 
