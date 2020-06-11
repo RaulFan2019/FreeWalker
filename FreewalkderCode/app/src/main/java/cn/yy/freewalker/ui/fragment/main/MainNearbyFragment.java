@@ -18,16 +18,24 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
+import cn.yy.freewalker.entity.net.UserInfoResult;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.AmapNearbyUserView;
 import cn.yy.freewalker.ui.widget.radarview.RadarView;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -64,7 +72,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     AMap mAMap;                                                     //地图
     AMapLocation mLocation;                                         //当前位置
     boolean mFirstLocation = true;                                   //首次定位
-
+    List<UserInfoResult> listUser = new ArrayList<>();
+    List<LatLng> listLat = new ArrayList<>();
 
     /* 定位相关 */
     private AMapLocationClient mLocationClient;
@@ -220,6 +229,23 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                             .setStyleExtraPath(Environment.getExternalStoragePublicDirectory("data").getPath() + "style_extra.data")
 
             );
+            mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    YLog.e(TAG, "onMarkerClick");
+                    for (int i = 0; i < listLat.size(); i++) {
+                        if (listLat.get(i).latitude == marker.getPosition().latitude
+                            && listLat.get(i).longitude == marker.getPosition().longitude){
+                            YLog.e(TAG, "find");
+                            LocalApp.getInstance().getEventBus().post(
+                                    new NearbyUserCartEvent(NearbyUserCartEvent.SHOW, listUser.get(i)));
+                            break;
+                        }
+                    }
+
+                    return false;
+                }
+            });
 
             initMyLocation();
 
@@ -244,29 +270,29 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     private void showTestMarker() {
         if (mLocation != null) {
-            AmapNearbyUserView nearbyUserView1 = new AmapNearbyUserView(getActivity());
-            nearbyUserView1.bindView(1, "贝吉塔", "");
-            mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                    .position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
-                    .icon(BitmapDescriptorFactory.fromView(nearbyUserView1)));
+            listUser.add(new UserInfoResult("", "贝吉塔", "男", "25", "工程师",
+                    "女", "160~170", "60~70"));
+            listUser.add(new UserInfoResult("", "孙悟空", "女", "35", "律师",
+                    "女", "160~170", "60~70"));
+            listUser.add(new UserInfoResult("", "短笛", "女", "35", "建筑师",
+                    "女", "160~170", "60~70"));
+            listUser.add(new UserInfoResult("", "魔人布欧", "男", "25", "销售员",
+                    "女", "160~170", "60~70"));
 
-            AmapNearbyUserView nearbyUserView2 = new AmapNearbyUserView(getActivity());
-            nearbyUserView2.bindView(0, "孙悟空", "");
-            mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                    .position(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude() + 0.001))
-                    .icon(BitmapDescriptorFactory.fromView(nearbyUserView2)));
 
-            AmapNearbyUserView nearbyUserView3 = new AmapNearbyUserView(getActivity());
-            nearbyUserView3.bindView(0, "短笛", "");
-            mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                    .position(new LatLng(mLocation.getLatitude() + 0.002, mLocation.getLongitude() - 0.002))
-                    .icon(BitmapDescriptorFactory.fromView(nearbyUserView3)));
+            listLat.add(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
+            listLat.add(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude() + 0.001));
+            listLat.add(new LatLng(mLocation.getLatitude() + 0.002, mLocation.getLongitude() + 0.002));
+            listLat.add(new LatLng(mLocation.getLatitude() - 0.001, mLocation.getLongitude() + 0.003));
+            listLat.add(new LatLng(mLocation.getLatitude() - 0.002, mLocation.getLongitude() + 0.002));
 
-            AmapNearbyUserView nearbyUserView4 = new AmapNearbyUserView(getActivity());
-            nearbyUserView4.bindView(0, "魔人布欧", "");
-            mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
-                    .position(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude() + 0.002))
-                    .icon(BitmapDescriptorFactory.fromView(nearbyUserView4)));
+            for (int i = 0; i < listUser.size(); i++) {
+                AmapNearbyUserView nearbyUserView = new AmapNearbyUserView(getActivity());
+                nearbyUserView.bindView(listUser.get(i));
+                mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
+                        .position(listLat.get(i))
+                        .icon(BitmapDescriptorFactory.fromView(nearbyUserView)));
+            }
         }
 
     }

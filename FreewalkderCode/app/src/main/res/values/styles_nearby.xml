@@ -15,4 +15,18 @@
         <item name="android:layout_width">18dp</item>
         <item name="android:layout_height">18dp</item>
     </style>
+
+
+    <style name="NearbyUserCardIcon">
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">12dp</item>
+    </style>
+
+    <style name="NearbyUserCardTv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">5.5dp</item>
+        <item name="android:textColor">@color/tv_secondly</item>
+        <item name="android:textSize">12dp</item>
+    </style>
 </resources>

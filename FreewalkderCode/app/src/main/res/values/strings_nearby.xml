@@ -4,4 +4,6 @@
     
     <string name="nearby_action_scan">开始搜索附近的人</string>
 
+    <string name="nearby_action_shield">屏蔽ta</string>
+    <string name="nearby_action_chat">和ta聊天</string>
 </resources>

@@ -2,11 +2,16 @@ package cn.yy.freewalker.ui.activity.main;
 
 import android.os.Environment;
 import android.os.Message;
+
 import androidx.fragment.app.FragmentTransaction;
+
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,13 +20,16 @@ import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.fragment.main.MainChatFragment;
 import cn.yy.freewalker.ui.fragment.main.MainDeviceFragment;
 import cn.yy.freewalker.ui.fragment.main.MainMeFragment;
 import cn.yy.freewalker.ui.fragment.main.MainNearbyFragment;
+import cn.yy.freewalker.ui.fragment.main.MainNearbyUserCardFragment;
 
 /**
  * @author Raul.Fan
@@ -38,7 +46,8 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.ll_fragment_root)
     LinearLayout llFragmentRoot;
-
+    @BindView(R.id.ll_user_card)
+    LinearLayout llFragmentUserCard;
     @BindView(R.id.iv_device)
     View ivDevice;                                              //设备图标
     @BindView(R.id.tv_device)
@@ -64,6 +73,8 @@ public class MainActivity extends BaseActivity {
     private MainChatFragment fragmentChat;
     private MainNearbyFragment fragmentNearby;
     private MainMeFragment fragmentMe;
+
+    private MainNearbyUserCardFragment fragmentNearbyUserCard;
 
     @Override
     protected int getLayoutId() {
@@ -94,6 +105,24 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 附近的人相关事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void NearbyCardEvent(NearbyUserCartEvent event) {
+        if (event.type == NearbyUserCartEvent.SHOW) {
+            fragmentNearbyUserCard.updateViews(event.user);
+            llFragmentUserCard.setVisibility(View.VISIBLE);
+        }else if (event.type == NearbyUserCartEvent.CLOSE){
+            if (fragmentNearbyUserCard != null){
+                llFragmentUserCard.setVisibility(View.INVISIBLE);
+            }
+
+        }
+    }
+
     @Override
     protected void initData() {
 
@@ -106,14 +135,21 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void doMyCreate() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        fragmentNearbyUserCard = MainNearbyUserCardFragment.newInstance();
+        transaction.add(R.id.ll_user_card, fragmentNearbyUserCard);
+        transaction.commitAllowingStateLoss();
+
         selectTab(TAB_DEVICE);
         saveMapFile1();
         saveMapFile2();
+
+        LocalApp.getInstance().getEventBus().register(this);
     }
 
     @Override
     protected void causeGC() {
-
+        LocalApp.getInstance().getEventBus().unregister(this);
     }
 
 
@@ -220,16 +256,16 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void saveMapFile1(){
+    private void saveMapFile1() {
         try {
             // 先获取系统默认的文档存放根目录
             File parent_path = Environment.getExternalStorageDirectory();
             File dir = new File(parent_path.getAbsoluteFile(), "data");
-            if(!dir.exists()){
+            if (!dir.exists()) {
                 dir.mkdir();
             }
             File file = new File(dir.getAbsoluteFile(), "style.data");
-            if(file.exists()){
+            if (file.exists()) {
                 return;
             }
             //读取数据文件
@@ -239,8 +275,8 @@ public class MainActivity extends BaseActivity {
             FileOutputStream fos = new FileOutputStream(file);
             int len;
             byte[] buf = new byte[1024];
-            while((len=open.read(buf))!=-1){
-                fos.write(buf,0,len);
+            while ((len = open.read(buf)) != -1) {
+                fos.write(buf, 0, len);
             }
             fos.flush();
             fos.close();
@@ -250,16 +286,16 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void saveMapFile2(){
+    private void saveMapFile2() {
         try {
             // 先获取系统默认的文档存放根目录
             File parent_path = Environment.getExternalStorageDirectory();
             File dir = new File(parent_path.getAbsoluteFile(), "data");
-            if(!dir.exists()){
+            if (!dir.exists()) {
                 dir.mkdir();
             }
             File file = new File(dir.getAbsoluteFile(), "style_extra.data");
-            if(file.exists()){
+            if (file.exists()) {
                 return;
             }
             //读取数据文件
@@ -269,8 +305,8 @@ public class MainActivity extends BaseActivity {
             FileOutputStream fos = new FileOutputStream(file);
             int len;
             byte[] buf = new byte[1024];
-            while((len=open.read(buf))!=-1){
-                fos.write(buf,0,len);
+            while ((len = open.read(buf)) != -1) {
+                fos.write(buf, 0, len);
             }
             fos.flush();
             fos.close();

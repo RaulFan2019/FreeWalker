@@ -25,6 +25,19 @@ public class LocalApp extends Application {
 
     private EventBus eventBus;
 
+
+    /**
+     * 获取 LocalApplication
+     *
+     * @return
+     */
+    public static LocalApp getInstance() {
+        if (instance == null) {
+            instance = new LocalApp();
+        }
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,4 +47,20 @@ public class LocalApp extends Application {
         x.Ext.init(this);
         x.Ext.setDebug(false);
     }
+
+    /**
+     * 获取EventBus
+     *
+     * @return
+     */
+    public EventBus getEventBus() {
+        if (eventBus == null) {
+            eventBus = EventBus.builder()
+                    .sendNoSubscriberEvent(false)
+                    .logNoSubscriberMessages(false)
+                    .build();
+        }
+        return eventBus;
+    }
+
 }
