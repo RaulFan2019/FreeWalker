@@ -1,4 +1,4 @@
-package cn.yy.freewalker.adapter;
+package cn.yy.freewalker.ui.adapter;
 
 import android.view.View;
 

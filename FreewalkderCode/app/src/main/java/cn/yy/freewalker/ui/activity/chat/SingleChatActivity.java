@@ -1,20 +1,25 @@
-package cn.yy.freewalker.ui.activity.main;
+package cn.yy.freewalker.ui.activity.chat;
 
-import android.content.Context;
-import android.os.FileObserver;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Message;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,30 +27,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import butterknife.OnTextChanged;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.adapter.ChatFaceBinder;
-import cn.yy.freewalker.adapter.ChatLeftTextBinder;
-import cn.yy.freewalker.adapter.ChatRightTextBinder;
-import cn.yy.freewalker.adapter.ChatTimeBinder;
-import cn.yy.freewalker.adapter.ChatUserInfoBinder;
-import cn.yy.freewalker.adapter.FacePagerAdapter;
-import cn.yy.freewalker.bean.ChatFaceBean;
+import cn.yy.freewalker.ui.adapter.binder.ChatLeftTextBinder;
+import cn.yy.freewalker.ui.adapter.binder.ChatRightTextBinder;
+import cn.yy.freewalker.ui.adapter.binder.ChatTimeBinder;
+import cn.yy.freewalker.ui.adapter.FacePagerAdapter;
 import cn.yy.freewalker.bean.ChatLeftTextBean;
 import cn.yy.freewalker.bean.ChatRightTextBean;
 import cn.yy.freewalker.bean.ChatTimeBean;
-import cn.yy.freewalker.bean.ChatUserInfoBean;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
-import cn.yy.freewalker.ui.widget.common.KeyboardLayout;
 import cn.yy.freewalker.utils.ChatUiHelper;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -73,14 +68,17 @@ public class SingleChatActivity extends BaseActivity {
     ImageView mInputTypeIv;
     @BindView(R.id.ll_chat_content)
     LinearLayout mContentLl;
+    @BindView(R.id.btn_send)
+    Button mSendBtn;
+    @BindView(R.id.iv_input_loc)
+    ImageView mLocIv;
 
     private MultiTypeAdapter mChatAdapter;
     private FacePagerAdapter mVpAdapter;
 
     private ArrayList<Object> mChatItems = new ArrayList<>();
-    private ChatUiHelper mHelper;
 
-    @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text})
+    @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text,R.id.iv_input_loc,R.id.btn_send})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_back:
@@ -95,13 +93,20 @@ public class SingleChatActivity extends BaseActivity {
             case R.id.et_input_text:
 
                 break;
+            case R.id.iv_input_loc:
+
+                break;
+            case R.id.btn_send:
+                    showRightChat(mInputEt.getText().toString());
+                    mInputEt.setText("");
+                break;
             default:
         }
     }
 
     @OnLongClick({R.id.tv_input_speak})
-    public void onLongClick(View view){
-        switch (view.getId()){
+    public void onLongClick(View view) {
+        switch (view.getId()) {
             case R.id.tv_input_speak:
 
                 break;
@@ -127,23 +132,12 @@ public class SingleChatActivity extends BaseActivity {
 
         mChatItems.add(new ChatTimeBean("12:18"));
         mChatItems.add(new ChatLeftTextBean("你好[微笑][微笑][微笑][微笑][微笑]", ""));
-        mChatItems.add(new ChatRightTextBean("你好[呲牙]", ""));
-        mChatItems.add(new ChatLeftTextBean("你好你好你好你好你好你好你好你好[微笑][微笑][微笑][微笑][微笑]", ""));
-        mChatItems.add(new ChatRightTextBean("你好[呲牙]", ""));
-        mChatItems.add(new ChatLeftTextBean("你好你好你好你好你好你好你好你好[微笑][微笑][微笑][微笑][微笑]", ""));
-        mChatItems.add(new ChatRightTextBean("你好[呲牙]", ""));
-        mChatItems.add(new ChatLeftTextBean("你好[微笑][微笑][微笑][微笑][微笑]", ""));
-        mChatItems.add(new ChatRightTextBean("你好[呲牙]", ""));
-        mChatItems.add(new ChatLeftTextBean("你好[微笑][微笑][微笑][微笑][微笑]", ""));
-        mChatItems.add(new ChatRightTextBean("你好[呲牙]", ""));
-        mChatItems.add(new ChatLeftTextBean("你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好[微笑][微笑][微笑][微笑][微笑]", ""));
-        mChatItems.add(new ChatRightTextBean("你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好[呲牙]", ""));
+
         mChatAdapter.setItems(mChatItems);
 
         FaceInputFragment inputFragment = FaceInputFragment.newInstance();
         inputFragment.setOnOutputListener(bean -> {
-
-                    mInputEt.append(bean.unicode);
+                    editTextShowEmoji(bean.unicode,bean.faceId);
                 }
         );
 
@@ -156,7 +150,7 @@ public class SingleChatActivity extends BaseActivity {
     @Override
     protected void initViews() {
 
-        initChatUI();
+        initChatUi();
 
         mChatRv.setLayoutManager(new LinearLayoutManager(this));
         mChatRv.setAdapter(mChatAdapter);
@@ -177,17 +171,24 @@ public class SingleChatActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if(mInputEt.getText().length() > 0 && !mSendBtn.isShown()){
+                    mSendBtn.setVisibility(View.VISIBLE);
+                    mLocIv.setVisibility(View.GONE);
+                }else if(mInputEt.getText().length() <=0){
+                    mSendBtn.setVisibility(View.GONE);
+                    mLocIv.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
 
-    private void initChatUI(){
-        mHelper = ChatUiHelper.with(this)
+    private void initChatUi() {
+       ChatUiHelper.with(this)
                 .bindEditText(mInputEt)
                 .bindContentLayout(mContentLl)
                 .bindBottomLayout(mBottonLl)
                 .bindEmojiLayout(mFaceLl)
-        .bindToEmojiButton(mInputTypeIv);
+                .bindToEmojiButton(mInputTypeIv);
     }
 
     @Override
@@ -205,10 +206,25 @@ public class SingleChatActivity extends BaseActivity {
 
     }
 
-    private void initFaceView(int height) {
-        ViewGroup.LayoutParams lp = mFaceLl.getLayoutParams();
-        lp.height = height;
-        mFaceLl.setLayoutParams(lp);
+    /*输入框显示表情*/
+    private void editTextShowEmoji(String unicode,int faceId) {
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), faceId, null);
+        if(drawable != null) {
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+            ImageSpan imageSpan = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
+            SpannableString spannableString = new SpannableString(unicode);
+            spannableString.setSpan(imageSpan,0,unicode.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mInputEt.append(spannableString);
+        }
     }
 
+    private void showLeftChat(String chatText){
+        mChatItems.add(new ChatLeftTextBean(chatText, ""));
+        mChatAdapter.notifyDataSetChanged();
+    }
+
+    private void showRightChat(String chatText){
+        mChatItems.add(new ChatRightTextBean(chatText,""));
+        mChatAdapter.notifyDataSetChanged();
+    }
 }

@@ -1,4 +1,4 @@
-package cn.yy.freewalker.adapter;
+package cn.yy.freewalker.ui.adapter.binder;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.adapter.holder.ChatTimeHolder;
+import cn.yy.freewalker.ui.adapter.holder.ChatTimeHolder;
 import cn.yy.freewalker.bean.ChatTimeBean;
 import me.drakeet.multitype.ItemViewBinder;
 

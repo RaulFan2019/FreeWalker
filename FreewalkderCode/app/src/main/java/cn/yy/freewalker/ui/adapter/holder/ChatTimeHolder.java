@@ -1,4 +1,4 @@
-package cn.yy.freewalker.adapter.holder;
+package cn.yy.freewalker.ui.adapter.holder;
 
 import android.view.View;
 import android.widget.TextView;

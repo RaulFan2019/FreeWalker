@@ -1,4 +1,4 @@
-package cn.yy.freewalker.adapter.holder;
+package cn.yy.freewalker.ui.adapter.holder;
 
 import android.util.Log;
 import android.view.View;
@@ -19,7 +19,7 @@ import cn.yy.freewalker.R;
  * @date 2020/6/8 下午9:25
  */
 public class ChatFaceHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.iv_chat_face)
+    @BindView(R.id.iv_item_chat_face)
     ImageView mFaceIv;
     public ChatFaceHolder(@NonNull View itemView) {
         super(itemView);

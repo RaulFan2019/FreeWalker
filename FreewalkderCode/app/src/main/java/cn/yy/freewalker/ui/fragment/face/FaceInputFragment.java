@@ -1,9 +1,7 @@
 package cn.yy.freewalker.ui.fragment.face;
 
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,12 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.qmuiteam.qmui.qqface.QQFace;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.adapter.ChatFaceBinder;
+import cn.yy.freewalker.ui.adapter.binder.ChatFaceBinder;
 import cn.yy.freewalker.bean.ChatFaceBean;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.faceView.QDQQFaceManager;

@@ -7,7 +7,7 @@
     android:layout_height="60dp">
 
     <ImageView
-        android:id="@+id/iv_chat_face"
+        android:id="@+id/iv_item_chat_face"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/smiley_0"/>

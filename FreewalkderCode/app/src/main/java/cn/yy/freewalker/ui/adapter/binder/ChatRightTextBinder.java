@@ -1,11 +1,11 @@
-package cn.yy.freewalker.adapter;
+package cn.yy.freewalker.ui.adapter.binder;
 
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.adapter.holder.ChatTextHolder;
+import cn.yy.freewalker.ui.adapter.holder.ChatTextHolder;
 import cn.yy.freewalker.bean.ChatRightTextBean;
 import me.drakeet.multitype.ItemViewBinder;
 

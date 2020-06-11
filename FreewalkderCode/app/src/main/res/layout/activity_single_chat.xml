@@ -173,8 +173,17 @@
                 android:src="@drawable/btn_emoji"
                 />
             <ImageView
+                android:id="@+id/iv_input_loc"
                 style="@style/ChatInputRightBtn"
                 android:src="@drawable/btn_location"/>
+
+            <Button
+                android:id="@+id/btn_send"
+                android:visibility="gone"
+                android:layout_marginEnd="15dp"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="发送"/>
         </LinearLayout>
     </LinearLayout>
 

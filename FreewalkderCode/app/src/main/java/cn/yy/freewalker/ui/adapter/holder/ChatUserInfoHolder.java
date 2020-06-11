@@ -1,4 +1,4 @@
-package cn.yy.freewalker.adapter.holder;
+package cn.yy.freewalker.ui.adapter.holder;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
