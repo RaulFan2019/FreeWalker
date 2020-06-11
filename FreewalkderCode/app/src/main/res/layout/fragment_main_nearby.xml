@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.amap.api.maps.MapView>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|bottom"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="36dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/btn_zoom_in"
+            style="@style/NearbyMapBtnLy">
+            <View
+                style="@style/NearbyMapBtnLyImg"
+                android:background="@drawable/icon_nearby_zoomin"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_zoom_out"
+            android:layout_marginTop="15dp"
+            style="@style/NearbyMapBtnLy">
+            <View
+                style="@style/NearbyMapBtnLyImg"
+                android:background="@drawable/icon_nearby_zoomout"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_location"
+            android:layout_marginTop="15dp"
+            style="@style/NearbyMapBtnLy">
+            <View
+                style="@style/NearbyMapBtnLyImg"
+                android:background="@drawable/icon_nearby_location"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/btn_scan"
+        style="@style/BtnLarge"
+        android:layout_width="200dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="62dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/icon_nearby_scan"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="10dp"
+            android:text="@string/nearby_action_scan"/>
+
+    </LinearLayout>
+
+    <cn.yy.freewalker.ui.widget.radarview.RadarView
+        android:id="@+id/radar"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:visibility="invisible"/>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_radar"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        -->
+<!--        android:visibility="gone">-->
+
+<!--        -->
+
+<!--    </LinearLayout>-->
+
+
+
+
+</FrameLayout>

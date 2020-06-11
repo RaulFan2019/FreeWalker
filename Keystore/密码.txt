@@ -1,0 +1,6 @@
+yy2020
+freewalker
+
+
+
+keytool -importkeystore -srckeystore D:\workspace_me\freewalker\FreeWalker\Keystore\freeWalker.jks -destkeystore D:\workspace_me\freewalker\FreeWalker\Keystore\freeWalker.jks -deststoretype pkcs12

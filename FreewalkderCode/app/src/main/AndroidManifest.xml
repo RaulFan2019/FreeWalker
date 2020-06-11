@@ -41,6 +41,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+
+        <!-- 高德地图 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="2e0cfc3b3e8dc1d44393bec51ee78eb4"/>
+
         <!-- main -->
         <activity android:name=".ui.activity.main.WelcomeActivity"
             android:theme="@style/ThemeAppStartLoad">
@@ -52,9 +58,6 @@
         <activity android:name=".ui.activity.main.PrivacyActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.main.MainActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".ui.activity.main.SingleChatActivity"
             android:screenOrientation="portrait"/>
 
         <!-- device -->
