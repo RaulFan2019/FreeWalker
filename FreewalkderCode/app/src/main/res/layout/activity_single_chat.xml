@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/bg_chat_pager"
     android:layout_width="match_parent"
@@ -35,78 +35,95 @@
             />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_user_info"
-        android:layout_below="@+id/rl_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:background="@drawable/bg_chat_user_info"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="14dp"
-            android:src="@drawable/icon_gender" />
-
-        <TextView
-            android:id="@+id/tv_chat_user_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="男" />
-
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="19dp"
-            android:src="@drawable/icon_age" />
-
-        <TextView
-            android:id="@+id/tv_chat_user_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="25" />
-
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/icon_like" />
-
-        <TextView
-            android:id="@+id/tv_chat_user_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="女" />
-
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="18dp"
-            android:src="@drawable/icon_job" />
-
-        <TextView
-            android:id="@+id/tv_chat_user_job"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="13dp"
-            android:text="房地产/建筑" />
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="108dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_user_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:background="@drawable/bg_chat_user_info"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="14dp"
+                android:src="@drawable/icon_gender" />
+
+            <TextView
+                android:id="@+id/tv_chat_user_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="男" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="19dp"
+                android:src="@drawable/icon_age" />
+
+            <TextView
+                android:id="@+id/tv_chat_user_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="25" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/icon_like" />
+
+            <TextView
+                android:id="@+id/tv_chat_user_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="女" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="18dp"
+                android:src="@drawable/icon_job" />
+
+            <TextView
+                android:id="@+id/tv_chat_user_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="13dp"
+                android:text="房地产/建筑" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_not_connect_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F2DFE1"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textSize="12sp"
+            android:drawableStart="@drawable/bg_channel"
+            android:drawablePadding="5dp"
+            android:textColor="#FF414F"
+            android:text="未连接蓝牙耳机，聊天功能暂不可用，请先连接耳机。"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_chat_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat_list"
@@ -116,6 +133,7 @@
 
         </androidx.recyclerview.widget.RecyclerView>
         <LinearLayout
+
             style="@style/ChatInputNavLayout">
             <ImageView
                 android:id="@+id/iv_input_type"
@@ -130,16 +148,19 @@
                 android:layout_marginBottom="7dp">
                 <EditText
                     android:id="@+id/et_input_text"
+                    android:minLines="3"
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_chat_input"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/tv_input_speak"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:textSize="15sp"
+                    android:background="@drawable/bg_chat_input"
                     android:textColor="@color/tv_secondly"
                     android:text="按住说话"
                     />
@@ -155,12 +176,17 @@
                 style="@style/ChatInputRightBtn"
                 android:src="@drawable/btn_location"/>
         </LinearLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_chat_bottom"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/ll_face_view"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vp_face_input"
                 android:layout_width="match_parent"
@@ -169,25 +195,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <cn.yy.freewalker.ui.widget.common.KeyboardLayout
-        android:id="@+id/kbl_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    
-    <TextView
-        android:id="@+id/tv_not_connect_tip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:background="#F2DFE1"
-        android:paddingTop="7dp"
-        android:paddingBottom="7dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:textSize="12sp"
-        android:drawableStart="@drawable/bg_channel"
-        android:drawablePadding="5dp"
-        android:textColor="#FF414F"
-        android:layout_marginTop="60dp"
-        android:text="未连接蓝牙耳机，聊天功能暂不可用，请先连接耳机。"/>
-</RelativeLayout>
+</LinearLayout>

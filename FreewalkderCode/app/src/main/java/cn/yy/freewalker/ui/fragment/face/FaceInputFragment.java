@@ -1,8 +1,11 @@
 package cn.yy.freewalker.ui.fragment.face;
 
 import android.os.Message;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +35,7 @@ public class FaceInputFragment extends BaseFragment {
 
     private MultiTypeAdapter mFaceAdapter;
 
+    private OnOutputListener listener;
 
     private ArrayList<Object> mFaceItems = new ArrayList<>();
 
@@ -58,6 +62,27 @@ public class FaceInputFragment extends BaseFragment {
         initFace();
 
         mFaceRv.setLayoutManager(new GridLayoutManager(getActivity(),8));
+        mFaceRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener(){
+
+            @Override
+            public void onChildViewAttachedToWindow(@NonNull View view) {
+                view.setOnClickListener(v -> {
+                    int position = mFaceRv.getChildAdapterPosition(view);
+                    Object bean = mFaceItems.get(position);
+                    if(bean instanceof ChatFaceBean){
+                        if(listener != null) {
+                            listener.output((ChatFaceBean) bean);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(@NonNull View view) {
+
+            }
+        });
+
         mFaceRv.setAdapter(mFaceAdapter);
 
     }
@@ -86,5 +111,13 @@ public class FaceInputFragment extends BaseFragment {
     @Override
     protected void onInVisible() {
 
+    }
+
+    public void setOnOutputListener(OnOutputListener listener){
+        this.listener = listener;
+    }
+
+    public interface OnOutputListener{
+        void output(ChatFaceBean bean);
     }
 }
