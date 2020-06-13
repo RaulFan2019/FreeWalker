@@ -232,11 +232,9 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    YLog.e(TAG, "onMarkerClick");
                     for (int i = 0; i < listLat.size(); i++) {
                         if (listLat.get(i).latitude == marker.getPosition().latitude
                             && listLat.get(i).longitude == marker.getPosition().longitude){
-                            YLog.e(TAG, "find");
                             LocalApp.getInstance().getEventBus().post(
                                     new NearbyUserCartEvent(NearbyUserCartEvent.SHOW, listUser.get(i)));
                             break;

@@ -73,6 +73,12 @@
 
     <string name="auth_action_improve_submit">提交</string>
 
-
+    <string name="auth_tag_me_photo">相册</string>
+    <string name="auth_tip_me_photo">联网下可查看</string>
+    <string name="auth_tag_me_record">录音</string>
+    <string name="auth_tag_me_loc">位置共享并被附近的人搜索到</string>
+    <string name="auth_tag_me_feedback">意见反馈</string>
+    <string name="auth_tag_me_clear">清除缓存</string>
+    <string name="auth_tag_me_about">关于我们</string>
 
 </resources>
