@@ -16,9 +16,9 @@ import java.util.List;
  * @version 1.0
  * @date 2020/6/9 下午10:23
  */
-public class FacePagerAdapter extends FragmentStatePagerAdapter {
+public class FreePagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<Fragment> mList;
-    public FacePagerAdapter(ArrayList<Fragment> list, FragmentManager fm) {
+    public FreePagerAdapter(ArrayList<Fragment> list, FragmentManager fm) {
         super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.mList = list;
     }

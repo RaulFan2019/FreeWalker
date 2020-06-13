@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwipeMenuLayout"><attr format="boolean" name="swipeEnable"/><attr format="boolean" name="ios"/><attr format="boolean" name="leftSwipe"/></declare-styleable>
+</resources>

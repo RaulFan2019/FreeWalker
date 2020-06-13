@@ -68,12 +68,10 @@ dependencies {
     //tag View
     implementation project(':tagview')
     // 聊天气泡
-//    implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1' //由于使用了Androidx 在思考是否继续使用
+//    implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1'
     //RecycleView Adapter支持
     implementation 'me.drakeet.multitype:multitype:3.4.4'
 
     implementation 'com.qmuiteam:qmui:2.0.0-alpha08'
-
-
 
 }

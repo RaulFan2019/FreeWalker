@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        style="@style/TitleLayout">
 
+        <TextView
+            android:id="@+id/tv_chat_user_title"
+            style="@style/TitleTitleTv"
+            android:text="聊天"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+    </RelativeLayout>
+    
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_chat_type"
+        app:tabIndicatorFullWidth="false"
+        app:tabSelectedTextColor="@color/bg_tag_selected"
+        app:tabBackground="@color/bg_tag_normal"
+        app:tabTextColor="@color/tv_tag_normal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_chat_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

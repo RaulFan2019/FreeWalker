@@ -1,10 +1,8 @@
 package cn.yy.freewalker.ui.activity.chat;
 
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Message;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,17 +12,14 @@ import androidx.viewpager.widget.ViewPager;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,7 +30,7 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.adapter.binder.ChatLeftTextBinder;
 import cn.yy.freewalker.ui.adapter.binder.ChatRightTextBinder;
 import cn.yy.freewalker.ui.adapter.binder.ChatTimeBinder;
-import cn.yy.freewalker.ui.adapter.FacePagerAdapter;
+import cn.yy.freewalker.ui.adapter.FreePagerAdapter;
 import cn.yy.freewalker.bean.ChatLeftTextBean;
 import cn.yy.freewalker.bean.ChatRightTextBean;
 import cn.yy.freewalker.bean.ChatTimeBean;
@@ -74,9 +69,10 @@ public class SingleChatActivity extends BaseActivity {
     ImageView mLocIv;
 
     private MultiTypeAdapter mChatAdapter;
-    private FacePagerAdapter mVpAdapter;
+    private FreePagerAdapter mVpAdapter;
 
     private ArrayList<Object> mChatItems = new ArrayList<>();
+    private Long lastTime = 0L;
 
     @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text,R.id.iv_input_loc,R.id.btn_send})
     public void onClick(View v) {
@@ -143,7 +139,7 @@ public class SingleChatActivity extends BaseActivity {
 
         ArrayList<Fragment> fList = new ArrayList<>();
         fList.add(inputFragment);
-        mVpAdapter = new FacePagerAdapter(fList, getSupportFragmentManager());
+        mVpAdapter = new FreePagerAdapter(fList, getSupportFragmentManager());
     }
 
 
@@ -224,6 +220,10 @@ public class SingleChatActivity extends BaseActivity {
     }
 
     private void showRightChat(String chatText){
+        if(System.currentTimeMillis() - lastTime >= 60 * 1000){
+            mChatItems.add(new ChatTimeBean("00:00"));//TODO
+        }
+
         mChatItems.add(new ChatRightTextBean(chatText,""));
         mChatAdapter.notifyDataSetChanged();
     }

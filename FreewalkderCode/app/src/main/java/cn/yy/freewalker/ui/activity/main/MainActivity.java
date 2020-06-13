@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_chat:
                 selectTab(TAB_CHAT);
-                startActivity(SingleChatActivity.class);
+//                startActivity(SingleChatActivity.class);
                 break;
             case R.id.ll_nearby:
                 selectTab(TAB_NEARBY);

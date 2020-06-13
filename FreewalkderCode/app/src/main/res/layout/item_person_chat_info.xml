@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.yy.freewalker.ui.widget.listview.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/rl_person_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_channel_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/icon_channel" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="48dp"
+            android:layout_toEndOf="@id/iv_channel_icon"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_person_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="频道1"
+                android:textColor="@color/tv_mostly"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_last_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="频道1频道1频道1频道1频道1频道1频道1频道1频道1频道1"
+                android:textColor="@color/tv_thirdly"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_last_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:12"
+                android:textColor="@color/tv_thirdly"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="7dp"
+                android:src="@drawable/icon_shield_small" />
+        </LinearLayout>
+
+        <View
+            style="@style/DividerH"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
+    </RelativeLayout>
+
+    <!-- 以下都是侧滑菜单的内容依序排列 -->
+    <Button
+        android:id="@+id/btn_shield_confirm"
+        android:layout_width="150dp"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="@color/bg_tag_selected"
+        android:text="确认删除"
+        android:textColor="@android:color/white" />
+
+    <LinearLayout
+        android:id="@+id/ll_fun"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_shield_friend"
+            android:orientation="vertical"
+            android:layout_width="75dp"
+            android:gravity="center"
+            android:background="@color/tv_tag_normal"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_shield_big"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/tv_white"
+                android:text="屏蔽"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_del_friend"
+            android:orientation="vertical"
+            android:layout_width="75dp"
+            android:gravity="center"
+            android:background="@color/bg_tag_selected"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/icon_shield_big"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/tv_white"
+                android:text="删除"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</cn.yy.freewalker.ui.widget.listview.SwipeMenuLayout>
