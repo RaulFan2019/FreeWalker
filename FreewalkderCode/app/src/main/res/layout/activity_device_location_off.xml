@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <!-- title -->
-    <RelativeLayout style="@style/TitleLayout">
+    <FrameLayout style="@style/TitleLayout">
 
         <TextView
             style="@style/TitleTitleTv"
@@ -16,7 +16,7 @@
             style="@style/TitleBackButton" />
 
         <View style="@style/TitleBottomLine" />
-    </RelativeLayout>
+    </FrameLayout>
 
 
     <LinearLayout

@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.ui.activity.auth.UserSettingsActivity;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.utils.DensityU;
@@ -51,6 +52,7 @@ public class MainMeFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.card_avatar:
+                startActivity(UserSettingsActivity.class);
                 break;
             case R.id.ll_photo:
                 break;

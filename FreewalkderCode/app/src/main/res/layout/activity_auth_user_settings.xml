@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/auth_title_user_settings" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton" />
+
+        <View style="@style/TitleBottomLine" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_avatar"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_avatar" />
+
+                <cn.yy.freewalker.ui.widget.common.CircularImage
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/avatar_default"
+                    android:layout_marginEnd="15dp"/>
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_nickname"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_nickname" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="天才樱木花道" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+            <LinearLayout
+                android:id="@+id/ll_gender"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_gender" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="男" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+            <LinearLayout
+                android:id="@+id/ll_age"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_age" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="25" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+            <LinearLayout
+                android:id="@+id/ll_like"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_like" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="女" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+            <LinearLayout
+                android:id="@+id/ll_profession"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_profession" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="房地产/建筑" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+            <LinearLayout
+                android:id="@+id/ll_height"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_height" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="190~200cm" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+            <LinearLayout
+                android:id="@+id/ll_weight"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_weight" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="70~80kg" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+
+            <LinearLayout
+                android:id="@+id/ll_phone"
+                style="@style/AuthMeSettingsLine">
+
+                <TextView
+                    style="@style/AuthMeSettingsTag"
+                    android:text="@string/auth_tag_user_phone" />
+
+                <TextView
+                    style="@style/AuthMeSettingsValue"
+                    android:text="15512345678" />
+
+                <View style="@style/AuthMeSettingsMore" />
+            </LinearLayout>
+
+            <View style="@style/AuthMeSettingsDivider" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

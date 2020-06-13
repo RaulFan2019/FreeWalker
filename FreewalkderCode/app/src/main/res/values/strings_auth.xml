@@ -81,4 +81,17 @@
     <string name="auth_tag_me_clear">清除缓存</string>
     <string name="auth_tag_me_about">关于我们</string>
 
+    <string name="auth_title_user_settings">个人主页</string>
+    <string name="auth_tag_user_avatar">头像</string>
+    <string name="auth_tag_user_nickname">昵称</string>
+    <string name="auth_tag_user_gender">性别</string>
+    <string name="auth_tag_user_age">年龄</string>
+    <string name="auth_tag_user_like">喜欢</string>
+    <string name="auth_tag_user_profession">职业</string>
+    <string name="auth_tag_user_height">身高</string>
+    <string name="auth_tag_user_weight">体重</string>
+    <string name="auth_tag_user_phone">已绑定手机号</string>
+
+
+
 </resources>

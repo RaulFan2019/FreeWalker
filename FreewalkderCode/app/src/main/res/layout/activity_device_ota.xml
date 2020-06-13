@@ -7,7 +7,7 @@
 
 
     <!-- title -->
-    <RelativeLayout style="@style/TitleLayout">
+    <FrameLayout style="@style/TitleLayout">
 
         <TextView
             style="@style/TitleTitleTv"
@@ -18,7 +18,7 @@
             style="@style/TitleBackButton" />
 
         <View style="@style/TitleBottomLine" />
-    </RelativeLayout>
+    </FrameLayout>
 
     <include layout="@layout/include_device_settings_ota_need"/>
     <include layout="@layout/include_device_settings_ota_ing"/>
