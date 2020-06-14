@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/chat_title_record" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton" />
+
+        <View style="@style/TitleBottomLine" />
+    </FrameLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="116dp">
+
+                <TextView
+                    android:id="@+id/tv_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="116dp"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/chat_tip_record"
+                    android:textColor="@color/tv_secondly"
+                    android:textSize="14dp" />
+
+                <FrameLayout
+                    android:id="@+id/fl_recording"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <cn.yy.freewalker.ui.widget.common.CircularImage
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:src="@color/accent"
+                        android:layout_gravity="center_vertical|center_horizontal"/>
+
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:background="@drawable/icon_voice"/>
+
+                </FrameLayout>
+            </FrameLayout>
+
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_channel"
+                android:layout_width="match_parent"
+                android:layout_height="415dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp" />
+
+            <View style="@style/DividerCardH" />
+
+            <LinearLayout
+                android:id="@+id/ll_record_file"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/tv_mostly"
+                    android:textSize="15dp"
+                    android:text="@string/chat_tag_record_file"/>
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/icon_more" />
+            </LinearLayout>
+
+            <View style="@style/DividerH" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

@@ -12,6 +12,7 @@ import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.auth.FeedbackActivity;
 import cn.yy.freewalker.ui.activity.auth.UserSettingsActivity;
+import cn.yy.freewalker.ui.activity.chat.RecordSelectChannelActivity;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.utils.AppU;
@@ -60,6 +61,7 @@ public class MainMeFragment extends BaseFragment {
             case R.id.ll_photo:
                 break;
             case R.id.ll_record:
+                startActivity(RecordSelectChannelActivity.class);
                 break;
             //建议与反馈
             case R.id.ll_feedback:

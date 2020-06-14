@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tips_no_friends">你还没有和好友单聊过，\n快去群聊里找个好友聊天吧~</string>
+    
+    <string name="chat_title_record">录音</string>
+
+    <string name="chat_tip_record">点击下方任意频道启动录音</string>
+    <string name="chat_tag_record_file">录音文件</string>
 </resources>
