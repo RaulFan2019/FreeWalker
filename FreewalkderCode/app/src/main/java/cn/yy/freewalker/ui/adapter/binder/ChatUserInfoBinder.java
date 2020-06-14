@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.adapter.holder.ChatUserInfoHolder;
-import cn.yy.freewalker.bean.ChatUserInfoBean;
+import cn.yy.freewalker.entity.model.ChatUserInfoBean;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**

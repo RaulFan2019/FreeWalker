@@ -2,13 +2,6 @@ package cn.yy.freewalker.ui.activity.chat;
 
 import android.graphics.drawable.Drawable;
 import android.os.Message;
-
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -21,7 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.gyf.immersionbar.ImmersionBar;
+
+import org.xutils.x;
 
 import java.util.ArrayList;
 
@@ -29,14 +30,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.ui.adapter.binder.ChatLeftTextBinder;
-import cn.yy.freewalker.ui.adapter.binder.ChatRightTextBinder;
-import cn.yy.freewalker.ui.adapter.binder.ChatTimeBinder;
-import cn.yy.freewalker.ui.adapter.FreePagerAdapter;
 import cn.yy.freewalker.entity.model.ChatLeftTextBean;
 import cn.yy.freewalker.entity.model.ChatRightTextBean;
 import cn.yy.freewalker.entity.model.ChatTimeBean;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.adapter.FreePagerAdapter;
+import cn.yy.freewalker.ui.adapter.binder.ChatLeftTextBinder;
+import cn.yy.freewalker.ui.adapter.binder.ChatRightTextBinder;
+import cn.yy.freewalker.ui.adapter.binder.ChatTimeBinder;
 import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
 import cn.yy.freewalker.utils.ChatUiHelper;
 import cn.yy.freewalker.utils.DateUtils;
@@ -47,7 +48,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * @version 1.0
  * @date 2020/6/3 22:00
  */
-public class SingleChatActivity extends BaseActivity {
+public class GroupChatActivity extends BaseActivity {
     @BindView(R.id.tv_chat_user_title)
     TextView mUserTitleTv;
     @BindView(R.id.rv_chat_list)
@@ -114,7 +115,7 @@ public class SingleChatActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_single_chat;
+        return R.layout.activity_group_chat;
     }
 
     @Override
@@ -227,7 +228,9 @@ public class SingleChatActivity extends BaseActivity {
     }
 
     private void showRightChat(String chatText){
-        if(System.currentTimeMillis() - lastTime >= 60 * 1000){
+        long currentTime = System.currentTimeMillis();
+        if(currentTime - lastTime >= 60 * 1000){
+
             mChatItems.add(new ChatTimeBean(DateUtils.getCurrentTime()));
         }
 

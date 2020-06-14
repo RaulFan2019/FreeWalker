@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.adapter.holder.ChatTextHolder;
-import cn.yy.freewalker.bean.ChatLeftTextBean;
+import cn.yy.freewalker.entity.model.ChatLeftTextBean;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**

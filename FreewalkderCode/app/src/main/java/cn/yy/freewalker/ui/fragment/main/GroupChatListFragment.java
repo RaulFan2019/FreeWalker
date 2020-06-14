@@ -2,7 +2,9 @@ package cn.yy.freewalker.ui.fragment.main;
 
 import android.os.Bundle;
 import android.os.Message;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,7 +12,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.bean.ChatRoomBean;
+import cn.yy.freewalker.entity.model.ChatFaceBean;
+import cn.yy.freewalker.entity.model.ChatRoomBean;
+import cn.yy.freewalker.ui.activity.chat.GroupChatActivity;
 import cn.yy.freewalker.ui.adapter.binder.ChatRoomBinder;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import me.drakeet.multitype.MultiTypeAdapter;
@@ -59,6 +63,24 @@ public class GroupChatListFragment extends BaseFragment {
             mRoomItems.add(new ChatRoomBean("频道"+i,i));
         }
         mChatListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mChatListRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener(){
+
+            @Override
+            public void onChildViewAttachedToWindow(@NonNull View view) {
+                view.setOnClickListener(v -> {
+                    int position = mChatListRv.getChildAdapterPosition(view);
+                    Object bean = mRoomItems.get(position);
+                    if(bean instanceof ChatRoomBean){
+                        startActivity(GroupChatActivity.class);
+                    }
+                });
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(@NonNull View view) {
+
+            }
+        });
         mChatListRv.setAdapter(mAdapter);
     }
 

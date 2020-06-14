@@ -3,12 +3,15 @@ package cn.yy.freewalker.ui.activity.main;
 import android.os.Environment;
 import android.os.Message;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -130,7 +133,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .statusBarView(R.id.v_status_bar)
+                .init();
     }
 
     @Override
@@ -163,6 +169,9 @@ public class MainActivity extends BaseActivity {
         switch (tab) {
             //切换到分析
             case TAB_DEVICE:
+                ImmersionBar.with(this)
+                        .statusBarDarkFont(true)
+                        .init();
                 ivDevice.setBackgroundResource(R.drawable.icon_main_tab_device_selected);
                 tvDevice.setTextColor(getResources().getColor(R.color.tv_accent));
                 if (fragmentDevice == null) {
@@ -174,6 +183,9 @@ public class MainActivity extends BaseActivity {
                 break;
             //切换到运动
             case TAB_CHAT:
+                ImmersionBar.with(this)
+                        .statusBarDarkFont(true)
+                        .init();
                 ivChat.setBackgroundResource(R.drawable.icon_main_tab_chat_selected);
                 tvChat.setTextColor(getResources().getColor(R.color.tv_accent));
                 if (fragmentChat == null) {
@@ -184,6 +196,9 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case TAB_NEARBY:
+                ImmersionBar.with(this)
+                        .statusBarDarkFont(true)
+                        .init();
                 ivNearby.setBackgroundResource(R.drawable.icon_main_tab_nearby_selected);
                 tvNearby.setTextColor(getResources().getColor(R.color.tv_accent));
                 if (fragmentNearby == null) {
@@ -194,8 +209,11 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case TAB_ME:
+                ImmersionBar.with(this)
+                        .statusBarDarkFont(false)
+                        .init();
                 ivMe.setBackgroundResource(R.drawable.icon_main_tab_me_selected);
-                tvMe.setTextColor(getResources().getColor(R.color.tv_accent));
+                tvMe.setTextColor(ContextCompat.getColor(this,R.color.tv_accent));
                 if (fragmentMe == null) {
                     fragmentMe = MainMeFragment.newInstance();
                     transaction.add(R.id.ll_fragment_root, fragmentMe);

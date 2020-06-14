@@ -1,8 +1,8 @@
 package cn.yy.freewalker.ui.fragment.main;
 
-import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,11 +12,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.bean.ChatPersonBean;
-import cn.yy.freewalker.bean.ChatRoomBean;
+import cn.yy.freewalker.entity.model.ChatPersonBean;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.adapter.binder.ChatPersonBinder;
-import cn.yy.freewalker.ui.adapter.binder.ChatRoomBinder;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -28,7 +26,8 @@ import me.drakeet.multitype.MultiTypeAdapter;
 public class SingleChatListFragment extends BaseFragment {
     @BindView(R.id.iv_single_chat_list)
     RecyclerView mChatListRv;
-
+    @BindView(R.id.rl_no_content_tip)
+    RelativeLayout mNoContentRl;
 
     private MultiTypeAdapter mAdapter;
 

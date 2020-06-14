@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.adapter.holder.ChatFaceHolder;
-import cn.yy.freewalker.bean.ChatFaceBean;
+import cn.yy.freewalker.entity.model.ChatFaceBean;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**

@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.bean.ChatPersonBean;
-import cn.yy.freewalker.bean.ChatRoomBean;
+import cn.yy.freewalker.entity.model.ChatPersonBean;
 import cn.yy.freewalker.ui.adapter.holder.ChatPersonHolder;
-import cn.yy.freewalker.ui.adapter.holder.ChatRoomHolder;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**

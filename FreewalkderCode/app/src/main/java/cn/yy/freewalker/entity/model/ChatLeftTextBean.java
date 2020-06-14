@@ -1,15 +1,15 @@
-package cn.yy.freewalker.bean;
+package cn.yy.freewalker.entity.model;
 
 /**
  * @author zhao
  * @version 1.0
  * @date 2020/6/4 上午12:10
  */
-public class ChatRightTextBean {
+public class ChatLeftTextBean {
     public String chatText;
     public String photoUrl;
 
-    public ChatRightTextBean(String chatText, String photoUrl) {
+    public ChatLeftTextBean(String chatText, String photoUrl) {
         this.chatText = chatText;
         this.photoUrl = photoUrl;
     }

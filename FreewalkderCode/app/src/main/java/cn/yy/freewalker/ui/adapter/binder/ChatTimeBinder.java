@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.adapter.holder.ChatTimeHolder;
-import cn.yy.freewalker.bean.ChatTimeBean;
+import cn.yy.freewalker.entity.model.ChatTimeBean;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
