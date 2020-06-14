@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.adapter.binder.ChatFaceBinder;
-import cn.yy.freewalker.bean.ChatFaceBean;
+import cn.yy.freewalker.entity.model.ChatFaceBean;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.faceView.QDQQFaceManager;
 import me.drakeet.multitype.MultiTypeAdapter;

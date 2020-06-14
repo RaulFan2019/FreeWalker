@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.gyf.immersionbar.ImmersionBar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -79,6 +81,9 @@ public class PrivacyActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .init();
         updateViewsByPrivacyType();
     }
 

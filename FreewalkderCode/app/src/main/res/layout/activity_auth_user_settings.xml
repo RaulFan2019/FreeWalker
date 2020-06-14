@@ -6,7 +6,7 @@
     android:background="@android:color/white">
 
     <!-- title -->
-    <FrameLayout style="@style/TitleLayout">
+    <RelativeLayout style="@style/TitleLayout">
 
         <TextView
             style="@style/TitleTitleTv"
@@ -17,7 +17,7 @@
             style="@style/TitleBackButton" />
 
         <View style="@style/TitleBottomLine" />
-    </FrameLayout>
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"

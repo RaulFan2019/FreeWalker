@@ -1,4 +1,4 @@
-package cn.yy.freewalker.bean;
+package cn.yy.freewalker.entity.model;
 
 /**
  * @author zhao

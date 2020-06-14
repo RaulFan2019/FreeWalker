@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 
+import com.gyf.immersionbar.ImmersionBar;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -219,7 +221,9 @@ public class UserSettingsActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .init();
     }
 
     @Override

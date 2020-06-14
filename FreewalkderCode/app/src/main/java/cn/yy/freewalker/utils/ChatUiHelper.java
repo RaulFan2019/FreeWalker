@@ -71,24 +71,21 @@ public class ChatUiHelper {
     public ChatUiHelper bindEditText(EditText editText) {
         mEditText = editText;
         mEditText.requestFocus();
-        mEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP&& mBottomLayout.isShown()) {
-                    lockContentHeight();//显示软件盘时，锁定内容高度，防止跳闪。
-                    hideBottomLayout(true);//隐藏表情布局，显示软件盘
-                    mIvEmoji.setImageResource(R.drawable.btn_emoji);
-                    unlockContentHeightDelayed();
-                    //软件盘显示后，释放内容高度
+        mEditText.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP&& mBottomLayout.isShown()) {
+                lockContentHeight();//显示软件盘时，锁定内容高度，防止跳闪。
+                hideBottomLayout(true);//隐藏表情布局，显示软件盘
+                mIvEmoji.setImageResource(R.drawable.btn_emoji);
+                unlockContentHeightDelayed();
+                //软件盘显示后，释放内容高度
 //                    mEditText.postDelayed(new Runnable() {
 //                        @Override
 //                        public void run() {
 //                            unlockContentHeightDelayed();
 //                        }
 //                    }, 200);
-                }
-                return false;
             }
+            return false;
         });
 
         mEditText.addTextChangedListener(new TextWatcher() {

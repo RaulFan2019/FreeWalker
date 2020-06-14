@@ -178,7 +178,9 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     @Override
     protected void causeGC() {
-        mapView.onDestroy();
+        if(mapView != null) {
+            mapView.onDestroy();
+        }
     }
 
     @Override

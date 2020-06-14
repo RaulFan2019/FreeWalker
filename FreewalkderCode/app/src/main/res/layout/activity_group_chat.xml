@@ -28,86 +28,86 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
-        <TextView
-            android:layout_width="22dp"
-            android:layout_height="18dp"
-            android:gravity="center"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:text="12"
-            android:textSize="10sp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/bg_channel"
-            />
+<!--        <TextView-->
+<!--            android:layout_width="22dp"-->
+<!--            android:layout_height="18dp"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:text="12"-->
+<!--            android:textSize="10sp"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:background="@drawable/bg_channel"-->
+<!--            />-->
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/ll_user_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:background="@drawable/bg_chat_user_info"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="14dp"
-                android:src="@drawable/icon_gender" />
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_user_info"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:gravity="center"-->
+<!--            android:background="@drawable/bg_chat_user_info"-->
+<!--            android:orientation="horizontal">-->
+<!--            <ImageView-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="14dp"-->
+<!--                android:src="@drawable/icon_gender" />-->
 
-            <TextView
-                android:id="@+id/tv_chat_user_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="男" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_chat_user_gender"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="6dp"-->
+<!--                android:text="男" />-->
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="19dp"
-                android:src="@drawable/icon_age" />
+<!--            <ImageView-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="19dp"-->
+<!--                android:src="@drawable/icon_age" />-->
 
-            <TextView
-                android:id="@+id/tv_chat_user_age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="25" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_chat_user_age"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="6dp"-->
+<!--                android:text="25" />-->
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/icon_like" />
+<!--            <ImageView-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:src="@drawable/icon_like" />-->
 
-            <TextView
-                android:id="@+id/tv_chat_user_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="女" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_chat_user_like"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="6dp"-->
+<!--                android:text="女" />-->
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="18dp"
-                android:src="@drawable/icon_job" />
+<!--            <ImageView-->
+<!--                android:layout_width="12dp"-->
+<!--                android:layout_height="12dp"-->
+<!--                android:layout_marginStart="18dp"-->
+<!--                android:src="@drawable/icon_job" />-->
 
-            <TextView
-                android:id="@+id/tv_chat_user_job"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="13dp"
-                android:text="房地产/建筑" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/tv_chat_user_job"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="6dp"-->
+<!--                android:layout_marginEnd="13dp"-->
+<!--                android:text="房地产/建筑" />-->
+<!--        </LinearLayout>-->
 
         <TextView
             android:id="@+id/tv_not_connect_tip"

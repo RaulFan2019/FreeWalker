@@ -71,7 +71,9 @@ dependencies {
 //    implementation 'com.github.MasayukiSuda:BubbleLayout:v1.2.1'
     //RecycleView Adapter支持
     implementation 'me.drakeet.multitype:multitype:3.4.4'
-
+    //QMUI
     implementation 'com.qmuiteam:qmui:2.0.0-alpha08'
+    //状态栏
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
 
 }

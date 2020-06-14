@@ -4,8 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/v_status_bar"
+        android:background="@color/tv_white"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
     <!-- title -->
-    <FrameLayout style="@style/TitleLayout">
+    <RelativeLayout style="@style/TitleLayout"
+        android:layout_height="40dp">
 
         <TextView
             style="@style/TitleTitleTv"
@@ -16,7 +22,7 @@
             style="@style/TitleBackButton"/>
 
         <View style="@style/TitleBottomLine"/>
-    </FrameLayout>
+    </RelativeLayout>
 
     <!-- 输入开始 -->
     <LinearLayout
