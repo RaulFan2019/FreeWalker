@@ -59,6 +59,7 @@
                     android:text="@string/auth_tag_user_nickname" />
 
                 <TextView
+                    android:id="@+id/tv_nickname"
                     style="@style/AuthMeSettingsValue"
                     android:text="天才樱木花道" />
 
@@ -76,6 +77,7 @@
                     android:text="@string/auth_tag_user_gender" />
 
                 <TextView
+                    android:id="@+id/tv_sex"
                     style="@style/AuthMeSettingsValue"
                     android:text="男" />
 
@@ -89,6 +91,7 @@
                 style="@style/AuthMeSettingsLine">
 
                 <TextView
+                    android:id="@+id/tv_age"
                     style="@style/AuthMeSettingsTag"
                     android:text="@string/auth_tag_user_age" />
 
@@ -110,6 +113,7 @@
                     android:text="@string/auth_tag_user_like" />
 
                 <TextView
+                    android:id="@+id/tv_like"
                     style="@style/AuthMeSettingsValue"
                     android:text="女" />
 
@@ -127,6 +131,7 @@
                     android:text="@string/auth_tag_user_profession" />
 
                 <TextView
+                    android:id="@+id/tv_profession"
                     style="@style/AuthMeSettingsValue"
                     android:text="房地产/建筑" />
 
@@ -144,6 +149,7 @@
                     android:text="@string/auth_tag_user_height" />
 
                 <TextView
+                    android:id="@+id/tv_height"
                     style="@style/AuthMeSettingsValue"
                     android:text="190~200cm" />
 
@@ -161,6 +167,7 @@
                     android:text="@string/auth_tag_user_weight" />
 
                 <TextView
+                    android:id="@+id/tv_weight"
                     style="@style/AuthMeSettingsValue"
                     android:text="70~80kg" />
 
@@ -178,6 +185,7 @@
                     android:text="@string/auth_tag_user_phone" />
 
                 <TextView
+                    android:id="@+id/tv_phone"
                     style="@style/AuthMeSettingsValue"
                     android:text="15512345678" />
 

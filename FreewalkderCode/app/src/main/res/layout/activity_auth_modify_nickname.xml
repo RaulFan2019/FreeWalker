@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/auth_title_modify_nickname" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton"/>
+
+        <View style="@style/TitleBottomLine"/>
+    </FrameLayout>
+
+
+    <LinearLayout
+        style="@style/AuthModifyInputLy">
+
+        <EditText
+            android:id="@+id/et_name"
+            style="@style/AuthModifyInputEt"
+            android:maxLength="8"/>
+
+        <View
+            android:id="@+id/btn_close"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/icon_close"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_tx_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:textSize="12dp"
+        android:gravity="right"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/tv_thirdly"/>
+
+    <Button
+        android:id="@+id/btn_save"
+        style="@style/BtnLarge"
+        android:layout_marginTop="15dp"
+        android:text="@string/app_action_save"/>
+
+</LinearLayout>

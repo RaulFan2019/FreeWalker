@@ -142,6 +142,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RESULT_TAKE_PICTURE:
                 if (mAvatarFile != null && mAvatarFile.exists())

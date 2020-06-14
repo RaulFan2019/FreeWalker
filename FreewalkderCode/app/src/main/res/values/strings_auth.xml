@@ -8,7 +8,7 @@
     <string name="auth_hint_input_verification">请输入验证码</string>
     <string name="auth_hint_input_register_mobile">请输入注册时的手机号</string>
     <string name="auth_hint_input_set_new_pwd">请设置新密码</string>
-    
+
     <string name="auth_action_forget_pwd">忘记密码？</string>
     <string name="auth_action_register">注册</string>
     <string name="auth_action_login">登录</string>
@@ -24,7 +24,7 @@
 
     <string name="auth_error_account_empty">手机号不能为空</string>
     <string name="auth_error_account_invalid">手机号格式不正确</string>
-    
+
     <string name="auth_title_improve_user_info">Hi，请完善你的信息</string>
     <string name="auth_tip_improve_user_info">填写正确的信息，有助于为你匹配到更多好友。</string>
 
@@ -92,6 +92,20 @@
     <string name="auth_tag_user_weight">体重</string>
     <string name="auth_tag_user_phone">已绑定手机号</string>
 
+    <string name="auth_title_modify_nickname">昵称</string>
+    <string name="auth_title_modify_phone">更换手机号</string>
 
+    <string name="auth_tx_new_phone">新手机号</string>
+    <string name="auth_tx_verification">验证码</string>
+    <string name="auth_tx_pwd">密码</string>
 
+    <string name="auth_title_feedback">意见反馈</string>
+    <string name="auth_tx_feedback_device">反馈的设备</string>
+    <string name="auth_tx_question_detail">问题详情</string>
+    <string name="auth_tx_contact">联系方式</string>
+    <string name="auth_action_submit_feedback">提交反馈</string>
+    <string name="auth_hint_select_device">请选择您使用的设备额</string>
+
+    <string name="auth_tag_user_shield">屏蔽ta</string>
+    <string name="auth_action_chat">和 ta 聊天</string>
 </resources>

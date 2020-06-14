@@ -122,4 +122,47 @@
         <item name="android:layout_height">10dp</item>
         <item name="android:background">@color/bg_divider_height</item>
     </style>
+
+    <style name="AuthModifyInputLy">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:background">@drawable/bg_rect_white</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AuthModifyInputEt">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/tv_mostly</item>
+        <item name="android:textColorHint">@color/tv_thirdly</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="AuthUserCardLy">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+    <style name="AuthUserCardIcon">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+    </style>
+    <style name="AuthUserCardTx">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/tv_secondly</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:layout_marginTop">4.5dp</item>
+    </style>
 </resources>

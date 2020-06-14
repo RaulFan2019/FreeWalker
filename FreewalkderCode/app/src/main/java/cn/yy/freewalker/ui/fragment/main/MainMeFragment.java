@@ -10,9 +10,11 @@ import androidx.cardview.widget.CardView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.ui.activity.auth.FeedbackActivity;
 import cn.yy.freewalker.ui.activity.auth.UserSettingsActivity;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
+import cn.yy.freewalker.utils.AppU;
 import cn.yy.freewalker.utils.DensityU;
 
 /**
@@ -51,6 +53,7 @@ public class MainMeFragment extends BaseFragment {
             R.id.ll_clear, R.id.ll_about, R.id.btn_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            //点击头像
             case R.id.card_avatar:
                 startActivity(UserSettingsActivity.class);
                 break;
@@ -58,13 +61,17 @@ public class MainMeFragment extends BaseFragment {
                 break;
             case R.id.ll_record:
                 break;
+            //建议与反馈
             case R.id.ll_feedback:
+                startActivity(FeedbackActivity.class);
                 break;
             case R.id.ll_clear:
+                //TODO
                 break;
             case R.id.ll_about:
                 break;
             case R.id.btn_logout:
+                AppU.jumpToLogin(getActivity());
                 break;
         }
     }

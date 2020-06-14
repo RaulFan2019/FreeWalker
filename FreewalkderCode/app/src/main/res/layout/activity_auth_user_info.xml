@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/fl_user"
+            android:layout_width="match_parent"
+            android:layout_height="330dp">
+
+            <View
+                android:layout_width="600dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_me_top" />
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                style="@style/TitleBackButton"
+                android:layout_gravity="left|top"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="203dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/bg_rect_white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="55dp"
+                        android:text="天才樱木花道"
+                        android:textColor="@color/tv_mostly"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/DividerH"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
+
+                        <LinearLayout style="@style/AuthUserCardLy">
+
+                            <View
+                                style="@style/AuthUserCardIcon"
+                                android:background="@drawable/icon_gender" />
+
+                            <TextView
+                                android:id="@+id/tv_gender"
+                                style="@style/AuthUserCardTx"
+                                android:text="男" />
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/AuthUserCardLy">
+
+                            <View
+                                style="@style/AuthUserCardIcon"
+                                android:background="@drawable/icon_age" />
+
+                            <TextView
+                                android:id="@+id/tv_age"
+                                style="@style/AuthUserCardTx"
+                                android:text="25" />
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/AuthUserCardLy">
+
+                            <View
+                                style="@style/AuthUserCardIcon"
+                                android:background="@drawable/icon_job" />
+
+                            <TextView
+                                android:id="@+id/tv_profession"
+                                style="@style/AuthUserCardTx"
+                                android:text="房地产/建筑" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
+
+                        <LinearLayout style="@style/AuthUserCardLy">
+
+                            <View
+                                style="@style/AuthUserCardIcon"
+                                android:background="@drawable/icon_like" />
+
+                            <TextView
+                                android:id="@+id/tv_like"
+                                style="@style/AuthUserCardTx"
+                                android:text="女" />
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/AuthUserCardLy">
+
+                            <View
+                                style="@style/AuthUserCardIcon"
+                                android:background="@drawable/icon_height" />
+
+                            <TextView
+                                android:id="@+id/tv_height"
+                                style="@style/AuthUserCardTx"
+                                android:text="170~180cm" />
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/AuthUserCardLy">
+
+                            <View
+                                style="@style/AuthUserCardIcon"
+                                android:background="@drawable/icon_weight" />
+
+                            <TextView
+                                android:id="@+id/tv_weight"
+                                style="@style/AuthUserCardTx"
+                                android:text="60~70kg" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="84dp"
+                android:gravity="center_horizontal"
+                app:cardCornerRadius="40dp">
+
+                <cn.yy.freewalker.ui.widget.common.CircularImage
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="1dp"
+                    android:src="@drawable/avatar_default" />
+
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+        <!-- 相册 -->
+        <LinearLayout
+            android:id="@+id/ll_photo"
+            style="@style/AuthMeSettingsLine">
+
+            <TextView
+                style="@style/AuthMeSettingsTag"
+                android:text="@string/auth_tag_me_photo" />
+
+        </LinearLayout>
+
+        <View style="@style/AuthMeSettingsDivider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
+
+        <View style="@style/AuthMeDivider" />
+
+        <LinearLayout style="@style/AuthMeSettingsLine">
+
+            <TextView
+                style="@style/AuthMeSettingsTag"
+                android:text="@string/auth_tag_user_shield" />
+
+            <CheckBox
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+        <View style="@style/AuthMeSettingsDivider" />
+
+
+        <Button
+            android:id="@+id/btn_chat"
+            style="@style/BtnLarge"
+            android:text="@string/auth_action_chat"
+            android:layout_marginTop="159dp"
+            android:layout_marginBottom="55dp"/>
+    </LinearLayout>
+
+</ScrollView>

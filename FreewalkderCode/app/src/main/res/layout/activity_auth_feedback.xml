@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_base_gray"
+    android:orientation="vertical">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/auth_title_feedback" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton" />
+
+        <View style="@style/TitleBottomLine" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/auth_tx_feedback_device"
+        android:textColor="@color/tv_thirdly"
+        android:textSize="12dp" />
+
+    <LinearLayout style="@style/AuthModifyInputLy">
+
+        <EditText
+            android:id="@+id/et_phone"
+            style="@style/AuthModifyInputEt"
+            android:hint="@string/auth_hint_select_device" />
+
+        <View style="@style/AuthMeSettingsMore" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/auth_tx_question_detail"
+        android:textColor="@color/tv_thirdly"
+        android:textSize="12dp" />
+
+    <LinearLayout style="@style/AuthModifyInputLy"
+        android:layout_height="150dp">
+
+        <EditText
+            android:id="@+id/et_question_detail"
+            style="@style/AuthModifyInputEt"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/auth_tx_contact"
+        android:textColor="@color/tv_thirdly"
+        android:textSize="12dp" />
+
+    <LinearLayout style="@style/AuthModifyInputLy">
+
+        <EditText
+            android:id="@+id/et_contact"
+            style="@style/AuthModifyInputEt"/>
+
+        <View style="@style/AuthMeSettingsMore" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_feedback"
+        style="@style/BtnLarge"
+        android:layout_marginTop="52dp"
+        android:text="@string/auth_action_submit_feedback"/>
+
+</LinearLayout>
