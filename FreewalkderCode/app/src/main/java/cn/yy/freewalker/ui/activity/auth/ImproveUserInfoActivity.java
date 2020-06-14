@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 
@@ -220,7 +221,10 @@ public class ImproveUserInfoActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .keyboardEnable(true) // 解决软键盘与底部输入框冲突问题
+                .init();
     }
 
     @Override

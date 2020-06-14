@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 
+import com.gyf.immersionbar.ImmersionBar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -77,7 +79,9 @@ public class UserSettingsActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .init();
     }
 
     @Override

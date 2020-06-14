@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.gyf.immersionbar.ImmersionBar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -99,6 +101,11 @@ public class ForgetPwdActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void initViews() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .keyboardEnable(true) // 解决软键盘与底部输入框冲突问题
+                .statusBarView(R.id.v_status_bar)
+                .init();
         //输入框监听
         etMobile.addTextChangedListener(this);
         etPwd.addTextChangedListener(this);

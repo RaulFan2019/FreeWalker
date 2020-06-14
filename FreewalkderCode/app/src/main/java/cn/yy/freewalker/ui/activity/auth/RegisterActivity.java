@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gyf.immersionbar.ImmersionBar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -129,6 +131,10 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void initViews() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .keyboardEnable(true) // 解决软键盘与底部输入框冲突问题
+                .init();
         //协议说明文本
         String s1 = getString(R.string.privacy_keyword_user_agreement);
         String s2 = getString(R.string.privacy_keyword_privacy);
