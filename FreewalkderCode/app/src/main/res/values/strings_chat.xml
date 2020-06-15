@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tips_no_friends">你还没有和好友单聊过，\n快去群聊里找个好友聊天吧~</string>
-    
+    <string name="tips_no_connect_headset">未连接蓝牙耳机，聊天功能暂不可用，请先连接耳机。</string>
+    <string name="btn_send_chat">发送</string>
+    <string name="btn_press_hold_and_speak">按住说话</string>
+
+    <string name="btn_del_voice">删除</string>
+    <string name="btn_save_voice">保存</string>
+
+    <string name="tv_title_chat">聊天</string>
+
     <string name="chat_title_record">录音</string>
 
     <string name="chat_tip_record">点击下方任意频道启动录音</string>
     <string name="chat_tag_record_file">录音文件</string>
-    
+
     <string name="chat_title_dialog_record">是否开始录音？</string>
     <string name="chat_tip_dialog_record_start">录音功能开启时，只可采集一个频道的音频。</string>
     <string name="chat_tip_dialog_record_start_channel_diff">录音功能开启时，耳机将自动切换到该频道，且只可采集该频道的音频。</string>
-    
+
     <string name="chat_title_dialog_record_change_channel">是否切换频道？</string>
     <string name="chat_tip_dialog_record_change_channel">录音功能开启时，只可采集一个频道的音频。返回之前的频道，仍可找到未保存的录音文件。</string>
     <string name="chat_action_dialog_record_start">开始录音</string>

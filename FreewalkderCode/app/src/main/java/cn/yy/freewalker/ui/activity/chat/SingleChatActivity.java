@@ -229,6 +229,7 @@ public class SingleChatActivity extends BaseActivity {
     private void showRightChat(String chatText){
         if(System.currentTimeMillis() - lastTime >= 60 * 1000){
             mChatItems.add(new ChatTimeBean(DateUtils.getCurrentTime()));
+            lastTime = System.currentTimeMillis();
         }
 
         mChatItems.add(new ChatRightTextBean(chatText,""));

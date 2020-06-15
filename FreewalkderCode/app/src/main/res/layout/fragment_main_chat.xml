@@ -11,7 +11,7 @@
         <TextView
             android:id="@+id/tv_chat_user_title"
             style="@style/TitleTitleTv"
-            android:text="聊天"
+            android:text="@string/tv_title_chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

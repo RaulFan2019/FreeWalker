@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            android:id="@+id/tv_record_title"
+            style="@style/TitleTitleTv" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton"/>
+
+        <View style="@style/TitleBottomLine"/>
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_voice_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/ll_operate_voice"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/tv_del_voice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/btn_del_voice"
+            android:gravity="center"
+            android:textColor="@color/tv_secondly"
+            android:textSize="15sp"
+            android:layout_weight="1"/>
+
+        <View
+            style="@style/DividerV"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="17dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_save_voice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/btn_save_voice"
+            android:gravity="center"
+            android:textColor="@color/tv_accent"
+            android:textSize="15sp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>

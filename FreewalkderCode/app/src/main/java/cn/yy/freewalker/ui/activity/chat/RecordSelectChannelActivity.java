@@ -178,6 +178,7 @@ public class RecordSelectChannelActivity extends BaseActivity {
                 //进入录音界面
                 if (pos == 0){
                     //TODO
+                    startActivity(RecordListActivity.class);
                 //停止录音
                 }else {
                     tvTip.setVisibility(View.VISIBLE);

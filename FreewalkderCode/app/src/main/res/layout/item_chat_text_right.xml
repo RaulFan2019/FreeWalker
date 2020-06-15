@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:minHeight="40dp"
+        android:gravity="center_vertical"
         android:layout_toStartOf="@+id/iv_user_photo"
         android:background="@drawable/bg_chat_right"
         android:minWidth="20dp"

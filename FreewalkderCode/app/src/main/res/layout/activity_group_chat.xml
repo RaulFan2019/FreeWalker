@@ -122,7 +122,7 @@
             android:drawableStart="@drawable/bg_channel"
             android:drawablePadding="5dp"
             android:textColor="#FF414F"
-            android:text="未连接蓝牙耳机，聊天功能暂不可用，请先连接耳机。"/>
+            android:text="@string/tips_no_connect_headset"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -168,7 +168,7 @@
                     android:textSize="15sp"
                     android:background="@drawable/bg_chat_input"
                     android:textColor="@color/tv_secondly"
-                    android:text="按住说话"
+                    android:text="@string/btn_press_hold_and_speak"
                     />
             </RelativeLayout>
 
@@ -189,7 +189,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:text="发送"/>
+                android:text="@string/btn_send_chat"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -106,5 +106,8 @@
         <activity android:name=".ui.activity.chat.RecordFileListActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.activity.chat.RecordListActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 </manifest>

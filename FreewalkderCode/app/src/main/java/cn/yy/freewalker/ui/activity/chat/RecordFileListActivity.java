@@ -60,6 +60,8 @@ public class RecordFileListActivity extends BaseActivity implements RecordFileLi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //TODO 进入录音文件
+
+        startActivity(RecordListActivity.class);
     }
 
     @Override
