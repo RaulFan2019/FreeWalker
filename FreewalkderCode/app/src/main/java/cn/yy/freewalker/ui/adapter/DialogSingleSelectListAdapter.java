@@ -19,9 +19,16 @@ import cn.yy.freewalker.R;
 public class DialogSingleSelectListAdapter extends BaseAdapter {
 
     private List<String> listData;
+    private boolean mHasRedAction;
 
     public DialogSingleSelectListAdapter(List<String> data) {
         this.listData = data;
+        this.mHasRedAction = false;
+    }
+
+    public DialogSingleSelectListAdapter(List<String> data, boolean hasRedAction) {
+        this.listData = data;
+        this.mHasRedAction = hasRedAction;
     }
 
     @Override
@@ -72,6 +79,11 @@ public class DialogSingleSelectListAdapter extends BaseAdapter {
 
         public void UpdateUI(Context context, String data, int position) {
             tvSelect.setText(data);
+            if (mHasRedAction && (position == (listData.size() - 1))) {
+                tvSelect.setTextColor(context.getResources().getColor(R.color.tv_accent));
+            }else {
+                tvSelect.setTextColor(context.getResources().getColor(R.color.tv_mostly));
+            }
         }
     }
 

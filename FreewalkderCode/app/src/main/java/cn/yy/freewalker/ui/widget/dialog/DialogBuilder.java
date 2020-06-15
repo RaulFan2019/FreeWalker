@@ -55,6 +55,19 @@ public class DialogBuilder {
         dialogSingleSelect.show(title, data);
     }
 
+    /**
+     * 显示单选对话框的结果
+     *
+     * @param context
+     * @param data
+     */
+    public void showSingleSelectDialog(final Context context,final List<String> data) {
+        if (dialogSingleSelect == null) {
+            dialogSingleSelect = new DialogSingleSelect(context);
+        }
+        dialogSingleSelect.show(data);
+    }
+
 
     /**
      * 设置单选对话框的监听器
@@ -114,13 +127,28 @@ public class DialogBuilder {
      * @param confirm
      * @param cancel
      */
-    public void showChoiceDialog(final Context context, final String title, final String confirm, final String cancel) {
+    public void showChoiceDialog(final Context context, final String title,
+                                 final String confirm, final String cancel) {
         if (dialogChoice == null) {
             dialogChoice = new DialogChoice(context);
         }
         dialogChoice.show(title, confirm, cancel);
     }
 
+    /**
+     * 显示选择对话框
+     * @param context
+     * @param title
+     * @param confirm
+     * @param cancel
+     */
+    public void showChoiceDialog(final Context context, final String title, final String content,
+                                 final String confirm, final String cancel) {
+        if (dialogChoice == null) {
+            dialogChoice = new DialogChoice(context);
+        }
+        dialogChoice.show(title, content, confirm, cancel);
+    }
 
     public void setChoiceDialogListener(DialogChoice.onBtnClickListener listener){
         dialogChoice.setListener(listener);

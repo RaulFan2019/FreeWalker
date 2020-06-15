@@ -6,4 +6,16 @@
 
     <string name="chat_tip_record">点击下方任意频道启动录音</string>
     <string name="chat_tag_record_file">录音文件</string>
+    
+    <string name="chat_title_dialog_record">是否开始录音？</string>
+    <string name="chat_tip_dialog_record_start">录音功能开启时，只可采集一个频道的音频。</string>
+    <string name="chat_tip_dialog_record_start_channel_diff">录音功能开启时，耳机将自动切换到该频道，且只可采集该频道的音频。</string>
+    
+    <string name="chat_title_dialog_record_change_channel">是否切换频道？</string>
+    <string name="chat_tip_dialog_record_change_channel">录音功能开启时，只可采集一个频道的音频。返回之前的频道，仍可找到未保存的录音文件。</string>
+    <string name="chat_action_dialog_record_start">开始录音</string>
+    <string name="chat_action_dialog_record_change_channel">确定切换</string>
+
+    <string name="chat_action_dialog_record_into">进入录音界面</string>
+    <string name="chat_action_dialog_record_stop">停止录音</string>
 </resources>

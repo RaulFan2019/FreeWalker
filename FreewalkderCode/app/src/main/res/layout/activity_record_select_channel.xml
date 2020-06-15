@@ -46,7 +46,14 @@
                 <FrameLayout
                     android:id="@+id/fl_recording"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="275dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/img_wave"
+                        android:layout_gravity="center_vertical|center_horizontal"/>
 
                     <cn.yy.freewalker.ui.widget.common.CircularImage
                         android:layout_width="75dp"

@@ -61,9 +61,23 @@ public class DialogSingleSelect {
      * @param title
      */
     public void show(final String title , final List<String> listData){
+        tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText(title);
 
         DialogSingleSelectListAdapter adapter = new DialogSingleSelectListAdapter(listData);
+        lv.setAdapter(adapter);
+
+        mDialog.show();
+        mDialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    /**
+     * 显示
+     */
+    public void show(final List<String> listData){
+        tvTitle.setVisibility(View.GONE);
+
+        DialogSingleSelectListAdapter adapter = new DialogSingleSelectListAdapter(listData,true);
         lv.setAdapter(adapter);
 
         mDialog.show();

@@ -18,6 +18,7 @@ public class DialogChoice {
     public Dialog mDialog;
 
     TextView tvTitle;
+    TextView tvContent;
     TextView btnConfirm;
     TextView btnCancel;
 
@@ -73,11 +74,28 @@ public class DialogChoice {
      */
     public void show(final String title , final String confirm , final String cancel){
         tvTitle.setText(title);
+        tvContent.setVisibility(View.GONE);
         btnCancel.setText(cancel);
         btnConfirm.setText(confirm);
 
         mDialog.show();
     }
+
+    /**
+     * 显示
+     * @param title
+     * @param confirm
+     */
+    public void show(final String title , final String content, final String confirm , final String cancel){
+        tvTitle.setText(title);
+        tvContent.setVisibility(View.VISIBLE);
+        tvContent.setText(content);
+        btnCancel.setText(cancel);
+        btnConfirm.setText(confirm);
+
+        mDialog.show();
+    }
+
 
     /**
      * 设置监听器

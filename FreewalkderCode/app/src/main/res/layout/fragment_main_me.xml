@@ -179,7 +179,8 @@
             android:id="@+id/btn_logout"
             style="@style/BtnLarge"
             android:layout_marginTop="60dp"
-            android:layout_marginBottom="40dp" />
+            android:layout_marginBottom="40dp"
+            android:text="@string/auth_action_logout"/>
     </LinearLayout>
 
 </ScrollView>
