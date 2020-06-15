@@ -63,7 +63,7 @@ public class RecordSelectChannelActivity extends BaseActivity {
                 break;
             //录音文件
             case R.id.ll_record_file:
-                //TODO
+                startActivity(RecordFileListActivity.class);
                 break;
         }
     }
@@ -134,6 +134,7 @@ public class RecordSelectChannelActivity extends BaseActivity {
                 mChannel = channel;
                 tvTip.setVisibility(View.GONE);
                 flRecording.setVisibility(View.VISIBLE);
+                mState = STATE_RECORD_ING;
 
             }
 
@@ -181,6 +182,7 @@ public class RecordSelectChannelActivity extends BaseActivity {
                 }else {
                     tvTip.setVisibility(View.VISIBLE);
                     flRecording.setVisibility(View.GONE);
+                    mState = STATE_INIT;
                 }
             }
         });

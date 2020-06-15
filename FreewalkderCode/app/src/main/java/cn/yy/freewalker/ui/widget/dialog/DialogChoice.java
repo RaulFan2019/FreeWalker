@@ -43,6 +43,7 @@ public class DialogChoice {
         mDialog.setCanceledOnTouchOutside(true);
 
         tvTitle = (TextView) mDialog.findViewById(R.id.tv_title);
+        tvContent = mDialog.findViewById(R.id.tv_content);
         btnConfirm = (TextView) mDialog.findViewById(R.id.tv_confirm);
         btnCancel = (TextView) mDialog.findViewById(R.id.tv_cancel);
 
