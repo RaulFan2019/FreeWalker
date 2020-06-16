@@ -457,5 +457,12 @@ public class ChatUiHelper {
         return height;
     }
 
+    /*计算语音item的长度*/
+    public static void calRecordLayoutWidth(Context context,LinearLayout layout,int length){
 
+        ViewGroup.LayoutParams params = layout.getLayoutParams();
+        float percent =length>=60 ? 1: (float) length/60;
+        params.width = DensityU.dip2px(context,300f*percent);
+        layout.setLayoutParams(params);
+    }
 }

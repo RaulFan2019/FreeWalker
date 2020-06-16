@@ -7,6 +7,7 @@
 
     <string name="btn_del_voice">删除</string>
     <string name="btn_save_voice">保存</string>
+    <string name="btn_title_choose_all">全选</string>
 
     <string name="tv_title_chat">聊天</string>
 
@@ -32,4 +33,5 @@
     <string name="chat_tx_record_file_name">文件名称</string>
 
     <string name="chat_dialog_title_save_file">请输入文件名</string>
+    <string name="chat_dialog_msg_del_record">是否删除录音</string>
 </resources>

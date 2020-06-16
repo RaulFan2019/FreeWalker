@@ -2,6 +2,8 @@ package cn.yy.freewalker.ui.adapter.holder;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import org.xutils.x;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.utils.ChatUiHelper;
+import cn.yy.freewalker.utils.DensityU;
 
 /**
  * @author zhao
@@ -23,6 +27,8 @@ public class RecordRightHolder extends RecyclerView.ViewHolder {
     TextView mRightLengthTv;
     @BindView(R.id.iv_record_select_right)
     ImageView mRightSelectIv;
+    @BindView(R.id.ll_record_length_right_bg)
+    public LinearLayout mRightRecordLl;
     public RecordRightHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
@@ -34,5 +40,13 @@ public class RecordRightHolder extends RecyclerView.ViewHolder {
 
     public void setSelectImg(int imgId){
         mRightSelectIv.setImageResource(imgId);
+    }
+
+    public void setEditModel(boolean editModel){
+        mRightSelectIv.setVisibility(editModel?View.VISIBLE:View.GONE);
+    }
+
+    public void calRecordLayoutWidth(int length){
+        ChatUiHelper.calRecordLayoutWidth(itemView.getContext(),mRightRecordLl,length);
     }
 }

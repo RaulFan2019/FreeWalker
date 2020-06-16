@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="end|center_vertical"
     android:padding="7dp">
 
-    <ImageView
-        android:id="@+id/iv_record_avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="45dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/img_send"/>
-
     <LinearLayout
-        android:layout_toStartOf="@id/iv_record_avatar"
-        android:layout_centerVertical="true"
+        android:id="@+id/ll_record_length_right_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="40dp"
@@ -37,11 +28,17 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/iv_record_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/img_send"/>
+
+    <ImageView
         android:id="@+id/iv_record_select_right"
-        android:layout_centerVertical="true"
         android:layout_marginEnd="15dp"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignParentEnd="true"
         android:src="@drawable/btn_pick_normal"/>
-</RelativeLayout>
+</LinearLayout>

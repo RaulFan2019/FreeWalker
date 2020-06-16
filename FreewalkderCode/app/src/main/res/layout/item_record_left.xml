@@ -13,6 +13,7 @@
         android:src="@drawable/img_receive"/>
 
     <LinearLayout
+        android:id="@+id/ll_record_length_left_bg"
         android:layout_toEndOf="@id/iv_record_avatar"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
