@@ -30,4 +30,6 @@
     <string name="chat_title_record_file_list">录音文件</string>
     <string name="chat_action_delete_file">删除</string>
     <string name="chat_tx_record_file_name">文件名称</string>
+
+    <string name="chat_dialog_title_save_file">请输入文件名</string>
 </resources>

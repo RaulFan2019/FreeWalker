@@ -19,6 +19,8 @@ import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.adapter.PhotoSelectAdapter;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogChoice;
+import cn.yy.freewalker.ui.widget.dialog.DialogSaveFile;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -127,6 +129,19 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
         adapter = new PhotoSelectAdapter(UserPhotoAlbumActivity.this, listPhoto,mIsSelectedMode);
         gvPhoto.setAdapter(adapter);
         adapter.setListener(this);
+//
+//        mDialogBuilder.showSaveFileDialog(UserPhotoAlbumActivity.this);
+//        mDialogBuilder.setSaveFileDialogListener(new DialogSaveFile.onBtnClickListener() {
+//            @Override
+//            public void onConfirmBtnClick(String fileName) {
+//                YLog.e("onConfirmBtnClick","fileName:" + fileName);
+//            }
+//
+//            @Override
+//            public void onCancelBtnClick() {
+//
+//            }
+//        });
     }
 
     @Override

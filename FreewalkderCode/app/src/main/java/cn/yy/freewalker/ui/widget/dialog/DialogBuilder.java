@@ -17,6 +17,7 @@ public class DialogBuilder {
     private DialogTagSelect dialogTagSelect;
     private DialogChoice dialogChoice;
     private DialogDeviceInputChannelPwd dialogDeviceInputChannelPwd;
+    private DialogSaveFile dialogSaveFile;
 
     /**
      * 显示隐私询问对话框
@@ -168,6 +169,23 @@ public class DialogBuilder {
 
     public void setDeviceChannelPwdDialogListener(DialogDeviceInputChannelPwd.onConfirmListener listener){
         dialogDeviceInputChannelPwd.setListener(listener);
+    }
+
+
+    /**
+     * 显示设备频道密码对话框
+     * @param context
+     */
+    public void showSaveFileDialog(final Context context) {
+        if (dialogSaveFile == null) {
+            dialogSaveFile = new DialogSaveFile(context);
+        }
+        dialogSaveFile.show();
+    }
+
+
+    public void setSaveFileDialogListener(DialogSaveFile.onBtnClickListener listener){
+        dialogSaveFile.setListener(listener);
     }
 
 }
