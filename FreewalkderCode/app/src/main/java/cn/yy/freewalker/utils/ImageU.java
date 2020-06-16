@@ -31,4 +31,20 @@ public class ImageU {
         x.image().bind(imageView, avatar, imageOptions);
     }
 
+    /**
+     * 缓冲用户头像图片
+     *
+     * @param avatar
+     * @param imageView
+     */
+    public static void loadPhoto(final String avatar, final ImageView imageView) {
+        ImageOptions imageOptions = new ImageOptions.Builder()
+                .setCrop(true)
+                .setLoadingDrawableId(R.color.bg_base_gray)
+                .setFailureDrawableId(R.color.bg_base_gray)
+                .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
+                .setSize(50, 50)
+                .build();
+        x.image().bind(imageView, avatar, imageOptions);
+    }
 }

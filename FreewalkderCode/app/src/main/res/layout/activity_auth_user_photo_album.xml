@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_base_gray"
+    android:orientation="vertical">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/auth_title_user_photo_album" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton" />
+
+        <LinearLayout
+            style="@style/TitleRightBtnLy">
+
+            <TextView
+                android:id="@+id/tv_action"
+                style="@style/TitleRightButton"
+                android:gravity="center"
+                android:textColor="@color/tv_accent"
+                android:textSize="15dp"
+                android:text="@string/app_action_delete"/>
+
+        </LinearLayout>
+
+        <View style="@style/TitleBottomLine" />
+    </FrameLayout>
+
+    <GridView
+        android:id="@+id/gv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:verticalSpacing="15dp"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"/>
+
+    <Button
+        android:id="@+id/btn_delete"
+        style="@style/BtnLarge"
+        android:text="@string/app_action_delete"
+        android:layout_marginBottom="30dp"
+        android:visibility="gone"/>
+</LinearLayout>

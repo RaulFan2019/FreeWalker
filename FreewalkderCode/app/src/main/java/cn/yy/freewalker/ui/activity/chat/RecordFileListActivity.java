@@ -12,11 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.config.DeviceConfig;
-import cn.yy.freewalker.entity.adapter.BindDeviceAdapterEntity;
-import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
-import cn.yy.freewalker.ui.adapter.DeviceListAdapter;
 import cn.yy.freewalker.ui.adapter.RecordFileListAdapter;
 import cn.yy.freewalker.ui.widget.listview.ListViewRecordFile;
 
@@ -25,7 +21,8 @@ import cn.yy.freewalker.ui.widget.listview.ListViewRecordFile;
  * @email 35686324@qq.com
  * @date 2020/6/15 20:42
  */
-public class RecordFileListActivity extends BaseActivity implements RecordFileListAdapter.onListItemDeleteListener, AdapterView.OnItemClickListener {
+public class RecordFileListActivity extends BaseActivity implements RecordFileListAdapter.onListItemDeleteListener,
+        AdapterView.OnItemClickListener {
 
 
 

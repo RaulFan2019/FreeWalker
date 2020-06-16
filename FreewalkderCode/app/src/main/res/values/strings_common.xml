@@ -10,6 +10,7 @@
     <string name="app_action_cancel">取消</string>
     <string name="app_action_save">保存</string>
     <string name="app_action_submit">提交</string>
+    <string name="app_action_delete">删除</string>
 
     <string name="app_toast_modify_ok">修改成功</string>
 

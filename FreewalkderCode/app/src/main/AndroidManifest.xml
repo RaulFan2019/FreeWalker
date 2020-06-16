@@ -95,6 +95,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.auth.UserInfoActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.auth.UserPhotoAlbumActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- chat -->
         <activity android:name=".ui.activity.chat.SingleChatActivity"

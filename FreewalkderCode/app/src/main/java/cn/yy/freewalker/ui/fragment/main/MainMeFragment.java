@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.auth.FeedbackActivity;
+import cn.yy.freewalker.ui.activity.auth.UserPhotoAlbumActivity;
 import cn.yy.freewalker.ui.activity.auth.UserSettingsActivity;
 import cn.yy.freewalker.ui.activity.chat.RecordSelectChannelActivity;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
@@ -59,6 +60,7 @@ public class MainMeFragment extends BaseFragment {
                 startActivity(UserSettingsActivity.class);
                 break;
             case R.id.ll_photo:
+                startActivity(UserPhotoAlbumActivity.class);
                 break;
             case R.id.ll_record:
                 startActivity(RecordSelectChannelActivity.class);

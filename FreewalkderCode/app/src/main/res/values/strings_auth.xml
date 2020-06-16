@@ -110,4 +110,7 @@
 
     <string name="auth_tag_user_shield">屏蔽ta</string>
     <string name="auth_action_chat">和 ta 聊天</string>
+
+    <string name="auth_title_user_photo_album">相册</string>
+    <string name="auth_title_dialog_delete_photo">是否要删掉照片，且删掉之后无法找回</string>
 </resources>

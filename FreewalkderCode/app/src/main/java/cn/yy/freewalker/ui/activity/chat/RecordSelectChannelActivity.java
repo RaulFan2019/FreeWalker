@@ -35,14 +35,14 @@ public class RecordSelectChannelActivity extends BaseActivity {
 
     @BindView(R.id.rv_channel)
     RecyclerView rvChannel;
-
-    DeviceSettingChannelRvAdapter adapter;
-    DialogBuilder mDialogBuilder;
     @BindView(R.id.tv_tip)
     TextView tvTip;
     @BindView(R.id.fl_recording)
     FrameLayout flRecording;
 
+
+    DeviceSettingChannelRvAdapter adapter;
+    DialogBuilder mDialogBuilder;
     /* data */
     private int mChannel = -1;
 

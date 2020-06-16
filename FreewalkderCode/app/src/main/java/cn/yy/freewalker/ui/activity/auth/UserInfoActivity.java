@@ -79,17 +79,12 @@ public class UserInfoActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @OnClick({R.id.btn_back, R.id.btn_chat})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
+                finish();
                 break;
             case R.id.btn_chat:
                 break;
