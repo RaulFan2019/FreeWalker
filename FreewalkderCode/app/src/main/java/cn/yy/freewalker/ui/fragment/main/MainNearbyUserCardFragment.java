@@ -10,6 +10,7 @@ import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.entity.net.UserInfoResult;
+import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.utils.ImageU;
@@ -58,7 +59,7 @@ public class MainNearbyUserCardFragment extends BaseFragment {
                 //TODO
                 break;
             case R.id.btn_chat:
-                //TODO
+                startActivity(SingleChatActivity.class);
                 break;
             case R.id.btn_close:
                 LocalApp.getInstance().getEventBus().post(new NearbyUserCartEvent(NearbyUserCartEvent.CLOSE,null));

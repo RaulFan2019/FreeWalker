@@ -177,8 +177,9 @@ public class RecordSelectChannelActivity extends BaseActivity {
             public void onConfirmBtnClick(int pos) {
                 //进入录音界面
                 if (pos == 0){
-                    //TODO
-                    startActivity(RecordListActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", getString(R.string.chat_title_channel) + mChannel);
+                    startActivity(RecordListActivity.class, bundle);
                 //停止录音
                 }else {
                     tvTip.setVisibility(View.VISIBLE);

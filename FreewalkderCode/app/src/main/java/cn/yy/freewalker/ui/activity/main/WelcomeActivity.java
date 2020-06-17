@@ -55,6 +55,12 @@ public class WelcomeActivity extends BaseActivity {
             return;
         }
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         //检查是否询问过隐私问题
         if (!SpAppData.getPrivacy(WelcomeActivity.this)) {
             mDialogBuilder.showPrivacyDialog(WelcomeActivity.this);
@@ -96,6 +102,7 @@ public class WelcomeActivity extends BaseActivity {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.REQUEST_INSTALL_PACKAGES,
+                Manifest.permission.CAMERA
 
         };
         //申请权限

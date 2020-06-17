@@ -95,6 +95,7 @@ public class RadarView extends View {
         mPaintLine.setColor(getResources().getColor(R.color.accent));
         mPaintLine.setAntiAlias(true);
         mPaintLine.setStrokeWidth(1);
+        mPaintLine.setAlpha(180);
         mPaintLine.setStyle(Paint.Style.STROKE);
 
         mPaintStraight = new Paint();

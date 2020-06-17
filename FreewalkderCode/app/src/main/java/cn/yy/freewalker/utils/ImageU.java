@@ -26,7 +26,7 @@ public class ImageU {
                 .setLoadingDrawableId(R.drawable.avatar_default)
                 .setFailureDrawableId(R.drawable.avatar_default)
                 .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
-                .setSize(50, 50)
+                .setSize(100, 100)
                 .build();
         x.image().bind(imageView, avatar, imageOptions);
     }
@@ -43,7 +43,7 @@ public class ImageU {
                 .setLoadingDrawableId(R.color.bg_base_gray)
                 .setFailureDrawableId(R.color.bg_base_gray)
                 .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
-                .setSize(50, 50)
+                .setSize(500, 500)
                 .build();
         x.image().bind(imageView, avatar, imageOptions);
     }

@@ -25,7 +25,6 @@ public class RecordFileListActivity extends BaseActivity implements RecordFileLi
         AdapterView.OnItemClickListener {
 
 
-
     @BindView(R.id.lv_record_file)
     ListViewRecordFile lvRecordFile;
 
@@ -56,9 +55,9 @@ public class RecordFileListActivity extends BaseActivity implements RecordFileLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //TODO 进入录音文件
-
-        startActivity(RecordListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("title", listFile.get(position));
+        startActivity(RecordListActivity.class, bundle);
     }
 
     @Override

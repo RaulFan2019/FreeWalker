@@ -38,6 +38,8 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * @date 2020/6/15 下午8:41
  */
 public class RecordListActivity extends BaseActivity {
+
+
     @BindView(R.id.tv_del_voice)
     TextView mDelVoiceTv;
     @BindView(R.id.tv_save_voice)
@@ -48,6 +50,8 @@ public class RecordListActivity extends BaseActivity {
     RecyclerView mVoiceListRv;
     @BindView(R.id.tv_title_right)
     TextView mTitleRightTv;
+    @BindView(R.id.tv_record_title)
+    TextView tvTitle;
 
     private MultiTypeAdapter mAdapter;
 
@@ -56,6 +60,8 @@ public class RecordListActivity extends BaseActivity {
     private ArrayList<Object> mChooseItems = new ArrayList<>();
 
     private DialogBuilder mBuilder;
+
+    private String title = "";
 
     @OnClick({R.id.btn_back, R.id.tv_del_voice, R.id.tv_save_voice, R.id.tv_title_right})
     public void onClick(View v) {
@@ -142,6 +148,8 @@ public class RecordListActivity extends BaseActivity {
         mRecordItems.add(new RecordLeftBean(4, 59, false));
         mRecordItems.add(new RecordRightBean(5, 10, false));
         mAdapter.setItems(mRecordItems);
+
+        title = getIntent().getExtras().getString("title");
     }
 
     @Override
@@ -149,6 +157,8 @@ public class RecordListActivity extends BaseActivity {
         mBuilder  = new DialogBuilder();
         mVoiceListRv.setLayoutManager(new LinearLayoutManager(this));
         mVoiceListRv.setAdapter(mAdapter);
+
+        tvTitle.setText(title);
     }
 
     @Override

@@ -49,6 +49,8 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * @date 2020/6/3 22:00
  */
 public class GroupChatActivity extends BaseActivity {
+
+
     @BindView(R.id.tv_chat_user_title)
     TextView mUserTitleTv;
     @BindView(R.id.rv_chat_list)
