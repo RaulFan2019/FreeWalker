@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
@@ -157,6 +158,10 @@ public class RecordListActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)
+                .init();
+
         mBuilder  = new DialogBuilder();
         mVoiceListRv.setLayoutManager(new LinearLayoutManager(this));
         mVoiceListRv.setAdapter(mAdapter);
@@ -230,43 +235,6 @@ public class RecordListActivity extends BaseActivity {
                 entryEditModel();
             }
         });
-    }
-
-    private void showItemMenu(View view,int pos){
-//        LinearLayout linearLayout = new LinearLayout(this);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(QMUIDisplayHelper.dp2px(this,60),QMUIDisplayHelper.dp2px(this,30));
-//        linearLayout.setLayoutParams(params);
-//        LayoutInflater inflater = LayoutInflater.from(this);
-//       View v =  inflater.inflate(R.layout.item_popups_menu,linearLayout);
-        TextView textView = new TextView(this);
-        textView.setLineSpacing(QMUIDisplayHelper.dp2px(this, 4), 1.0f);
-        int padding = QMUIDisplayHelper.dp2px(this, 20);
-        textView.setPadding(padding, padding, padding, padding);
-        textView.setText("QMUIBasePopup 可以设置其位置以及显示和隐藏的动画");
-        textView.setTextColor(ContextCompat.getColor(this,R.color.tv_error));
-        textView.setBackgroundColor(ContextCompat.getColor(this,R.color.tv_mostly));
-                //QMUIResHelper.getAttrColor(this, R.attr.app_skin_common_title_text_color));
-//        QMUISkinValueBuilder builder = QMUISkinValueBuilder.acquire();
-//        builder.background(R.drawable.icon_voice);
-//        QMUISkinHelper.setSkinValue(textView,builder);
-//        builder.release();
-        QMUIPopups.popup(this, QMUIDisplayHelper.dp2px(this, 250))
-                .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
-                .view(textView)
-                .skinManager(QMUISkinManager.defaultInstance(this))
-                .edgeProtection(QMUIDisplayHelper.dp2px(this, 20))
-                .offsetX(QMUIDisplayHelper.dp2px(this, 20))
-                .offsetYIfBottom(QMUIDisplayHelper.dp2px(this, 5))
-                .shadow(true)
-                .arrow(true)
-                .animStyle(QMUIPopup.ANIM_GROW_FROM_CENTER)
-                .onDismiss(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        Toast.makeText(RecordListActivity.this, "onDismiss", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .show(view);
     }
 
     /*进入多选模式*/
