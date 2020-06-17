@@ -213,14 +213,16 @@ public class RecordListActivity extends BaseActivity {
 //        QMUISkinHelper.setSkinValue(textView, builder);
 //        builder.release();
         QMUIPopups.quickAction(this,
-                QMUIDisplayHelper.dp2px(this, 56),
-                QMUIDisplayHelper.dp2px(this, 56))
+                QMUIDisplayHelper.dp2px(this, 35),
+                QMUIDisplayHelper.dp2px(this, 48))
                 .shadow(true)
-//                .bgColor(R.color.tv_white)
+                .preferredDirection(QMUIPopup.DIRECTION_TOP)
+                .bgColor(getResources().getColor(R.color.bg_base_gray))
 //                .arrow(true)
                 .skinManager(QMUISkinManager.defaultInstance(this))
                 .edgeProtection(QMUIDisplayHelper.dp2px(this, 20))
-                .addAction(new QMUIQuickAction.Action().text("删除").textColorAttr(R.color.tv_white).onClick(new QMUIQuickAction.OnClickListener() {
+                .addAction(new QMUIQuickAction.Action().text("删除")
+                        .onClick(new QMUIQuickAction.OnClickListener() {
                     @Override
                     public void onClick(QMUIQuickAction quickAction, QMUIQuickAction.Action action, int position) {
                         quickAction.dismiss();
