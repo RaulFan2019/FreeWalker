@@ -28,6 +28,7 @@ import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.adapter.binder.RecordLeftBinder;
 import cn.yy.freewalker.ui.adapter.binder.RecordRightBinder;
 import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
+import cn.yy.freewalker.ui.widget.ChatRecordPopView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogChoice;
 import cn.yy.freewalker.ui.widget.dialog.DialogSaveFile;
@@ -208,35 +209,27 @@ public class RecordListActivity extends BaseActivity {
     }
 
     private void showPopMenu(View v, int pos) {
-//        QMUISkinValueBuilder builder = QMUISkinValueBuilder.acquire();
-//        builder.textColor(R.attr.app_skin_common_title_text_color);
-//        QMUISkinHelper.setSkinValue(textView, builder);
-//        builder.release();
-        QMUIPopups.quickAction(this,
-                QMUIDisplayHelper.dp2px(this, 35),
-                QMUIDisplayHelper.dp2px(this, 48))
-                .shadow(true)
+        ChatRecordPopView view = new ChatRecordPopView(RecordListActivity.this);
+        QMUIPopup popup = QMUIPopups.popup(this,
+                QMUIDisplayHelper.dp2px(this, 96),
+                QMUIDisplayHelper.dp2px(this, 35))
                 .preferredDirection(QMUIPopup.DIRECTION_TOP)
-                .bgColor(getResources().getColor(R.color.bg_base_gray))
-//                .arrow(true)
-                .skinManager(QMUISkinManager.defaultInstance(this))
-                .edgeProtection(QMUIDisplayHelper.dp2px(this, 20))
-                .addAction(new QMUIQuickAction.Action().text("删除")
-                        .onClick(new QMUIQuickAction.OnClickListener() {
-                    @Override
-                    public void onClick(QMUIQuickAction quickAction, QMUIQuickAction.Action action, int position) {
-                        quickAction.dismiss();
-                        showDelDialog(pos);
-                    }
-                }))
-                .addAction(new QMUIQuickAction.Action().text("多选").onClick(new QMUIQuickAction.OnClickListener() {
-                    @Override
-                    public void onClick(QMUIQuickAction quickAction, QMUIQuickAction.Action action, int position) {
-                        quickAction.dismiss();
-                        entryEditModel();
-                    }
-                }))
+                .view(view)
                 .show(v);
+
+        view.setListener(new ChatRecordPopView.OnBtnClick() {
+            @Override
+            public void onDelete() {
+                popup.dismiss();
+                showDelDialog(pos);
+            }
+
+            @Override
+            public void onSelect() {
+                popup.dismiss();
+                entryEditModel();
+            }
+        });
     }
 
     private void showItemMenu(View view,int pos){
