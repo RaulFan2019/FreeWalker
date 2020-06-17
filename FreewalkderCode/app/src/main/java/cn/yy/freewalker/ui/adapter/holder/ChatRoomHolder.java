@@ -16,12 +16,13 @@ import cn.yy.freewalker.R;
  * @date 2020/6/13 下午4:23
  */
 public class ChatRoomHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.tv_group_name)
+//    @BindView(R.id.tv_group_name)
     TextView mRoomNameTv;
 
     public ChatRoomHolder(@NonNull View itemView) {
         super(itemView);
-        ButterKnife.bind(this,itemView);
+//        ButterKnife.bind(this,itemView);
+        mRoomNameTv = itemView.findViewById(R.id.tv_group_name);
     }
 
     public void showGroupName(String name){

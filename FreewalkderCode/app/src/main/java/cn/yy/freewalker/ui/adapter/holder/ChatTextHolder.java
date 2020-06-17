@@ -22,13 +22,16 @@ import cn.yy.freewalker.utils.ImageU;
  */
 public class ChatTextHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.iv_user_photo)
-    ImageView mChatUserPhotoIv;
-    @BindView(R.id.qtv_chat_content)
+//    @BindView(R.id.iv_user_photo)
+    public ImageView mChatUserPhotoIv;
+//    @BindView(R.id.qtv_chat_content)
     QQFaceTextView mChatContentQtv;
 
     public ChatTextHolder(@NonNull View itemView) {
         super(itemView);
+//        ButterKnife.bind(this,itemView);
+        mChatUserPhotoIv = itemView.findViewById(R.id.iv_user_photo);
+        mChatContentQtv = itemView.findViewById(R.id.qtv_chat_content);
         ButterKnife.bind(this,itemView);
 
         mChatUserPhotoIv.setOnClickListener(new View.OnClickListener() {

@@ -17,11 +17,13 @@
         <TextView
             android:id="@+id/tv_chat_user_title"
             style="@style/TitleTitleTv"
+            android:text="好友"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <ImageButton
             android:id="@+id/btn_back"
+            android:layout_centerVertical="true"
             style="@style/TitleBackButton"/>
 
         <View
@@ -119,7 +121,7 @@
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:textSize="12sp"
-            android:drawableStart="@drawable/bg_channel"
+            android:drawableStart="@drawable/icon_notice_red"
             android:drawablePadding="5dp"
             android:textColor="#FF414F"
             android:text="@string/tips_no_connect_headset"/>

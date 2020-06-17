@@ -43,6 +43,7 @@ import cn.yy.freewalker.ui.adapter.FreePagerAdapter;
 import cn.yy.freewalker.ui.adapter.binder.ChatLeftTextBinder;
 import cn.yy.freewalker.ui.adapter.binder.ChatRightTextBinder;
 import cn.yy.freewalker.ui.adapter.binder.ChatTimeBinder;
+import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
 import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
 import cn.yy.freewalker.utils.ChatUiHelper;
 import cn.yy.freewalker.utils.DateUtils;
@@ -144,8 +145,33 @@ public class GroupChatActivity extends BaseActivity {
     protected void initData() {
         mChatAdapter = new MultiTypeAdapter();
         mChatAdapter.register(ChatTimeBean.class, new ChatTimeBinder());
-        mChatAdapter.register(ChatLeftTextBean.class, new ChatLeftTextBinder());
-        mChatAdapter.register(ChatRightTextBean.class, new ChatRightTextBinder());
+        ChatLeftTextBinder leftTextBinder = new ChatLeftTextBinder();
+//        leftTextBinder.setOnItemClick(new OnItemListener() {
+//            @Override
+//            public void onLongClick(View view, int pos) {
+//
+//            }
+//
+//            @Override
+//            public void onClick(View view, int pos) {
+//                startActivity(UserInfoActivity.class);
+//            }
+//        });
+
+        ChatRightTextBinder rightTextBinder = new ChatRightTextBinder();
+//        rightTextBinder.setOnItemClick(new OnItemListener() {
+//            @Override
+//            public void onLongClick(View view, int pos) {
+//
+//            }
+//
+//            @Override
+//            public void onClick(View view, int pos) {
+//                startActivity(UserInfoActivity.class);
+//            }
+//        });
+        mChatAdapter.register(ChatLeftTextBean.class, leftTextBinder);
+        mChatAdapter.register(ChatRightTextBean.class, rightTextBinder);
 
         mChatItems.add(new ChatTimeBean("12:18"));
         mChatItems.add(new ChatLeftTextBean("你好[微笑][微笑][微笑][微笑][微笑]", ""));

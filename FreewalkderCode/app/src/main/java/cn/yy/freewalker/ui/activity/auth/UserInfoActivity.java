@@ -8,6 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+
+import com.gyf.immersionbar.ImmersionBar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -64,6 +67,10 @@ public class UserInfoActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(false)
+                .init();
+
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardAvatar.getLayoutParams();
         params.leftMargin = (DensityU.getScreenWidth(UserInfoActivity.this) - DensityU.dip2px(UserInfoActivity.this,80)) / 2;
         cardAvatar.setLayoutParams(params);

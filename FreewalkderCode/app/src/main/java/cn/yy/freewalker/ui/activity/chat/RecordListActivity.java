@@ -3,16 +3,17 @@ package cn.yy.freewalker.ui.activity.chat;
 import android.os.Message;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.qmuiteam.qmui.skin.QMUISkinHelper;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
-import com.qmuiteam.qmui.skin.QMUISkinValueBuilder;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.qmuiteam.qmui.widget.popup.QMUIQuickAction;
 
@@ -26,7 +27,7 @@ import cn.yy.freewalker.entity.model.RecordRightBean;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.adapter.binder.RecordLeftBinder;
 import cn.yy.freewalker.ui.adapter.binder.RecordRightBinder;
-import cn.yy.freewalker.ui.adapter.listener.OnRecordItemListener;
+import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogChoice;
 import cn.yy.freewalker.ui.widget.dialog.DialogSaveFile;
@@ -98,10 +99,11 @@ public class RecordListActivity extends BaseActivity {
         mAdapter = new MultiTypeAdapter();
 
         RecordLeftBinder leftBinder = new RecordLeftBinder();
-        leftBinder.setItemListener(new OnRecordItemListener() {
+        leftBinder.setItemListener(new OnItemListener() {
             @Override
             public void onLongClick(View view, int pos) {
                 showPopMenu(view, pos);
+//                showItemMenu(view, pos);
             }
 
             @Override
@@ -120,7 +122,7 @@ public class RecordListActivity extends BaseActivity {
         });
 
         RecordRightBinder rightBinder = new RecordRightBinder();
-        rightBinder.setItemListener(new OnRecordItemListener() {
+        rightBinder.setItemListener(new OnItemListener() {
             @Override
             public void onLongClick(View view, int pos) {
                 showPopMenu(view, pos);
@@ -214,11 +216,11 @@ public class RecordListActivity extends BaseActivity {
                 QMUIDisplayHelper.dp2px(this, 56),
                 QMUIDisplayHelper.dp2px(this, 56))
                 .shadow(true)
-                .bgColor(R.color.tv_white)
-                .arrow(true)
+//                .bgColor(R.color.tv_white)
+//                .arrow(true)
                 .skinManager(QMUISkinManager.defaultInstance(this))
                 .edgeProtection(QMUIDisplayHelper.dp2px(this, 20))
-                .addAction(new QMUIQuickAction.Action().text("删除").onClick(new QMUIQuickAction.OnClickListener() {
+                .addAction(new QMUIQuickAction.Action().text("删除").textColorAttr(R.color.tv_white).onClick(new QMUIQuickAction.OnClickListener() {
                     @Override
                     public void onClick(QMUIQuickAction quickAction, QMUIQuickAction.Action action, int position) {
                         quickAction.dismiss();
@@ -233,6 +235,43 @@ public class RecordListActivity extends BaseActivity {
                     }
                 }))
                 .show(v);
+    }
+
+    private void showItemMenu(View view,int pos){
+//        LinearLayout linearLayout = new LinearLayout(this);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(QMUIDisplayHelper.dp2px(this,60),QMUIDisplayHelper.dp2px(this,30));
+//        linearLayout.setLayoutParams(params);
+//        LayoutInflater inflater = LayoutInflater.from(this);
+//       View v =  inflater.inflate(R.layout.item_popups_menu,linearLayout);
+        TextView textView = new TextView(this);
+        textView.setLineSpacing(QMUIDisplayHelper.dp2px(this, 4), 1.0f);
+        int padding = QMUIDisplayHelper.dp2px(this, 20);
+        textView.setPadding(padding, padding, padding, padding);
+        textView.setText("QMUIBasePopup 可以设置其位置以及显示和隐藏的动画");
+        textView.setTextColor(ContextCompat.getColor(this,R.color.tv_error));
+        textView.setBackgroundColor(ContextCompat.getColor(this,R.color.tv_mostly));
+                //QMUIResHelper.getAttrColor(this, R.attr.app_skin_common_title_text_color));
+//        QMUISkinValueBuilder builder = QMUISkinValueBuilder.acquire();
+//        builder.background(R.drawable.icon_voice);
+//        QMUISkinHelper.setSkinValue(textView,builder);
+//        builder.release();
+        QMUIPopups.popup(this, QMUIDisplayHelper.dp2px(this, 250))
+                .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
+                .view(textView)
+                .skinManager(QMUISkinManager.defaultInstance(this))
+                .edgeProtection(QMUIDisplayHelper.dp2px(this, 20))
+                .offsetX(QMUIDisplayHelper.dp2px(this, 20))
+                .offsetYIfBottom(QMUIDisplayHelper.dp2px(this, 5))
+                .shadow(true)
+                .arrow(true)
+                .animStyle(QMUIPopup.ANIM_GROW_FROM_CENTER)
+                .onDismiss(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        Toast.makeText(RecordListActivity.this, "onDismiss", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show(view);
     }
 
     /*进入多选模式*/
@@ -288,6 +327,7 @@ public class RecordListActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
     }
 
+    /*删除选中*/
     private void delChooseItem() {
         for (Object bean : mChooseItems) {
             mRecordItems.remove(bean);

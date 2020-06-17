@@ -1,7 +1,6 @@
 package cn.yy.freewalker.ui.adapter.binder;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -9,7 +8,7 @@ import androidx.annotation.NonNull;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.entity.model.RecordLeftBean;
 import cn.yy.freewalker.ui.adapter.holder.RecordLeftHolder;
-import cn.yy.freewalker.ui.adapter.listener.OnRecordItemListener;
+import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -18,7 +17,7 @@ import me.drakeet.multitype.ItemViewBinder;
  * @date 2020/6/15 下午9:28
  */
 public class RecordLeftBinder extends ItemViewBinder<RecordLeftBean, RecordLeftHolder> {
-    private OnRecordItemListener listener;
+    private OnItemListener listener;
 
     @NonNull
     @Override
@@ -50,7 +49,7 @@ public class RecordLeftBinder extends ItemViewBinder<RecordLeftBean, RecordLeftH
         }
     }
 
-    public void setItemListener(OnRecordItemListener listener){
+    public void setItemListener(OnItemListener listener){
         this.listener = listener;
     }
 }

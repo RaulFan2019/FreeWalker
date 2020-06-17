@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="#ff00ff"
+    android:layout_width="match_parent"
+    android:layout_height="33dp">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textColor="@color/tv_white"
+        android:layout_weight="1"/>
+
+    <View
+        style="@style/DividerV"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textColor="@color/tv_white"
+        android:layout_weight="1"/>
+</LinearLayout>

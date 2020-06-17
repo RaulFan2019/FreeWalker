@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.entity.model.RecordRightBean;
 import cn.yy.freewalker.ui.adapter.holder.RecordRightHolder;
-import cn.yy.freewalker.ui.adapter.listener.OnRecordItemListener;
+import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -17,7 +17,7 @@ import me.drakeet.multitype.ItemViewBinder;
  * @date 2020/6/15 下午9:28
  */
 public class RecordRightBinder extends ItemViewBinder<RecordRightBean, RecordRightHolder> {
-    private OnRecordItemListener listener;
+    private OnItemListener listener;
     @NonNull
     @Override
     protected RecordRightHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
@@ -45,7 +45,7 @@ public class RecordRightBinder extends ItemViewBinder<RecordRightBean, RecordRig
         }
     }
 
-    public void setItemListener(OnRecordItemListener listener){
+    public void setItemListener(OnItemListener listener){
         this.listener = listener;
     }
 
