@@ -9,8 +9,11 @@ import org.xutils.x;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.entity.event.OnUserAvatarClickEvent;
 import cn.yy.freewalker.ui.widget.faceView.QQFaceTextView;
+import cn.yy.freewalker.utils.ImageU;
 
 /**
  * @author zhao
@@ -27,6 +30,13 @@ public class ChatTextHolder extends RecyclerView.ViewHolder {
     public ChatTextHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
+
+        mChatUserPhotoIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocalApp.getInstance().getEventBus().post(new OnUserAvatarClickEvent());
+            }
+        });
     }
 
     public void setContentText(String text){
@@ -34,6 +44,6 @@ public class ChatTextHolder extends RecyclerView.ViewHolder {
     }
 
     public void setUserPhoto(String photoUrl){
-        x.image().bind(mChatUserPhotoIv,photoUrl);
+        ImageU.loadUserImage(photoUrl,mChatUserPhotoIv);
     }
 }

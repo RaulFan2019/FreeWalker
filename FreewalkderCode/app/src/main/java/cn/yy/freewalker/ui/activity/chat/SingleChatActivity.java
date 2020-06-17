@@ -23,12 +23,19 @@ import android.widget.TextView;
 
 import com.gyf.immersionbar.ImmersionBar;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
+import cn.yy.freewalker.entity.event.OnUserAvatarClickEvent;
+import cn.yy.freewalker.ui.activity.auth.UserInfoActivity;
 import cn.yy.freewalker.ui.adapter.binder.ChatLeftTextBinder;
 import cn.yy.freewalker.ui.adapter.binder.ChatRightTextBinder;
 import cn.yy.freewalker.ui.adapter.binder.ChatTimeBinder;
@@ -122,6 +129,17 @@ public class SingleChatActivity extends BaseActivity {
 
     }
 
+    /**
+     * 附近的人相关事件
+     *
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void NearbyCardEvent(OnUserAvatarClickEvent event) {
+        startActivity(UserInfoActivity.class);
+    }
+
+
     @Override
     protected void initData() {
         mChatAdapter = new MultiTypeAdapter();
@@ -196,12 +214,12 @@ public class SingleChatActivity extends BaseActivity {
 
     @Override
     protected void doMyCreate() {
-
+        LocalApp.getInstance().getEventBus().register(this);
     }
 
     @Override
     protected void causeGC() {
-
+        LocalApp.getInstance().getEventBus().unregister(this);
     }
 
     @Override
