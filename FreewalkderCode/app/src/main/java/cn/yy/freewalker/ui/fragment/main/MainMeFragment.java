@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -16,12 +17,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +40,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.FileConfig;
+import cn.yy.freewalker.config.UrlConfig;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
+import cn.yy.freewalker.entity.net.BaseResult;
+import cn.yy.freewalker.entity.net.PhotoResult;
+import cn.yy.freewalker.network.NetworkExceptionHelper;
+import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.auth.FeedbackActivity;
 import cn.yy.freewalker.ui.activity.auth.ImproveUserInfoActivity;
 import cn.yy.freewalker.ui.activity.auth.UserPhotoAlbumActivity;
@@ -45,6 +59,7 @@ import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogSingleSelect;
 import cn.yy.freewalker.utils.AppU;
 import cn.yy.freewalker.utils.DensityU;
+import cn.yy.freewalker.utils.ImageU;
 import cn.yy.freewalker.utils.YLog;
 
 import static android.app.Activity.RESULT_OK;
@@ -62,6 +77,10 @@ public class MainMeFragment extends BaseFragment {
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_CUT_PHOTO = 2;
 
+    private static final int MSG_GET_PHOTO_OK = 0x01;
+    private static final int MSG_UPLOAD_PHOTO_OK = 0x02;
+    private static final int MSG_UPLOAD_PHOTO_ERROR = 0x03;
+
 
     @BindView(R.id.tv_name)
     TextView tvName;
@@ -69,12 +88,19 @@ public class MainMeFragment extends BaseFragment {
     FrameLayout flUser;
     @BindView(R.id.iv_avatar)
     CircularImage ivAvatar;
+
     @BindView(R.id.card_avatar)
     CardView cardAvatar;
     @BindView(R.id.cb_loc)
     CheckBox cbLoc;
     @BindView(R.id.img_photo_1)
     ImageView imgPhoto1;
+    @BindView(R.id.img_photo_2)
+    ImageView imgPhoto2;
+    @BindView(R.id.img_photo_3)
+    ImageView imgPhoto3;
+    @BindView(R.id.img_photo_4)
+    ImageView imgPhoto4;
 
     DialogBuilder mDialogBuilder;
 
@@ -84,6 +110,11 @@ public class MainMeFragment extends BaseFragment {
     private File mAvatarFile;                                   //头像文件
 
     private List<String> listPhotoMode = new ArrayList<>();     //照片选择模式
+    private List<PhotoResult> listPhoto = new ArrayList<>();
+
+    private UserDbEntity mUser;
+
+    private List<ImageView> listImageView = new ArrayList<>();
 
     /* 构造函数 */
     public static MainMeFragment newInstance() {
@@ -99,7 +130,7 @@ public class MainMeFragment extends BaseFragment {
 
 
     @OnClick({R.id.card_avatar, R.id.ll_photo, R.id.ll_record, R.id.ll_feedback,
-            R.id.ll_clear, R.id.ll_about, R.id.btn_logout,R.id.ll_add_photo})
+            R.id.ll_clear, R.id.ll_about, R.id.btn_logout, R.id.ll_add_photo})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //点击头像
@@ -107,8 +138,11 @@ public class MainMeFragment extends BaseFragment {
                 startActivity(UserSettingsActivity.class);
                 break;
             case R.id.ll_photo:
-                startActivity(UserPhotoAlbumActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("photo", (Serializable) listPhoto);
+                startActivity(UserPhotoAlbumActivity.class, bundle);
                 break;
+            //录音
             case R.id.ll_record:
                 startActivity(RecordSelectChannelActivity.class);
                 break;
@@ -124,6 +158,7 @@ public class MainMeFragment extends BaseFragment {
             case R.id.btn_logout:
                 AppU.jumpToLogin(getActivity());
                 break;
+            //增加照片
             case R.id.ll_add_photo:
                 addPhoto();
                 break;
@@ -132,7 +167,24 @@ public class MainMeFragment extends BaseFragment {
 
     @Override
     protected void myHandleMsg(Message msg) {
-
+        switch (msg.what) {
+            case MSG_GET_PHOTO_OK:
+                for (int i = 0; i < 4; i++) {
+                    if (listPhoto.size() > i) {
+                        listImageView.get(i).setVisibility(View.VISIBLE);
+                        ImageU.loadPhoto(UrlConfig.IMAGE_HOST + listPhoto.get(i).imgUrl, listImageView.get(i));
+                    } else {
+                        listImageView.get(i).setVisibility(View.GONE);
+                    }
+                }
+                break;
+            case MSG_UPLOAD_PHOTO_OK:
+                new ToastView(getActivity(), getString(R.string.app_tip_upload_ok), -1);
+                break;
+            case MSG_UPLOAD_PHOTO_ERROR:
+                new ToastView(getActivity(), (String) msg.obj, -1);
+                break;
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -153,9 +205,7 @@ public class MainMeFragment extends BaseFragment {
             case RESULT_CUT_PHOTO:
                 if (resultCode == RESULT_OK && null != data) {// 裁剪返回
                     if (mAvatarPhotoPath != null && mAvatarPhotoPath.length() != 0) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(mAvatarPhotoPath);
-                        //给头像设置图片源
-                        imgPhoto1.setImageBitmap(bitmap);
+                        requestUploadFile();
                     }
                 }
                 break;
@@ -165,8 +215,13 @@ public class MainMeFragment extends BaseFragment {
     @Override
     protected void initParams() {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardAvatar.getLayoutParams();
-        params.leftMargin = (DensityU.getScreenWidth(getActivity()) - DensityU.dip2px(getActivity(),80)) / 2;
+        params.leftMargin = (DensityU.getScreenWidth(getActivity()) - DensityU.dip2px(getActivity(), 80)) / 2;
         cardAvatar.setLayoutParams(params);
+
+        listImageView.add(imgPhoto1);
+        listImageView.add(imgPhoto2);
+        listImageView.add(imgPhoto3);
+        listImageView.add(imgPhoto4);
 
         mDialogBuilder = new DialogBuilder();
         //photoMode
@@ -183,7 +238,12 @@ public class MainMeFragment extends BaseFragment {
 
     @Override
     protected void onVisible() {
+        mUser = DBDataUser.getLoginUser(getActivity());
 
+        ImageU.loadUserImage(UrlConfig.IMAGE_HOST + mUser.avatar, ivAvatar);
+        tvName.setText(mUser.name);
+
+        requestUserPhoto();
     }
 
     @Override
@@ -228,14 +288,14 @@ public class MainMeFragment extends BaseFragment {
                 .onGranted(new Action<List<String>>() {
                     @Override
                     public void onAction(List<String> data) {
-                        YLog.e(TAG,"onGranted");
+                        YLog.e(TAG, "onGranted");
                         doCamera();
                     }
                 })
                 .onDenied(new Action<List<String>>() {
                     @Override
                     public void onAction(List<String> data) {
-                        YLog.e(TAG,"onAction");
+                        YLog.e(TAG, "onAction");
                         new ToastView(getActivity(),
                                 getString(R.string.auth_error_permission_photo_mode_camera),
                                 -1);
@@ -273,7 +333,7 @@ public class MainMeFragment extends BaseFragment {
      * 拍照
      */
     private void doCamera() {
-        YLog.e(TAG,"doCamera");
+        YLog.e(TAG, "doCamera");
 
         try {
             Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -345,5 +405,129 @@ public class MainMeFragment extends BaseFragment {
         startActivityForResult(intent, RESULT_CUT_PHOTO);
     }
 
+
+    /**
+     * 获取用户照片
+     */
+    private void requestUserPhoto() {
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.getUserPhoto(getActivity(), DBDataUser.getLoginUser(getActivity()).userId);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        YLog.e(TAG,"requestUserPhoto onSuccess:" + result.data);
+                        if (result.code == 200) {
+                            listPhoto.clear();
+                            List<PhotoResult> list = JSON.parseArray(result.data, PhotoResult.class);
+                            if (list != null) {
+                                listPhoto.addAll(list);
+                            }
+                            mHandler.sendEmptyMessage(MSG_GET_PHOTO_OK);
+                        } else {
+                            NetworkExceptionHelper.getErrorMsgByCode(getActivity(), result.code, result.msg);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     * 上传文件
+     */
+    private void requestUploadFile() {
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = new RequestParams("http://admin.yytalkie.com/prod-api/res/upFile");
+                params.setMultipart(true);
+                params.addBodyParameter("file", new File(mAvatarPhotoPath));
+
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        if (result.code == 200) {
+                            String url = result.data;
+                            requestAddUserPhoto(url);
+                        } else {
+                            mHandler.obtainMessage(MSG_UPLOAD_PHOTO_ERROR, result.msg).sendToTarget();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        mHandler.obtainMessage(MSG_UPLOAD_PHOTO_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+                    }
+
+                    @Override
+                    public void onFinished() {
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    /**
+     * 增加用户图片
+     */
+    private void requestAddUserPhoto(final String url) {
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.addUserPhoto(getActivity(), url);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        if (result.code == 200) {
+                            requestUserPhoto();
+                            mHandler.sendEmptyMessage(MSG_UPLOAD_PHOTO_OK);
+                        } else {
+                            mHandler.obtainMessage(MSG_UPLOAD_PHOTO_ERROR, NetworkExceptionHelper.getErrorMsgByCode(getActivity(), result.code, result.msg)).sendToTarget();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        YLog.e(TAG, "requestAddUserPhoto onError:" + ex.getMessage());
+                        mHandler.obtainMessage(MSG_UPLOAD_PHOTO_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
+    }
 
 }

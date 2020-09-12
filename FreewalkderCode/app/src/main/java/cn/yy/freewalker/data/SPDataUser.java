@@ -1,4 +1,4 @@
-package cn.yy.freewalker.data.sp;
+package cn.yy.freewalker.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,7 +14,7 @@ import android.preference.PreferenceManager;
 public class SPDataUser {
 
     private static final String ACCOUNT = "account";
-    public static final String DEFAULT_ACCOUNT = "";
+    public static final int DEFAULT_ACCOUNT = -1;
 
 
     /**
@@ -30,9 +30,9 @@ public class SPDataUser {
      * @param context
      * @param account
      */
-    public static void setAccount(final Context context, final String account){
+    public static void setAccount(final Context context, final int account){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(ACCOUNT, account);
+        editor.putInt(ACCOUNT, account);
         editor.commit();
     }
 
@@ -41,8 +41,8 @@ public class SPDataUser {
      * @param context
      * @return
      */
-    public static String getAccount(final Context context){
-        return getSharedPreferences(context).getString(ACCOUNT, DEFAULT_ACCOUNT);
+    public static int getAccount(final Context context){
+        return getSharedPreferences(context).getInt(ACCOUNT, DEFAULT_ACCOUNT);
     }
 
 }

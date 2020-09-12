@@ -6,7 +6,7 @@
     android:background="@android:color/white">
 
     <!-- title -->
-    <RelativeLayout style="@style/TitleLayout">
+    <FrameLayout style="@style/TitleLayout">
 
         <TextView
             style="@style/TitleTitleTv"
@@ -17,7 +17,7 @@
             style="@style/TitleBackButton" />
 
         <View style="@style/TitleBottomLine" />
-    </RelativeLayout>
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -91,11 +91,11 @@
                 style="@style/AuthMeSettingsLine">
 
                 <TextView
-                    android:id="@+id/tv_age"
                     style="@style/AuthMeSettingsTag"
                     android:text="@string/auth_tag_user_age" />
 
                 <TextView
+                    android:id="@+id/tv_age"
                     style="@style/AuthMeSettingsValue"
                     android:text="25" />
 

@@ -109,6 +109,24 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="11dp"/>
 
+            <ImageView
+                android:id="@+id/img_photo_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"/>
+
+            <ImageView
+                android:id="@+id/img_photo_3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"/>
+
+            <ImageView
+                android:id="@+id/img_photo_4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"/>
+
         </LinearLayout>
 
         <View style="@style/AuthMeDivider" />

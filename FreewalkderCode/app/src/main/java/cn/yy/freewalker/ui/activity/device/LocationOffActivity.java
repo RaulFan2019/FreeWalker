@@ -61,7 +61,7 @@ public class LocationOffActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (SystemU.isLocationEnabled(LocationOffActivity.this)) {
-            startActivity(FindActivity.class);
+            startActivity(DeviceFindActivity.class);
             finish();
         }
     }

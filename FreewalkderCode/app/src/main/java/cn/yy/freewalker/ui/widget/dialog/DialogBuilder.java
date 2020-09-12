@@ -11,6 +11,8 @@ import java.util.List;
 
 public class DialogBuilder {
 
+
+    private DialogWait dialogWait;
     private DialogPrivacy dialogPrivacy;
     private DialogSingleSelect dialogSingleSelect;
     private DialogPickView dialogPickView;
@@ -143,12 +145,28 @@ public class DialogBuilder {
      * @param confirm
      * @param cancel
      */
+    public void showChoiceDialog(final Context context, final String title,
+                                 final String confirm, final String cancel,final boolean cancelable) {
+        if (dialogChoice == null) {
+            dialogChoice = new DialogChoice(context);
+        }
+        dialogChoice.show(title, confirm, cancel, cancelable);
+    }
+
+
+    /**
+     * 显示选择对话框
+     * @param context
+     * @param title
+     * @param confirm
+     * @param cancel
+     */
     public void showChoiceDialog(final Context context, final String title, final String content,
                                  final String confirm, final String cancel) {
         if (dialogChoice == null) {
             dialogChoice = new DialogChoice(context);
         }
-        dialogChoice.show(title, content, confirm, cancel);
+        dialogChoice.show(title, confirm, cancel);
     }
 
     public void setChoiceDialogListener(DialogChoice.onBtnClickListener listener){
@@ -187,5 +205,45 @@ public class DialogBuilder {
     public void setSaveFileDialogListener(DialogSaveFile.onBtnClickListener listener){
         dialogSaveFile.setListener(listener);
     }
+
+
+
+    /**
+     * 显示同步进度对话框
+     *
+     * @param context
+     * @param content
+     */
+    public void showWaitDialog(final Context context, final String content) {
+        if (dialogWait == null) {
+            dialogWait = new DialogWait(context);
+        }
+        dialogWait.show(content);
+    }
+
+    /**
+     * 显示同步进度对话框
+     *
+     * @param context
+     * @param content
+     */
+    public void showWaitDialog(final Context context, final String content, final boolean cancelable) {
+        if (dialogWait == null) {
+            dialogWait = new DialogWait(context);
+        }
+        dialogWait.show(content, cancelable);
+    }
+
+
+
+    /**
+     * 同步对话框消失
+     */
+    public void dismissWaitDialog() {
+        if (dialogWait != null) {
+            dialogWait.mDialog.dismiss();
+        }
+    }
+
 
 }

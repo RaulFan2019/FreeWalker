@@ -1,22 +1,37 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    //Key
+    signingConfigs {
+        config {
+            storeFile file('../freeWalker.jks')
+            keyAlias 'yy'
+            keyPassword 'freewalker'
+            storePassword 'yy2020'
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "cn.yy.freewalker"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "freewalker 2.2"
     }
     buildTypes {
         debug {
             minifyEnabled false
             buildConfigField 'boolean', 'TEST', 'true'
+            signingConfig signingConfigs.config
+            buildConfigField 'String', 'HOST', '"http://47.110.149.158/blechat"'
         }
         release {
             minifyEnabled false
             buildConfigField 'boolean', 'TEST', 'false'
+            signingConfig signingConfigs.config
+            buildConfigField 'String', 'HOST', '"http://47.110.149.158/blechat"'
         }
     }
 
@@ -56,6 +71,8 @@ dependencies {
     //UI注解
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    implementation 'com.alibaba:fastjson:1.2.73'
 
     //xUtils 工具
     implementation 'org.xutils:xutils:3.8.5'

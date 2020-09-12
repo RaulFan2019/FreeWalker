@@ -61,8 +61,8 @@ public class AmapNearbyUserView extends FrameLayout {
 
     public void bindView(UserInfoResult user) {
         ImageU.loadUserImage(user.avatar, vAvatar);
-        tvName.setText(user.name);
-        if (user.gander.equals(mContext.getString(R.string.auth_tx_sex_male))) {
+        tvName.setText(user.nickName);
+        if (user.gender == 0) {
             llBg.setBackgroundResource(R.drawable.bg_nearby_map_marker_male);
         } else {
             llBg.setBackgroundResource(R.drawable.bg_nearby_map_marker_female);

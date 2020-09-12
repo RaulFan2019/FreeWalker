@@ -9,12 +9,15 @@ import com.yanzhenjie.permission.AndPermission;
 import java.util.List;
 
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.data.db.SpAppData;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.data.SpAppData;
+import cn.yy.freewalker.data.SPDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.activity.auth.ImproveUserInfoActivity;
 import cn.yy.freewalker.ui.activity.auth.LoginActivity;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogPrivacy;
-import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -55,12 +58,6 @@ public class WelcomeActivity extends BaseActivity {
             return;
         }
 
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         //检查是否询问过隐私问题
         if (!SpAppData.getPrivacy(WelcomeActivity.this)) {
             mDialogBuilder.showPrivacyDialog(WelcomeActivity.this);
@@ -82,6 +79,12 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void causeGC() {
 
     }
@@ -89,8 +92,8 @@ public class WelcomeActivity extends BaseActivity {
     /**
      * 检查权限
      */
-    private void checkPermissions(){
-        final String[] permissions = new String []{
+    private void checkPermissions() {
+        final String[] permissions = new String[]{
                 Manifest.permission.INTERNET,
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.ACCESS_WIFI_STATE,
@@ -101,8 +104,7 @@ public class WelcomeActivity extends BaseActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.REQUEST_INSTALL_PACKAGES,
-                Manifest.permission.CAMERA
+                Manifest.permission.REQUEST_INSTALL_PACKAGES
 
         };
         //申请权限
@@ -128,8 +130,22 @@ public class WelcomeActivity extends BaseActivity {
     /**
      * 启动App
      */
-    private void launch(){
-        startActivity(LoginActivity.class);
+    private void launch() {
+        if (SPDataUser.getAccount(WelcomeActivity.this) == SPDataUser.DEFAULT_ACCOUNT) {
+            startActivity(LoginActivity.class);
+        } else {
+            UserDbEntity user = DBDataUser.getLoginUser(WelcomeActivity.this);
+            if (user == null){
+                startActivity(LoginActivity.class);
+            }else {
+                if (user.name == null || user.name.isEmpty()){
+                    startActivity(ImproveUserInfoActivity.class);
+                }else {
+                    startActivity(MainActivity.class);
+                }
+            }
+
+        }
     }
 
 }

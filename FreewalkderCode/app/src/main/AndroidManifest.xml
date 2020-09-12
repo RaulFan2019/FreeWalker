@@ -29,7 +29,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/ThemeCommonLight">
+        android:theme="@style/ThemeCommonLight"
+        android:usesCleartextTraffic="true">
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -61,7 +62,7 @@
             android:screenOrientation="portrait"/>
 
         <!-- device -->
-        <activity android:name=".ui.activity.device.FindActivity"
+        <activity android:name=".ui.activity.device.DeviceFindActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.device.BluetoothOffActivity"
             android:screenOrientation="portrait"/>

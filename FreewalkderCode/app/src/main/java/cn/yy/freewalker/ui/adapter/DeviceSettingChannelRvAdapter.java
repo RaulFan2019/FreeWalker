@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,8 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_rv_device_setting_channel, parent, false);
         ViewHolder holder = new ViewHolder(view);
-        holder.llChannel.setWeightSum(1.0f);
+//        holder.llChannel.setWeightSum(1.0f);
+
         holder.llChannel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,14 +63,62 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.llChannel.setWeightSum(1.0f);
+//        holder.llChannel.setWeightSum(1.0f);
         holder.tvChannel.setText((position + 1) + "");
         if (selectChannel == (position + 1)) {
-            holder.tvChannel.setBackgroundColor(mContext.getResources().getColor(R.color.accent));
+            holder.llChannel.setBackgroundColor(mContext.getResources().getColor(R.color.accent));
             holder.tvChannel.setTextColor(Color.WHITE);
+            holder.vSlot.setBackgroundResource(R.drawable.bg_channel_encryption_selected);
         } else {
-            holder.tvChannel.setBackgroundColor(Color.WHITE);
+            holder.llChannel.setBackgroundColor(Color.WHITE);
             holder.tvChannel.setTextColor(mContext.getResources().getColor(R.color.tv_secondly));
+            holder.vSlot.setBackgroundResource(R.drawable.bg_channel_encryption_normal);
+        }
+
+        switch (position){
+            case 0:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_1));
+                break;
+            case 1:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_2));
+                break;
+            case 2:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_3));
+                break;
+            case 3:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_4));
+                break;
+            case 4:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_5));
+                break;
+            case 5:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_6));
+                break;
+            case 6:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_7));
+                break;
+            case 7:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_8));
+                break;
+            case 8:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_9));
+                break;
+            case 9:
+                holder.tvChannelInfo.setVisibility(View.VISIBLE);
+                holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_10));
+                break;
+            default:
+                holder.tvChannelInfo.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -78,13 +128,19 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout llChannel;
+        FrameLayout flChannel;
         TextView tvChannel;
+        TextView tvChannelInfo;
+        LinearLayout llChannel;
+        View vSlot;
 
         public ViewHolder(View view) {
             super(view);
-            llChannel = view.findViewById(R.id.ll_channel);
+            flChannel = view.findViewById(R.id.fl_channel);
             tvChannel = view.findViewById(R.id.tv_channel);
+            tvChannelInfo = view.findViewById(R.id.tv_channel_info);
+            vSlot = view.findViewById(R.id.v_slot);
+            llChannel = view.findViewById(R.id.ll_channel);
         }
 
     }

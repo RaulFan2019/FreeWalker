@@ -21,8 +21,6 @@
         android:gravity="center_vertical|center_horizontal"
         android:background="@color/accent">
 
-
-
         <View
             android:layout_width="12dp"
             android:layout_height="12dp"

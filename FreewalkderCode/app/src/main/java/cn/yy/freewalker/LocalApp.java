@@ -5,6 +5,7 @@ import android.content.Context;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.DbManager;
+import org.xutils.ex.DbException;
 import org.xutils.x;
 
 /**
@@ -20,6 +21,10 @@ public class LocalApp extends Application {
     private static LocalApp instance;                               //Application
 
     /* local data about db */
+    public static final String DB_NAME = "freewalker.db";
+    public static final int DB_VERSION = 2;
+
+
     private DbManager.DaoConfig daoConfig;
     private DbManager db;
 
@@ -61,6 +66,27 @@ public class LocalApp extends Application {
                     .build();
         }
         return eventBus;
+    }
+
+    /**
+     * 获取数据库操作库
+     *
+     * @return
+     */
+    public DbManager getDb() throws DbException {
+        if (daoConfig == null) {
+            daoConfig = new DbManager.DaoConfig()
+                    .setDbName(DB_NAME)
+                    .setDbVersion(DB_VERSION)
+                    .setDbOpenListener(db -> {
+                        // 开启WAL
+                        db.getDatabase().enableWriteAheadLogging();
+                    });
+        }
+        if (db == null) {
+            db = x.getDb(daoConfig);
+        }
+        return db;
     }
 
 }

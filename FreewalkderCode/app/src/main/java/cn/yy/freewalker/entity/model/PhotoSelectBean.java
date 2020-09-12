@@ -1,5 +1,7 @@
 package cn.yy.freewalker.entity.model;
 
+import cn.yy.freewalker.entity.net.PhotoResult;
+
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
@@ -7,11 +9,11 @@ package cn.yy.freewalker.entity.model;
  */
 public class PhotoSelectBean {
 
-    public String url;
+    public PhotoResult photo;
     public boolean isSelected;
 
-    public PhotoSelectBean(String url, boolean isSelected) {
-        this.url = url;
+    public PhotoSelectBean(PhotoResult photo, boolean isSelected) {
+        this.photo = photo;
         this.isSelected = isSelected;
     }
 }

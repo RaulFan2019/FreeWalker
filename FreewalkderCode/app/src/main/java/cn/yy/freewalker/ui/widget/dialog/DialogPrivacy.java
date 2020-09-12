@@ -1,6 +1,5 @@
 package cn.yy.freewalker.ui.widget.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,17 +10,13 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import cn.yy.freewalker.R;
-import cn.yy.freewalker.data.db.SpAppData;
+import cn.yy.freewalker.data.SpAppData;
 import cn.yy.freewalker.ui.activity.main.PrivacyActivity;
 
 /**
@@ -129,7 +124,8 @@ public class DialogPrivacy {
      * 显示
      */
     public void show() {
-        mDialog.getWindow().setGravity(Gravity.BOTTOM);
+        Window window = mDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
         mDialog.show();
     }
 

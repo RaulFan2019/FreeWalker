@@ -1,20 +1,26 @@
 package cn.yy.freewalker.ui.activity.main;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.os.Message;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.gyf.immersionbar.ImmersionBar;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,7 +31,11 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.config.FileConfig;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
+import cn.yy.freewalker.entity.net.BaseResult;
+import cn.yy.freewalker.entity.net.CheckVersionResult;
+import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.fragment.main.MainChatFragment;
@@ -33,6 +43,11 @@ import cn.yy.freewalker.ui.fragment.main.MainDeviceFragment;
 import cn.yy.freewalker.ui.fragment.main.MainMeFragment;
 import cn.yy.freewalker.ui.fragment.main.MainNearbyFragment;
 import cn.yy.freewalker.ui.fragment.main.MainNearbyUserCardFragment;
+import cn.yy.freewalker.ui.widget.common.ToastView;
+import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
+import cn.yy.freewalker.ui.widget.dialog.DialogChoice;
+import cn.yy.freewalker.utils.FileU;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -41,11 +56,18 @@ import cn.yy.freewalker.ui.fragment.main.MainNearbyUserCardFragment;
  */
 public class MainActivity extends BaseActivity {
 
+    private static final String TAG = "MainActivity";
 
     public static final int TAB_DEVICE = 0x01;
     public static final int TAB_CHAT = 0x02;
     public static final int TAB_NEARBY = 0x03;
     public static final int TAB_ME = 0x04;
+
+    private static final int MSG_NEED_UPDATE_APP = 0x01;
+
+    private static final int MSG_DOWNLOAD_FILE_OK = 0x03;                      //下载文件成功
+    private static final int MSG_DOWNLOAD_FILE_ERROR = 0x04;                   //下载文件失败
+    private static final int MSG_DOWNLOAD_FILE_PROGRESS = 0x05;                //下载文件进度更新
 
     @BindView(R.id.ll_fragment_root)
     LinearLayout llFragmentRoot;
@@ -71,6 +93,9 @@ public class MainActivity extends BaseActivity {
     /* local data */
     private long exitTime = 0;
 
+    private CheckVersionResult mCheckVersionRE;
+
+    private DialogBuilder mDialogBuilder;
 
     private MainDeviceFragment fragmentDevice;
     private MainChatFragment fragmentChat;
@@ -86,7 +111,26 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void myHandleMsg(Message msg) {
-
+        switch (msg.what) {
+            case MSG_NEED_UPDATE_APP:
+                showUpdateDialog();
+                break;
+            case MSG_DOWNLOAD_FILE_OK:
+                mDialogBuilder.dismissWaitDialog();
+                install7((String) msg.obj);
+                break;
+            case MSG_DOWNLOAD_FILE_PROGRESS:
+                mDialogBuilder.showWaitDialog(MainActivity.this, getString(R.string.app_tip_download_app) + msg.arg1 + "%");
+                break;
+            case MSG_DOWNLOAD_FILE_ERROR:
+                mDialogBuilder.dismissWaitDialog();
+                new ToastView(MainActivity.this, getString(R.string.app_toast_download_app_error), -1);
+                if (mCheckVersionRE.updateFlag){
+                    finish();
+                    System.exit(0);
+                }
+                break;
+        }
     }
 
     @OnClick({R.id.ll_device, R.id.ll_chat, R.id.ll_nearby, R.id.ll_me})
@@ -97,7 +141,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_chat:
                 selectTab(TAB_CHAT);
-//                startActivity(SingleChatActivity.class);
                 break;
             case R.id.ll_nearby:
                 selectTab(TAB_NEARBY);
@@ -118,8 +161,8 @@ public class MainActivity extends BaseActivity {
         if (event.type == NearbyUserCartEvent.SHOW) {
             fragmentNearbyUserCard.updateViews(event.user);
             llFragmentUserCard.setVisibility(View.VISIBLE);
-        }else if (event.type == NearbyUserCartEvent.CLOSE){
-            if (fragmentNearbyUserCard != null){
+        } else if (event.type == NearbyUserCartEvent.CLOSE) {
+            if (fragmentNearbyUserCard != null) {
                 llFragmentUserCard.setVisibility(View.INVISIBLE);
             }
 
@@ -128,7 +171,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        mDialogBuilder = new DialogBuilder();
     }
 
     @Override
@@ -151,6 +194,8 @@ public class MainActivity extends BaseActivity {
         saveMapFile2();
 
         LocalApp.getInstance().getEventBus().register(this);
+
+        postCheckVersion();
     }
 
     @Override
@@ -213,7 +258,7 @@ public class MainActivity extends BaseActivity {
                         .statusBarDarkFont(false)
                         .init();
                 ivMe.setBackgroundResource(R.drawable.icon_main_tab_me_selected);
-                tvMe.setTextColor(ContextCompat.getColor(this,R.color.tv_accent));
+                tvMe.setTextColor(ContextCompat.getColor(this, R.color.tv_accent));
                 if (fragmentMe == null) {
                     fragmentMe = MainMeFragment.newInstance();
                     transaction.add(R.id.ll_fragment_root, fragmentMe);
@@ -333,5 +378,138 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * 检查版本更新
+     */
+    private void postCheckVersion() {
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.checkAppVersion(MainActivity.this);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        Log.e(TAG, "postCheckVersion result:" + result.data);
+                        if (result.code == 200) {
+                            mCheckVersionRE = JSON.parseObject(result.data, CheckVersionResult.class);
+                            if (mCheckVersionRE.isUpdate) {
+                                mHandler.sendEmptyMessage(MSG_NEED_UPDATE_APP);
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        Log.e(TAG, "postCheckVersion onError:" + ex.getMessage());
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     * 显示更新对话框
+     */
+    private void showUpdateDialog() {
+        mDialogBuilder.showChoiceDialog(MainActivity.this,
+                "检测到新版本\n" + mCheckVersionRE.versionName + "是否更新？",
+                "更新", "取消", !mCheckVersionRE.updateFlag);
+        mDialogBuilder.setChoiceDialogListener(new DialogChoice.onBtnClickListener() {
+            @Override
+            public void onConfirmBtnClick() {
+                downloadFile();
+            }
+
+            @Override
+            public void onCancelBtnClick() {
+
+            }
+        });
+    }
+
+    /**
+     * 下载文件
+     */
+    private void downloadFile() {
+        mDialogBuilder.showWaitDialog(MainActivity.this, "正在下载软件..", !mCheckVersionRE.updateFlag);
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = new RequestParams(mCheckVersionRE.appUrl);
+                params.setCancelFast(true);
+                params.setSaveFilePath(FileConfig.DOWNLOAD_PATH);
+                params.setAutoRename(true);
+                mCancelable = x.http().get(params, new Callback.ProgressCallback<File>() {
+                    @Override
+                    public void onSuccess(File result) {
+                        Message msg = new Message();
+                        msg.what = MSG_DOWNLOAD_FILE_OK;
+                        msg.obj = result.getAbsolutePath();
+                        mHandler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        YLog.e(TAG, "ex:" + ex.getMessage());
+                        Message msg = new Message();
+                        msg.what = MSG_DOWNLOAD_FILE_ERROR;
+                        mHandler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+                    }
+
+                    @Override
+                    public void onFinished() {
+                    }
+
+                    @Override
+                    public void onWaiting() {
+                    }
+
+                    @Override
+                    public void onStarted() {
+                    }
+
+                    @Override
+                    public void onLoading(long total, long current, boolean isDownloading) {
+                        Message msg = new Message();
+                        msg.what = MSG_DOWNLOAD_FILE_PROGRESS;
+                        msg.arg1 = (int) (current * 100.0 / total);
+                        mHandler.sendMessage(msg);
+                    }
+                });
+            }
+        });
+    }
+
+
+    private void install7(final String path) {
+        Intent install = new Intent(Intent.ACTION_VIEW);
+        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        File file = new File(path);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        FileU.setIntentDataAndType(MainActivity.this, intent,
+                "application/vnd.android.package-archive", file, true);
+        startActivity(intent);
+    }
+
 
 }

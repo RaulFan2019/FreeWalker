@@ -17,6 +17,15 @@
             android:id="@+id/btn_back"
             style="@style/TitleBackButton" />
 
+        <LinearLayout
+            style="@style/TitleRightBtnLy">
+
+            <Button
+                style="@style/TitleRightButton"
+                android:background="@drawable/btn_more"/>
+
+        </LinearLayout>
+
         <View style="@style/TitleBottomLine" />
     </FrameLayout>
 

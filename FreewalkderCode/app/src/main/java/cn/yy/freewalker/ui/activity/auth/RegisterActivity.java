@@ -3,6 +3,7 @@ package cn.yy.freewalker.ui.activity.auth;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.YuvImage;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
@@ -24,13 +25,21 @@ import android.widget.Toast;
 
 import com.gyf.immersionbar.ImmersionBar;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.net.BaseResult;
+import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.main.PrivacyActivity;
 import cn.yy.freewalker.ui.widget.common.ToastView;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -39,10 +48,14 @@ import cn.yy.freewalker.ui.widget.common.ToastView;
  */
 public class RegisterActivity extends BaseActivity implements TextWatcher {
 
+    private static final String TAG = "RegisterActivity";
+
     /* contains */
     private static final int MSG_GET_CAPTCHA_OK = 0x01;               //请求验证码成功
     private static final int MSG_GET_CAPTCHA_ERROR = 0x02;            //请求验证码失败
     private static final int MSG_CAPTCHA_COUNT_DOWN = 0x03;           //验证码倒计时
+    private static final int MSG_REGISTER_OK = 0x04;                  //注册成功
+    private static final int MSG_REGISTER_ERROR = 0x05;               //注册失败
 
 
     /* views */
@@ -99,7 +112,6 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
                 break;
             //返回登录
             case R.id.btn_login:
-                startActivity(LoginActivity.class);
                 finish();
                 break;
         }
@@ -120,7 +132,32 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void myHandleMsg(Message msg) {
-
+        switch (msg.what) {
+            //获取验证码成功
+            case MSG_GET_CAPTCHA_OK:
+                tvSendVerification.setClickable(false);
+                mCaptchaCount = 60;
+                updateCaptchaView();
+                new ToastView(RegisterActivity.this, getString(R.string.auth_toast_verification_request_ok), -1);
+                break;
+            //获取验证码错误
+            case MSG_GET_CAPTCHA_ERROR:
+                new ToastView(RegisterActivity.this, (String) msg.obj, -1);
+                break;
+            //倒数验证码
+            case MSG_CAPTCHA_COUNT_DOWN:
+                mCaptchaCount--;
+                updateCaptchaView();
+                break;
+            //注册成功
+            case MSG_REGISTER_OK:
+                new ToastView(RegisterActivity.this, getString(R.string.auth_toast_register_ok), -1);
+                finish();
+                break;
+            case MSG_REGISTER_ERROR:
+                new ToastView(RegisterActivity.this, (String) msg.obj, -1);
+                break;
+        }
     }
 
 
@@ -210,11 +247,40 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
             new ToastView(RegisterActivity.this, getString(R.string.auth_error_account_empty), -1);
             return;
         }
-        //TODO
-        tvSendVerification.setClickable(false);
-        mCaptchaCount = 60;
-        updateCaptchaView();
-        mHandler.sendEmptyMessageDelayed(MSG_CAPTCHA_COUNT_DOWN, 1000);
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.getCaptcha(RegisterActivity.this, mAccount);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        YLog.e(TAG, "onSuccess:" + result.msg + "," + result.result);
+                        if (result.code == 200) {
+                            mHandler.sendEmptyMessage(MSG_GET_CAPTCHA_OK);
+                        } else {
+                            mHandler.obtainMessage(MSG_GET_CAPTCHA_ERROR, result.msg).sendToTarget();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        YLog.e(TAG, "onError:" + ex.getMessage());
+                        mHandler.obtainMessage(MSG_GET_CAPTCHA_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
+
     }
 
 
@@ -222,10 +288,58 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
      * 请求注册
      */
     private void requestRegister() {
-        //TODO
+        //检查账号
+        mAccount = etMobile.getText().toString();
+        //判断账号是否为空
+        if (TextUtils.isEmpty(mAccount)) {
+            new ToastView(RegisterActivity.this, getString(R.string.auth_error_account_empty), -1);
+            return;
+        }
+        String smsCode = etVerification.getText().toString();
+        //判断验证码是否为空
+        if (TextUtils.isEmpty(smsCode)) {
+            new ToastView(RegisterActivity.this, getString(R.string.auth_error_sms_code_empty), -1);
+            return;
+        }
+        String pwd = etPwd.getText().toString();
+        //判断密码是否为空
+        if (TextUtils.isEmpty(pwd)) {
+            new ToastView(RegisterActivity.this, getString(R.string.auth_error_pwd_empty), -1);
+            return;
+        }
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.register(RegisterActivity.this, mAccount, smsCode, pwd);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        YLog.e(TAG, "onSuccess:" + result.msg + "," + result.result);
+                        if (result.code == 200) {
+                            mHandler.sendEmptyMessage(MSG_REGISTER_OK);
+                        } else {
+                            mHandler.obtainMessage(MSG_REGISTER_ERROR, result.msg).sendToTarget();
+                        }
+                    }
 
-        new ToastView(RegisterActivity.this, getString(R.string.auth_toast_login_ok), R.drawable.icon_finished);
-        startActivity(ImproveUserInfoActivity.class);
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        YLog.e(TAG, "onError:" + ex.getMessage());
+                        mHandler.obtainMessage(MSG_REGISTER_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
     }
 
     /**

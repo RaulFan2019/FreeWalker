@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Message;
 import android.provider.MediaStore;
+
 import androidx.core.content.FileProvider;
 
 import android.view.View;
@@ -18,6 +19,10 @@ import android.widget.EditText;
 import com.gyf.immersionbar.ImmersionBar;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -29,6 +34,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.FileConfig;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
+import cn.yy.freewalker.entity.net.BaseResult;
+import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.main.MainActivity;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
@@ -37,6 +46,8 @@ import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogPickView;
 import cn.yy.freewalker.ui.widget.dialog.DialogSingleSelect;
 import cn.yy.freewalker.ui.widget.dialog.DialogTagSelect;
+import cn.yy.freewalker.utils.UserInfoU;
+import cn.yy.freewalker.utils.YLog;
 
 
 /**
@@ -53,6 +64,11 @@ public class ImproveUserInfoActivity extends BaseActivity {
     private static final int RESULT_TAKE_PICTURE = 0;
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_CUT_PHOTO = 2;
+
+    private static final int MSG_UPLOAD_PHOTO_OK = 0x01;
+    private static final int MSG_UPLOAD_PHOTO_ERROR = 0x02;
+    private static final int MSG_SET_USER_INFO_OK = 0x03;
+    private static final int MSG_SET_USER_INFO_ERROR = 0x04;
 
 
     @BindView(R.id.img_avatar)
@@ -78,25 +94,26 @@ public class ImproveUserInfoActivity extends BaseActivity {
 
     /* data */
     private List<String> listPhotoMode = new ArrayList<>();     //照片选择模式
-    private ArrayList<String> listAgeSelect = new ArrayList<>();//年龄选择列表
-    private List<String> listSexSelect = new ArrayList<>();     //性别选择
 
-    private List<String> listLikeSelect = new ArrayList<>();     //喜欢选择
-    private ArrayList<String> listProfessionSelect = new ArrayList<>();//职业选择
-    private ArrayList<String> listHeightSelect = new ArrayList<>();//身高选择列表
-    private ArrayList<String> listWeightSelect = new ArrayList<>();//体重选择列表
 
     private Uri mAvatarPhotoUri;                                //头像uri
     private String mAvatarPhotoPath;                            //头像文件地址
     private File mAvatarFile;                                   //头像文件
+    private String mAvatarUrl;                                  //头像网络地址
 
     private String mNickName;                                   //昵称
     private String mSex;                                        //性别
+    private int mGender;                                        //性别数字
     private String mAge;                                        //年龄
+    private int mAgeIndex;                                      //年龄选项
     private String mLike;                                       //喜欢
+    private int mGenderOri;                                     //性别取向数字
     private String mProfession;                                 //职业
+    private int mJobIndex;
     private String mHeight;                                     //身高
+    private int mHeightIndex;
     private String mWeight;                                     //体重
+    private int mWeightIndex;
 
     @Override
     protected int getLayoutId() {
@@ -132,14 +149,32 @@ public class ImproveUserInfoActivity extends BaseActivity {
                 onWeightSelectClick();
                 break;
             case R.id.btn_submit:
-                startActivity(MainActivity.class);
+                requestSetUserInfo();
                 break;
         }
     }
 
     @Override
     protected void myHandleMsg(Message msg) {
+        switch (msg.what) {
+            case MSG_UPLOAD_PHOTO_OK:
+                //给头像设置图片源
+                Bitmap bitmap = BitmapFactory.decodeFile(mAvatarPhotoPath);
+                imgAvatar.setImageBitmap(bitmap);
 
+                inputIsComplete();
+                break;
+            case MSG_UPLOAD_PHOTO_ERROR:
+                new ToastView(ImproveUserInfoActivity.this, (String) msg.obj, -1);
+                break;
+            case MSG_SET_USER_INFO_OK:
+                startActivity(MainActivity.class);
+                finish();
+                break;
+            case MSG_SET_USER_INFO_ERROR:
+                new ToastView(ImproveUserInfoActivity.this, (String) msg.obj, -1);
+                break;
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -160,10 +195,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
             case RESULT_CUT_PHOTO:
                 if (resultCode == RESULT_OK && null != data) {// 裁剪返回
                     if (mAvatarPhotoPath != null && mAvatarPhotoPath.length() != 0) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(mAvatarPhotoPath);
-                        //给头像设置图片源
-                        imgAvatar.setImageBitmap(bitmap);
-                        inputIsComplete();
+                        requestUploadFile();
                     }
                 }
                 break;
@@ -177,47 +209,6 @@ public class ImproveUserInfoActivity extends BaseActivity {
         listPhotoMode.add(getString(R.string.auth_dialog_tx_improve_photo_mode_camera));
         listPhotoMode.add(getString(R.string.auth_dialog_tx_improve_photo_mode_storage));
         listPhotoMode.add(getString(R.string.app_action_cancel));
-        //sex
-        listSexSelect.add(getString(R.string.auth_tx_sex_male));
-        listSexSelect.add(getString(R.string.auth_tx_sex_female));
-        listSexSelect.add(getString(R.string.auth_tx_sex_other));
-
-        //age
-        for (int i = 1; i < 100; i++) {
-            listAgeSelect.add(i + "");
-        }
-        //like
-        listLikeSelect.add(getString(R.string.auth_tx_like_male));
-        listLikeSelect.add(getString(R.string.auth_tx_like_female));
-        listLikeSelect.add(getString(R.string.auth_tx_like_all));
-        listLikeSelect.add(getString(R.string.auth_tx_like_other));
-
-        //职业选择
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_1));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_2));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_3));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_4));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_5));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_6));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_7));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_8));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_9));
-        listProfessionSelect.add(getString(R.string.auth_tx_profession_10));
-
-
-        //height
-        listHeightSelect.add("150 ~ 160");
-        listHeightSelect.add("160 ~ 170");
-        listHeightSelect.add("170 ~ 180");
-        listHeightSelect.add("180 ~ 190");
-        listHeightSelect.add("190 ~ 200");
-        //weight
-        listWeightSelect.add("30 ~ 40");
-        listWeightSelect.add("40 ~ 50");
-        listWeightSelect.add("50 ~ 60");
-        listWeightSelect.add("60 ~ 70");
-        listWeightSelect.add("70 ~ 80");
-        listWeightSelect.add("80 ~ 90");
     }
 
     @Override
@@ -265,12 +256,12 @@ public class ImproveUserInfoActivity extends BaseActivity {
      */
     private void onSexSelectClick() {
         mDialogBuilder.showSingleSelectDialog(ImproveUserInfoActivity.this,
-                getString(R.string.auth_dialog_title_improve_select_sex),
-                listSexSelect);
+                getString(R.string.auth_dialog_title_improve_select_sex), UserInfoU.getGenderStrList(ImproveUserInfoActivity.this));
         mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
             @Override
             public void onConfirmBtnClick(int pos) {
-                mSex = listSexSelect.get(pos);
+                mSex = UserInfoU.getGenderStr(ImproveUserInfoActivity.this, pos);
+                mGender = pos;
                 etSex.setText(mSex);
                 inputIsComplete();
             }
@@ -283,11 +274,12 @@ public class ImproveUserInfoActivity extends BaseActivity {
      */
     private void onAgeSelectClick() {
         mDialogBuilder.showPickViewDialog(ImproveUserInfoActivity.this,
-                getString(R.string.auth_dialog_title_improve_select_age), listAgeSelect, 20);
+                getString(R.string.auth_dialog_title_improve_select_age), UserInfoU.getAgeStrList(), 4);
         mDialogBuilder.setPickViewDialogListener(new DialogPickView.onConfirmListener() {
             @Override
             public void onConfirm(int index) {
-                mAge = listAgeSelect.get(index);
+                mAge = UserInfoU.getAgeStr(index);
+                mAgeIndex = index;
                 etAge.setText(mAge);
                 inputIsComplete();
             }
@@ -300,12 +292,12 @@ public class ImproveUserInfoActivity extends BaseActivity {
      */
     private void onLikeSelectClick() {
         mDialogBuilder.showSingleSelectDialog(ImproveUserInfoActivity.this,
-                getString(R.string.auth_dialog_title_improve_select_like),
-                listLikeSelect);
+                getString(R.string.auth_dialog_title_improve_select_like), UserInfoU.getGenderOriStrList(ImproveUserInfoActivity.this));
         mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
             @Override
             public void onConfirmBtnClick(int pos) {
-                mLike = listLikeSelect.get(pos);
+                mLike = UserInfoU.getGenderOriStr(ImproveUserInfoActivity.this, pos);
+                mGenderOri = pos;
                 etLike.setText(mLike);
                 inputIsComplete();
             }
@@ -317,12 +309,12 @@ public class ImproveUserInfoActivity extends BaseActivity {
      */
     private void onProfessionSelectClick() {
         mDialogBuilder.showTagSelectDialog(ImproveUserInfoActivity.this,
-                getString(R.string.auth_dialog_title_improve_select_profession),
-                listProfessionSelect);
+                getString(R.string.auth_dialog_title_improve_select_profession), UserInfoU.getJobStrList(ImproveUserInfoActivity.this));
         mDialogBuilder.setTagSelectDialogListener(new DialogTagSelect.onConfirmListener() {
             @Override
             public void onConfirm(int index) {
-                mProfession = listProfessionSelect.get(index);
+                mProfession = UserInfoU.getJobStr(ImproveUserInfoActivity.this, index);
+                mJobIndex = index;
                 etProfession.setText(mProfession);
                 inputIsComplete();
             }
@@ -335,11 +327,12 @@ public class ImproveUserInfoActivity extends BaseActivity {
      */
     private void onHeightSelectClick() {
         mDialogBuilder.showPickViewDialog(ImproveUserInfoActivity.this,
-                getString(R.string.auth_dialog_title_improve_select_height), listHeightSelect, 2);
+                getString(R.string.auth_dialog_title_improve_select_height), UserInfoU.getHeightStrList(), 2);
         mDialogBuilder.setPickViewDialogListener(new DialogPickView.onConfirmListener() {
             @Override
             public void onConfirm(int index) {
-                mHeight = listHeightSelect.get(index);
+                mHeight = UserInfoU.getHeightStr(index);
+                mHeightIndex = index;
                 etHeight.setText(mHeight);
                 inputIsComplete();
             }
@@ -351,11 +344,12 @@ public class ImproveUserInfoActivity extends BaseActivity {
      */
     private void onWeightSelectClick() {
         mDialogBuilder.showPickViewDialog(ImproveUserInfoActivity.this,
-                getString(R.string.auth_dialog_title_improve_select_weight), listWeightSelect, 3);
+                getString(R.string.auth_dialog_title_improve_select_weight), UserInfoU.getWeightStrList(), 3);
         mDialogBuilder.setPickViewDialogListener(new DialogPickView.onConfirmListener() {
             @Override
             public void onConfirm(int index) {
-                mWeight = listWeightSelect.get(index);
+                mWeight = UserInfoU.getWeightStr(index);
+                mWeightIndex = index;
                 etWeight.setText(mWeight);
                 inputIsComplete();
             }
@@ -513,5 +507,98 @@ public class ImproveUserInfoActivity extends BaseActivity {
         } else {
             btnSubmit.setEnabled(false);
         }
+    }
+
+    /**
+     * 上传文件
+     */
+    private void requestUploadFile() {
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = new RequestParams("http://admin.yytalkie.com/prod-api/res/upFile");
+                params.setMultipart(true);
+                params.addBodyParameter("file", new File(mAvatarPhotoPath));
+
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        YLog.e(TAG, "requestUploadFile onSuccess:" + result.data);
+                        if (result.code == 200) {
+                            mAvatarUrl = result.data;
+                            mHandler.sendEmptyMessage(MSG_UPLOAD_PHOTO_OK);
+                        } else {
+                            mHandler.obtainMessage(MSG_UPLOAD_PHOTO_ERROR, result.msg).sendToTarget();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        mHandler.obtainMessage(MSG_UPLOAD_PHOTO_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+                    }
+
+                    @Override
+                    public void onFinished() {
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    /**
+     * 请求设置用户信息
+     */
+    private void requestSetUserInfo() {
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.setUserInfo(ImproveUserInfoActivity.this,
+                        DBDataUser.getLoginUser(ImproveUserInfoActivity.this).userId,
+                        mNickName, mGender, mGenderOri, mAvatarUrl, mAgeIndex, mHeightIndex, mWeightIndex, mJobIndex);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        if (result.code == 200) {
+                            UserDbEntity user = DBDataUser.getLoginUser(ImproveUserInfoActivity.this);
+                            user.name = mNickName;
+                            user.genderIndex = mGender;
+                            user.genderOriIndex = mGenderOri;
+                            user.avatar = mAvatarUrl;
+                            user.ageIndex = mAgeIndex;
+                            user.heightIndex = mHeightIndex;
+                            user.weightIndex = mWeightIndex;
+                            user.professionIndex = mJobIndex;
+                            DBDataUser.update(user);
+                            mHandler.sendEmptyMessage(MSG_SET_USER_INFO_OK);
+                        } else {
+                            mHandler.obtainMessage(MSG_SET_USER_INFO_ERROR, result.msg).sendToTarget();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        mHandler.obtainMessage(MSG_SET_USER_INFO_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
     }
 }

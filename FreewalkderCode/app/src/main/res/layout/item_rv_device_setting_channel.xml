@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_channel"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_channel"
     android:layout_width="match_parent"
-    android:layout_height="69dp"
-    android:orientation="vertical"
-    android:padding="1dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:background="@drawable/bg_item_rv_device_channel">
 
-    <TextView
-        android:id="@+id/tv_channel"
+    <LinearLayout
+        android:id="@+id/ll_channel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textColor="@color/tv_mostly"
-        android:textSize="15dp"/>
+        android:layout_height="69dp"
+        android:orientation="vertical"
+        android:gravity="center">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tv_mostly"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tv_channel_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tv_secondly"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_slot"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="top|right"
+        android:background="@drawable/bg_channel_encryption_normal"/>
+
+
+</FrameLayout>

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.config.UrlConfig;
 import cn.yy.freewalker.entity.model.PhotoSelectBean;
 import cn.yy.freewalker.utils.ImageU;
 import cn.yy.freewalker.utils.YLog;
@@ -121,7 +122,7 @@ public class PhotoSelectAdapter extends BaseAdapter {
             } else {
                 flBase.setBackgroundResource(R.color.bg_base_gray);
                 photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                ImageU.loadPhoto(data.url, photoView);
+                ImageU.loadPhoto(UrlConfig.IMAGE_HOST + data.photo.imgUrl, photoView);
                 if (isSelectMode && data.isSelected) {
                     vSelect.setVisibility(View.VISIBLE);
                     photoView.setAlpha(0.5f);

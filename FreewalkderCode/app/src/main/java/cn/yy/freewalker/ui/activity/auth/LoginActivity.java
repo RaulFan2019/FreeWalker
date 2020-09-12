@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -17,15 +18,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.gyf.immersionbar.ImmersionBar;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
+import cn.yy.freewalker.entity.net.BaseResult;
+import cn.yy.freewalker.entity.net.LoginResult;
+import cn.yy.freewalker.entity.net.UserInfoResult;
+import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.main.MainActivity;
 import cn.yy.freewalker.ui.activity.main.PrivacyActivity;
 import cn.yy.freewalker.ui.widget.common.ToastView;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -36,6 +49,11 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
     /* contains */
     private static final String TAG = "LoginActivity";
+
+    private static final int MSG_LOGIN_OK = 0x01;
+    private static final int MSG_LOGIN_ERROR = 0x02;
+    private static final int MSG_GET_USER_INFO_OK = 0x03;
+    private static final int MSG_GET_USER_INFO_ERROR = 0x04;
 
 
     /* views */
@@ -52,10 +70,9 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
     @BindView(R.id.tv_tip)
     TextView tvTip;                                         //提示文本
 
-    ToastView viewToast;                                    //Toast
-
     /* data */
     private boolean mIsShowPwd = false;
+    private LoginResult mLoginResult;
 
     @Override
     protected int getLayoutId() {
@@ -64,11 +81,30 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void myHandleMsg(Message msg) {
-
+        switch (msg.what) {
+            case MSG_LOGIN_OK:
+                requestGetUserInfo();
+                break;
+            case MSG_LOGIN_ERROR:
+                new ToastView(LoginActivity.this, (String) msg.obj, -1);
+                break;
+            case MSG_GET_USER_INFO_OK:
+                UserDbEntity user = DBDataUser.getLoginUser(LoginActivity.this);
+                if (user.name == null || user.name.isEmpty()) {
+                    startActivity(ImproveUserInfoActivity.class);
+                } else {
+                    startActivity(MainActivity.class);
+                    finish();
+                }
+                break;
+            case MSG_GET_USER_INFO_ERROR:
+                new ToastView(LoginActivity.this, (String) msg.obj, -1);
+                break;
+        }
     }
 
 
-    @OnClick({R.id.btn_forget_pwd, R.id.btn_register, R.id.btn_login,R.id.v_eyes})
+    @OnClick({R.id.btn_forget_pwd, R.id.btn_register, R.id.btn_login, R.id.v_eyes})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //点击忘记密码
@@ -77,20 +113,18 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                 break;
             //点击注册
             case R.id.btn_register:
-                startActivity(ImproveUserInfoActivity.class);
-                finish();
+                startActivity(RegisterActivity.class);
                 break;
             //点击登录
             case R.id.btn_login:
-                //TODO
-                startActivity(MainActivity.class);
+                requestLogin();
                 break;
             //点击查看密码
             case R.id.v_eyes:
                 mIsShowPwd = !mIsShowPwd;
-                if (mIsShowPwd){
+                if (mIsShowPwd) {
                     etPwd.setInputType(InputType.TYPE_CLASS_TEXT);
-                }else {
+                } else {
                     etPwd.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
                 break;
@@ -99,6 +133,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
 
     /**
      * 输入框内容发生变化
+     *
      * @param s
      * @param start
      * @param before
@@ -138,7 +173,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                                     @Override
                                     public void onClick(View widget) {
                                         Intent intent = new Intent(LoginActivity.this, PrivacyActivity.class);
-                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE,PrivacyActivity.PRIVACY_TYPE_USER_AGREEMENT);
+                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE, PrivacyActivity.PRIVACY_TYPE_USER_AGREEMENT);
                                         startActivity(intent);
                                     }
                                 },
@@ -151,7 +186,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                                     @Override
                                     public void onClick(View widget) {
                                         Intent intent = new Intent(LoginActivity.this, PrivacyActivity.class);
-                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE,PrivacyActivity.PRIVACY_TYPE_PRIVACY);
+                                        intent.putExtra(PrivacyActivity.PRIVACY_TYPE, PrivacyActivity.PRIVACY_TYPE_PRIVACY);
                                         startActivity(intent);
                                     }
                                 },
@@ -176,6 +211,103 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
     @Override
     protected void causeGC() {
 
+    }
+
+
+    /**
+     * 请求登录
+     */
+    private void requestLogin() {
+        //检查账号
+        String mAccount = etMobile.getText().toString();
+        //判断账号是否为空
+        if (TextUtils.isEmpty(mAccount)) {
+            new ToastView(LoginActivity.this, getString(R.string.auth_error_account_empty), -1);
+            return;
+        }
+        String pwd = etPwd.getText().toString();
+        //判断密码是否为空
+        if (TextUtils.isEmpty(pwd)) {
+            new ToastView(LoginActivity.this, getString(R.string.auth_error_pwd_empty), -1);
+            return;
+        }
+
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.loginByPwd(LoginActivity.this, mAccount, pwd);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        YLog.e(TAG, "onSuccess:" + result.msg + "," + result.data);
+                        if (result.result) {
+                            mLoginResult = JSON.parseObject(result.data, LoginResult.class);
+                            mHandler.sendEmptyMessage(MSG_LOGIN_OK);
+                        } else {
+                            mHandler.obtainMessage(MSG_LOGIN_ERROR, result.msg).sendToTarget();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        YLog.e(TAG, "onError:" + ex.getMessage());
+                        mHandler.obtainMessage(MSG_LOGIN_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     * 请求用户信息
+     */
+    private void requestGetUserInfo() {
+        x.task().post(new Runnable() {
+            @Override
+            public void run() {
+                RequestParams params = RequestBuilder.getUserInfo(LoginActivity.this, mLoginResult.id, mLoginResult.token);
+                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                    @Override
+                    public void onSuccess(BaseResult result) {
+                        YLog.e(TAG, "onSuccess:" + result.msg + "," + result.data);
+                        if (result.result) {
+                            UserInfoResult userInfo = JSON.parseObject(result.data, UserInfoResult.class);
+                            DBDataUser.login(LoginActivity.this, mLoginResult, userInfo, etMobile.getText().toString());
+                            mHandler.sendEmptyMessage(MSG_GET_USER_INFO_OK);
+                        } else {
+                            mHandler.obtainMessage(MSG_GET_USER_INFO_ERROR, result.msg).sendToTarget();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        YLog.e(TAG, "onError:" + ex.getMessage());
+                        mHandler.obtainMessage(MSG_GET_USER_INFO_ERROR, ex.getMessage()).sendToTarget();
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                });
+            }
+        });
     }
 
     @Override

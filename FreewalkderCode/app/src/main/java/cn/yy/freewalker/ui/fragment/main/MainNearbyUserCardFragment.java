@@ -14,6 +14,7 @@ import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.utils.ImageU;
+import cn.yy.freewalker.utils.UserInfoU;
 
 /**
  * @author Raul.Fan
@@ -62,7 +63,7 @@ public class MainNearbyUserCardFragment extends BaseFragment {
                 startActivity(SingleChatActivity.class);
                 break;
             case R.id.btn_close:
-                LocalApp.getInstance().getEventBus().post(new NearbyUserCartEvent(NearbyUserCartEvent.CLOSE,null));
+                LocalApp.getInstance().getEventBus().post(new NearbyUserCartEvent(NearbyUserCartEvent.CLOSE, null));
                 break;
         }
     }
@@ -96,13 +97,13 @@ public class MainNearbyUserCardFragment extends BaseFragment {
 
         ImageU.loadUserImage(user.avatar, ivAvatar);
 
-        tvName.setText(user.name);
-        tvAge.setText(user.age);
-        tvHeight.setText(user.height);
-        tvWeight.setText(user.weight);
-        tvGender.setText(user.gander);
-        tvLike.setText(user.like);
-        tvProfession.setText(user.profession);
+        tvName.setText(user.nickName);
+        tvAge.setText(UserInfoU.getAgeStr(user.age));
+        tvHeight.setText(UserInfoU.getHeightStr(user.bodyLong));
+        tvWeight.setText(UserInfoU.getHeightStr(user.bodyWeight));
+        tvGender.setText(UserInfoU.getGenderStr(getActivity(), user.gender));
+        tvLike.setText(UserInfoU.getGenderOriStr(getActivity(), user.genderOri));
+        tvProfession.setText(UserInfoU.getJobStr(getActivity(), user.job));
     }
 
 

@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import org.xutils.common.Callback;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +20,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected MyHandler mHandler;
+    protected Callback.Cancelable mCancelable;
 
 
     protected class MyHandler extends Handler {
@@ -56,6 +60,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+        if (mCancelable != null){
+            mCancelable.cancel();
+        }
         causeGC();
     }
 

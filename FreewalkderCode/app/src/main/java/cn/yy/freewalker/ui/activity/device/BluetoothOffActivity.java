@@ -34,7 +34,7 @@ public class BluetoothOffActivity extends BaseActivity {
                 final int state = intent.getIntExtra(
                         BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 if (state == BluetoothAdapter.STATE_ON) {
-                    startActivity(FindActivity.class);
+                    startActivity(DeviceFindActivity.class);
                     finish();
                 }
             }

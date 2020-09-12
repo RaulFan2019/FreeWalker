@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;
@@ -33,7 +35,7 @@ import cn.yy.freewalker.utils.SystemU;
  * @email 35686324@qq.com
  * @date 2020/6/6 22:20
  */
-public class FindActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class DeviceFindActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
 
     /* contains */
@@ -49,7 +51,7 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
             Manifest.permission.ACCESS_FINE_LOCATION,
     };
 
-
+    public static final int OPEN = 0;
     public static final int SCANNING = 1;                           //正在扫描
     public static final int SCAN_FAIL = 2;                          //扫描失败
     public static final int CONNECTING = 3;                         //正在连接
@@ -66,6 +68,10 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
 
     DeviceScanListAdapter adapter;
     DialogBuilder mDialogBuilder;
+    @BindView(R.id.ll_open)
+    LinearLayout llOpen;
+    @BindView(R.id.ll_find)
+    LinearLayout llFind;
 
     /* local data */
     private int mState = 0;
@@ -79,11 +85,21 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
         return R.layout.activity_device_find;
     }
 
-
-    @OnClick(R.id.ll_tip)
-    public void onViewClicked() {
-        showScanAgainDialog();
+    @OnClick({R.id.btn_add_now, R.id.ll_tip})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_add_now:
+                mState = SCANNING;
+                llFind.setVisibility(View.VISIBLE);
+                llOpen.setVisibility(View.GONE);
+                startScan();
+                break;
+            case R.id.ll_tip:
+                showScanAgainDialog();
+                break;
+        }
     }
+
 
     @Override
     protected void myHandleMsg(Message msg) {
@@ -176,12 +192,10 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
             }
         }
         //是否打开了位置服务
-        if (!SystemU.isLocationEnabled(FindActivity.this)) {
+        if (!SystemU.isLocationEnabled(DeviceFindActivity.this)) {
             startActivity(LocationOffActivity.class);
             finish();
         }
-
-        startScan();
     }
 
     /**
@@ -214,7 +228,7 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
      */
     private void startConnect() {
         //TODO
-        new ToastView(FindActivity.this, getString(R.string.device_toast_connecting), -1);
+        new ToastView(DeviceFindActivity.this, getString(R.string.device_toast_connecting), -1);
         mHandler.sendEmptyMessageDelayed(MSG_STOP_CONNECT, INTERVAL_STOP_CONNECT);
     }
 
@@ -233,7 +247,7 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
         ArrayList<String> listSelect = new ArrayList<>();
         listSelect.add(getString(R.string.device_action_dialog_try_again));
         listSelect.add(getString(R.string.device_action_dialog_exit));
-        mDialogBuilder.showSingleSelectDialog(FindActivity.this,
+        mDialogBuilder.showSingleSelectDialog(DeviceFindActivity.this,
                 getString(R.string.device_title_dialog_scan_none), listSelect);
         mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
             @Override
@@ -259,14 +273,14 @@ public class FindActivity extends BaseActivity implements AdapterView.OnItemClic
         ArrayList<String> listSelect = new ArrayList<>();
         listSelect.add(getString(R.string.device_action_dialog_try_again));
         listSelect.add(getString(R.string.device_action_dialog_exit));
-        mDialogBuilder.showSingleSelectDialog(FindActivity.this,
+        mDialogBuilder.showSingleSelectDialog(DeviceFindActivity.this,
                 getString(R.string.device_title_dialog_connect_fail), listSelect);
         mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
             @Override
             public void onConfirmBtnClick(int pos) {
                 //重试
                 if (pos == 0) {
-                    new ToastView(FindActivity.this, getString(R.string.device_toast_connected), -1);
+                    new ToastView(DeviceFindActivity.this, getString(R.string.device_toast_connected), -1);
                     finish();
                 } else {
                     finish();

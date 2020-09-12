@@ -10,12 +10,15 @@
     <string name="device_action_add_new">添加新设备</string>
     <string name="device_action_unbind_device">解除绑定</string>
     <string name="device_action_unbind_in_dialog">解绑</string>
+    <string name="device_action_add_now">开始添加</string>
 
     <string name="device_status_disconnect">未连接，点击切换</string>
     <string name="device_status_connecting">正在连接</string>
     <string name="device_status_worked">已连接</string>
 
-    <string name="device_title_add">添加设备中</string>
+    <string name="device_title_add">添加一个新设备</string>
+    <string name="device_title_add_ing">添加设备中</string>
+    <string name="device_tip_open">长按设备开机键3秒，开始添加新设备</string>
     <string name="device_tip_add">添加过程中请保证耳机处于开机状态</string>
     <string name="device_tip_select_nearby">选择附近的FW</string>
     <string name="device_tip_scan_none">没有扫描到我要连接的设备</string>
@@ -49,6 +52,7 @@
     <string name="device_tx_settings_ota_update">固件升级</string>
     <string name="device_tx_settings_volume">音量</string>
     <string name="device_tx_settings_channel">当前频道</string>
+    <string name="device_tx_settings_battery">电量</string>
 
 
     <string name="device_tip_ota_has_new_version">检测到最新版本\n%1$s</string>
@@ -67,5 +71,17 @@
     <string name="device_action_setting_channel_pwd">密码设置</string>
     <string name="device_action_setting_channel_auth">权限设置</string>
     <string name="device_tip_setting_channel_pwd">用户须知：\n· 在同一频道下，您需与好友同时输入相同的密码，方可进入保密通信状态；\n· 密码为6个数字。</string>
+
+
+    <string name="device_channel_1">公共</string>
+    <string name="device_channel_2">公共</string>
+    <string name="device_channel_3">公共</string>
+    <string name="device_channel_4">社区</string>
+    <string name="device_channel_5">校园</string>
+    <string name="device_channel_6">商圈</string>
+    <string name="device_channel_7">婚恋</string>
+    <string name="device_channel_8">求职</string>
+    <string name="device_channel_9">旅游</string>
+    <string name="device_channel_10">交通</string>
 
 </resources>

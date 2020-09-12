@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
     <!-- title -->
-    <RelativeLayout style="@style/TitleLayout"
+    <FrameLayout style="@style/TitleLayout"
         android:layout_height="40dp">
 
         <TextView
@@ -22,7 +22,7 @@
             style="@style/TitleBackButton"/>
 
         <View style="@style/TitleBottomLine"/>
-    </RelativeLayout>
+    </FrameLayout>
 
     <!-- 输入开始 -->
     <LinearLayout

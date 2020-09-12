@@ -14,4 +14,8 @@ public class FileConfig {
 
     public static final String PHOTO_PATH = DEFAULT_PATH + "photo/";
     public final static String cutFileUri = "file://" + "/" + PHOTO_PATH;
+
+
+    //下载目录
+    public final static String DOWNLOAD_PATH = DEFAULT_PATH + "download/";
 }

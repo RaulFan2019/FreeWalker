@@ -157,6 +157,32 @@
 
         <View style="@style/DeviceSettingsDivider" />
 
+
+
+        <!-- 电量 -->
+        <LinearLayout
+            android:id="@+id/ll_battery"
+            style="@style/DeviceSettingsLl"
+            android:layout_marginTop="50dp">
+
+            <View
+                style="@style/DeviceSettingsIcon"
+                android:background="@drawable/icon_device_settings_battery" />
+
+            <TextView
+                style="@style/DeviceSettingsTvTag"
+                android:text="@string/device_tx_settings_battery" />
+
+
+            <TextView
+                android:id="@+id/tv_battery"
+                style="@style/DeviceSettingsTvValue" />
+
+            <View style="@style/DeviceSettingsIconMore" />
+
+        </LinearLayout>
+
+        <View style="@style/DeviceSettingsDivider" />
     </LinearLayout>
 
 </LinearLayout>

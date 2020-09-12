@@ -270,14 +270,14 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     private void showTestMarker() {
         if (mLocation != null) {
-            listUser.add(new UserInfoResult("", "贝吉塔", "男", "25", "工程师",
-                    "女", "160~170", "60~70"));
-            listUser.add(new UserInfoResult("", "孙悟空", "女", "35", "律师",
-                    "女", "160~170", "60~70"));
-            listUser.add(new UserInfoResult("", "短笛", "女", "35", "建筑师",
-                    "女", "160~170", "60~70"));
-            listUser.add(new UserInfoResult("", "魔人布欧", "男", "25", "销售员",
-                    "女", "160~170", "60~70"));
+//            listUser.add(new UserInfoResult("贝吉塔", 0, 1, "", "工程师",
+//                    "160~170", "60~70", "25"));
+//            listUser.add(new UserInfoResult("孙悟空", 0, 2, "", "律师",
+//                    "160~170", "60~70", "25"));
+//            listUser.add(new UserInfoResult("短笛", 0, 1, "", "建筑师",
+//                    "160~170", "60~70", "25"));
+//            listUser.add(new UserInfoResult("魔人布欧", 1, 3, "", "销售员",
+//                    "160~170", "60~70", "25"));
 
 
             listLat.add(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));

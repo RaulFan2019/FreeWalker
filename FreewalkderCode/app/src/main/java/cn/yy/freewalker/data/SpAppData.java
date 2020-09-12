@@ -1,4 +1,4 @@
-package cn.yy.freewalker.data.db;
+package cn.yy.freewalker.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;

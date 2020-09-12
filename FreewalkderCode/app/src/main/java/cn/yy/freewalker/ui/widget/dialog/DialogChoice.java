@@ -87,16 +87,40 @@ public class DialogChoice {
      * @param title
      * @param confirm
      */
-    public void show(final String title , final String content, final String confirm , final String cancel){
+//    public void show(final String title , final String content, final String confirm , final String cancel){
+//        tvTitle.setText(title);
+//        tvContent.setVisibility(View.VISIBLE);
+//        tvContent.setText(content);
+//        btnCancel.setText(cancel);
+//        btnConfirm.setText(confirm);
+//
+//        mDialog.show();
+//    }
+
+    /**
+     * 显示
+     * @param title
+     * @param confirm
+     */
+    public void show(final String title ,final String confirm ,
+                     final String cancel, final boolean cancelable){
+
+        mDialog.setCancelable(cancelable);
+        mDialog.setCanceledOnTouchOutside(cancelable);
+
         tvTitle.setText(title);
         tvContent.setVisibility(View.VISIBLE);
-        tvContent.setText(content);
         btnCancel.setText(cancel);
+
+        if (cancelable){
+            btnCancel.setVisibility(View.VISIBLE);
+        }else {
+            btnCancel.setVisibility(View.GONE);
+        }
         btnConfirm.setText(confirm);
 
         mDialog.show();
     }
-
 
     /**
      * 设置监听器
