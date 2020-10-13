@@ -93,4 +93,5 @@ dependencies {
     //状态栏
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
 
+    implementation project(':lib_ble')
 }

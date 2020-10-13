@@ -8,6 +8,8 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import cn.yy.sdk.ble.BM;
+
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
@@ -51,6 +53,9 @@ public class LocalApp extends Application {
         //初始化xUtils
         x.Ext.init(this);
         x.Ext.setDebug(false);
+        //初始化蓝牙
+        BM.getManager().init(this);
+        BM.getManager().setDebug(true);
     }
 
     /**
