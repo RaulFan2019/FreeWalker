@@ -24,6 +24,6 @@ public class ChatRoomBinder extends ItemViewBinder<ChatRoomBean,ChatRoomHolder> 
 
     @Override
     protected void onBindViewHolder(@NonNull ChatRoomHolder holder, @NonNull ChatRoomBean chatRoomBean) {
-        holder.showGroupName(chatRoomBean.name);
+        holder.updateUI(chatRoomBean);
     }
 }

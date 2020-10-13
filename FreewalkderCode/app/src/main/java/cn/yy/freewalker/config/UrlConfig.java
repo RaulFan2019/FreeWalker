@@ -34,7 +34,10 @@ public class UrlConfig {
     //增加用户照片
     public static final String ADD_USER_PHOTO = HOST + "/userImg/add";
     //删除用户照片
-    public static final String DELETE_USER_PHOTO = HOST + "/userImg/del";
+    public static final String DELETE_USER_PHOTO = HOST + "/userImg/delBatch";
     //建议与反馈
     public static final String FEED_BACK = HOST + "/feedBack/add";
+    //删除用户
+    public static final String DELETE_USER = HOST + "/delUser/add";
+
 }

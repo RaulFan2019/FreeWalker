@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.entity.model.ChatRoomBean;
 
 /**
  * @author zhao
@@ -18,14 +19,17 @@ import cn.yy.freewalker.R;
 public class ChatRoomHolder extends RecyclerView.ViewHolder {
 //    @BindView(R.id.tv_group_name)
     TextView mRoomNameTv;
+    View icChannel;
 
     public ChatRoomHolder(@NonNull View itemView) {
         super(itemView);
 //        ButterKnife.bind(this,itemView);
         mRoomNameTv = itemView.findViewById(R.id.tv_group_name);
+        icChannel = itemView.findViewById(R.id.iv_channel_icon);
     }
 
-    public void showGroupName(String name){
-        mRoomNameTv.setText(name);
+    public void updateUI(ChatRoomBean chat){
+        mRoomNameTv.setText(chat.name);
+        icChannel.setBackgroundResource(chat.iconRes);
     }
 }

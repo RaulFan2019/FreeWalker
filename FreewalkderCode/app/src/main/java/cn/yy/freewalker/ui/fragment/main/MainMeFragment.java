@@ -1,10 +1,8 @@
 package cn.yy.freewalker.ui.fragment.main;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,8 +18,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RequestExecutor;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -48,10 +44,10 @@ import cn.yy.freewalker.entity.net.PhotoResult;
 import cn.yy.freewalker.network.NetworkExceptionHelper;
 import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.auth.FeedbackActivity;
-import cn.yy.freewalker.ui.activity.auth.ImproveUserInfoActivity;
 import cn.yy.freewalker.ui.activity.auth.UserPhotoAlbumActivity;
 import cn.yy.freewalker.ui.activity.auth.UserSettingsActivity;
 import cn.yy.freewalker.ui.activity.chat.RecordSelectChannelActivity;
+import cn.yy.freewalker.ui.activity.main.AboutActivity;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.ui.widget.common.ToastView;
@@ -154,6 +150,7 @@ public class MainMeFragment extends BaseFragment {
                 //TODO
                 break;
             case R.id.ll_about:
+                startActivity(AboutActivity.class);
                 break;
             case R.id.btn_logout:
                 AppU.jumpToLogin(getActivity());
@@ -417,7 +414,7 @@ public class MainMeFragment extends BaseFragment {
                 x.http().post(params, new Callback.CommonCallback<BaseResult>() {
                     @Override
                     public void onSuccess(BaseResult result) {
-                        YLog.e(TAG,"requestUserPhoto onSuccess:" + result.data);
+                        YLog.e(TAG, "requestUserPhoto onSuccess:" + result.data);
                         if (result.code == 200) {
                             listPhoto.clear();
                             List<PhotoResult> list = JSON.parseArray(result.data, PhotoResult.class);

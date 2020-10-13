@@ -17,8 +17,8 @@ android {
         applicationId "cn.yy.freewalker"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 5
-        versionName "freewalker 2.2"
+        versionCode 8
+        versionName "freewalker 2.3"
     }
     buildTypes {
         debug {

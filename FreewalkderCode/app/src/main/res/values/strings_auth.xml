@@ -60,11 +60,6 @@
     <string name="auth_tx_like_all">男/女</string>
     <string name="auth_tx_like_other">不展示</string>
 
-
-
-
-
-
     <string name="auth_dialog_title_improve_select_profession">职业选择</string>
     <string name="auth_tx_profession_1">互联网/游戏/软件</string>
     <string name="auth_tx_profession_2">律师</string>
@@ -154,6 +149,5 @@
 
     <string name="auth_title_user_photo_album">相册</string>
     <string name="auth_title_dialog_delete_photo">是否要删掉照片，且删掉之后无法找回</string>
-
 
 </resources>

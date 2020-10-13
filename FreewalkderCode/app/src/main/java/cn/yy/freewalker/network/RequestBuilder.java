@@ -25,6 +25,7 @@ public class RequestBuilder {
     private static final String TAG = "RequestBuilder";
 
 
+
     public static RequestParams checkAppVersion(final Context context) {
         RequestParams params = new RequestParams(UrlConfig.CHECK_APP_VERSION);
 
@@ -246,17 +247,18 @@ public class RequestBuilder {
     /**
      * 删除用户照片
      * @param context
-     * @param url
+     * @param ids
      * @return
      */
-    public static RequestParams deleteUserPhoto(final Context context, final int id){
+    public static RequestParams deleteUserPhoto(final Context context, final String ids){
         RequestParams params = new RequestParams(UrlConfig.DELETE_USER_PHOTO);
 
+        YLog.e(TAG,"deleteUserPhoto:" + ids);
         params.addBodyParameter("l", SystemU.isZh(context) ? "zh_CN" : "en_US");
 
         params.addBodyParameter("token", DBDataUser.getLoginUser(context).token);
         params.addBodyParameter("userId", DBDataUser.getLoginUser(context).userId);
-        params.addBodyParameter("id", id);
+        params.addBodyParameter("ids", ids);
         return params;
     }
 
@@ -276,6 +278,21 @@ public class RequestBuilder {
         params.addBodyParameter("devType", devType);
         params.addBodyParameter("content", content);
         params.addBodyParameter("tel", tel);
+        return params;
+    }
+
+    /**
+     * 删除用户
+     * @param context
+     * @param email
+     * @return
+     */
+    public static RequestParams deleteUser(final Context context,final String email){
+        RequestParams params = new RequestParams(UrlConfig.DELETE_USER);
+
+        params.addBodyParameter("email", email);
+        params.addBodyParameter("userId", DBDataUser.getLoginUser(context).userId);
+        params.addBodyParameter("token", DBDataUser.getLoginUser(context).token);
         return params;
     }
 }

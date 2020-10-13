@@ -240,7 +240,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                     @Override
                     public void onSuccess(BaseResult result) {
                         YLog.e(TAG, "onSuccess:" + result.msg + "," + result.data);
-                        if (result.result) {
+                        if (result.code == 200) {
                             mLoginResult = JSON.parseObject(result.data, LoginResult.class);
                             mHandler.sendEmptyMessage(MSG_LOGIN_OK);
                         } else {
@@ -281,7 +281,7 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
                     @Override
                     public void onSuccess(BaseResult result) {
                         YLog.e(TAG, "onSuccess:" + result.msg + "," + result.data);
-                        if (result.result) {
+                        if (result.code == 200) {
                             UserInfoResult userInfo = JSON.parseObject(result.data, UserInfoResult.class);
                             DBDataUser.login(LoginActivity.this, mLoginResult, userInfo, etMobile.getText().toString());
                             mHandler.sendEmptyMessage(MSG_GET_USER_INFO_OK);

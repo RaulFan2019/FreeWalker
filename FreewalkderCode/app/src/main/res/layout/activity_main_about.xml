@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:gravity="center_horizontal">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/about_title" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton" />
+
+        <View style="@style/TitleBottomLine" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="100dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="141dp"
+        android:background="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/tv_mostly"
+        android:textSize="18dp"
+        android:layout_marginTop="20dp"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <View
+        style="@style/DividerH"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_privacy"
+        style="@style/DeviceSettingsLl">
+
+        <TextView
+            style="@style/DeviceSettingsTvTag"
+            android:text="@string/privacy_and_agreement"/>
+
+        <TextView
+            style="@style/DeviceSettingsTvValue"/>
+        <View
+            style="@style/DeviceSettingsIconMore"/>
+    </LinearLayout>
+
+    <View
+        style="@style/DividerH"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_power"
+        style="@style/DeviceSettingsLl">
+
+        <TextView
+            style="@style/DeviceSettingsTvTag"
+            android:text="@string/user_power_center"/>
+
+        <TextView
+            style="@style/DeviceSettingsTvValue"/>
+        <View
+            style="@style/DeviceSettingsIconMore"/>
+    </LinearLayout>
+
+    <View
+        style="@style/DividerH"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="80dp"/>
+
+</LinearLayout>

@@ -5,18 +5,18 @@
     android:orientation="vertical">
 
     <!-- title -->
-    <RelativeLayout style="@style/TitleLayout">
+    <FrameLayout style="@style/TitleLayout">
 
         <TextView
             style="@style/TitleTitleTv"
-            android:text="@string/privacy_activity_title" />
+            android:text="@string/privacy_and_agreement" />
 
         <ImageButton
             android:id="@+id/btn_back"
             style="@style/TitleBackButton"/>
 
         <View style="@style/TitleBottomLine"/>
-    </RelativeLayout>
+    </FrameLayout>
 
 
     <!-- exchange -->
@@ -24,7 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
         <LinearLayout
             android:id="@+id/ll_title_user_agreement"
             style="@style/PrivacyActivityExChangeLl">
@@ -61,7 +62,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/include_main_privacy_user_agreement"/>
         <include layout="@layout/include_main_privacy_privacy"/>
 
     </FrameLayout>

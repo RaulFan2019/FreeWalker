@@ -60,6 +60,14 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.main.MainActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.main.AboutActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.main.PowerCenterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.main.DeleteUserActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.main.DeleteUserImportantActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- device -->
         <activity android:name=".ui.activity.device.DeviceFindActivity"
@@ -111,6 +119,8 @@
 
         <activity android:name=".ui.activity.chat.RecordListActivity"
             android:screenOrientation="portrait"/>
+
+
 
     </application>
 </manifest>

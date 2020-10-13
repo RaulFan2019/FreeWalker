@@ -36,6 +36,7 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.entity.event.OnUserAvatarClickEvent;
 import cn.yy.freewalker.entity.model.ChatLeftTextBean;
 import cn.yy.freewalker.entity.model.ChatRightTextBean;
+import cn.yy.freewalker.entity.model.ChatRoomBean;
 import cn.yy.freewalker.entity.model.ChatTimeBean;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.auth.UserInfoActivity;
@@ -85,6 +86,8 @@ public class GroupChatActivity extends BaseActivity {
 
     private ArrayList<Object> mChatItems = new ArrayList<>();
     private Long lastTime = 0L;
+
+    private ChatRoomBean mRoom;
 
     @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text,R.id.iv_input_loc,R.id.btn_send})
     public void onClick(View v) {
@@ -146,6 +149,8 @@ public class GroupChatActivity extends BaseActivity {
         mChatAdapter = new MultiTypeAdapter();
         mChatAdapter.register(ChatTimeBean.class, new ChatTimeBinder());
         ChatLeftTextBinder leftTextBinder = new ChatLeftTextBinder();
+
+        mRoom = (ChatRoomBean) getIntent().getExtras().get("room");
 //        leftTextBinder.setOnItemClick(new OnItemListener() {
 //            @Override
 //            public void onLongClick(View view, int pos) {
@@ -198,6 +203,8 @@ public class GroupChatActivity extends BaseActivity {
                 .statusBarView(R.id.v_status_bar)
                 .init();
         initChatUi();
+
+        mUserTitleTv.setText(mRoom.name);
 
         mChatRv.setLayoutManager(new LinearLayoutManager(this));
         mChatRv.setAdapter(mChatAdapter);

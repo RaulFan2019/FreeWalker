@@ -12,16 +12,14 @@ public class PhotoResult implements Serializable {
     
     /**
      * imgUrl : 图片路径
-     */
-
-    public String imgUrl;
-    /**
      * createdAt : 2020-09-11 08:37:47
      * deleted : 0
      * id : 10
      * ownerId : 10
      */
 
+
+    public String imgUrl;
     public String createdAt;
     public int deleted;
     public int id;

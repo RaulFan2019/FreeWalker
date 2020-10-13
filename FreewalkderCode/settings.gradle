@@ -1,2 +1,3 @@
+include ':lib_ble'
 include ':app', ':WheelView', ':tagview'
 rootProject.name='Freewalker'

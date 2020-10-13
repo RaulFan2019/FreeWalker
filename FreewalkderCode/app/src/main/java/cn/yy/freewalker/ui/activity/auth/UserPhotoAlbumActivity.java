@@ -255,10 +255,20 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
             }
         }
 
+        String ids = "";
+        for (int i = 0; i < listDelete.size(); i++) {
+            if (i == 0){
+                ids += listDelete.get(i).photo.id;
+            }else {
+                ids += "," + listDelete.get(i).photo.id;
+            }
+        }
+
+        String finalIds = ids;
         x.task().post(new Runnable() {
             @Override
             public void run() {
-                RequestParams params = RequestBuilder.deleteUserPhoto(UserPhotoAlbumActivity.this, listDelete.get(0).photo.id);
+                RequestParams params = RequestBuilder.deleteUserPhoto(UserPhotoAlbumActivity.this, finalIds);
                 x.http().post(params, new Callback.CommonCallback<BaseResult>() {
                     @Override
                     public void onSuccess(BaseResult result) {
@@ -547,7 +557,7 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
                             listPhoto.clear();
                             List<PhotoResult> list = JSON.parseArray(result.data, PhotoResult.class);
                             if (list != null) {
-                                for (PhotoResult photo : list){
+                                for (PhotoResult photo : list) {
                                     listPhoto.add(new PhotoSelectBean(photo, false));
                                 }
                             }

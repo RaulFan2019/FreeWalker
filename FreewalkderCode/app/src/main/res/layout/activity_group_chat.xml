@@ -9,7 +9,7 @@
         android:background="@color/tv_white"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/rl_title"
         android:layout_height="40dp"
         style="@style/TitleLayout">
@@ -26,22 +26,8 @@
             style="@style/TitleBackButton"
             android:layout_centerVertical="true" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-<!--        <TextView-->
-<!--            android:layout_width="22dp"-->
-<!--            android:layout_height="18dp"-->
-<!--            android:gravity="center"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:text="12"-->
-<!--            android:textSize="10sp"-->
-<!--            android:layout_marginEnd="15dp"-->
-<!--            android:background="@drawable/bg_channel"-->
-<!--            />-->
-    </RelativeLayout>
+        <View style="@style/TitleBottomLine" />
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

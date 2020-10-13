@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/user_power_center" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton"/>
+
+        <View style="@style/TitleBottomLine"/>
+    </FrameLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/tv_mostly"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/user_power_center_tip" />
+
+    <View
+        style="@style/DividerH"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_delete"
+        style="@style/DeviceSettingsLl">
+
+        <TextView
+            style="@style/DeviceSettingsTvTag"
+            android:text="@string/privacy_delete_user"/>
+
+        <TextView
+            style="@style/DeviceSettingsTvValue"/>
+        <View
+            style="@style/DeviceSettingsIconMore"/>
+    </LinearLayout>
+
+    <View
+        style="@style/DividerH"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
+
+</LinearLayout>

@@ -204,6 +204,11 @@ public class MainActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     /**
      * 选择TAB
      */

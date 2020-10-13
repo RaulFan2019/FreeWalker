@@ -55,23 +55,56 @@ public class GroupChatListFragment extends BaseFragment {
 
     @Override
     protected void initParams() {
-        mAdapter  = new MultiTypeAdapter();
-        mAdapter.register(ChatRoomBean.class,new ChatRoomBinder());
+        mAdapter = new MultiTypeAdapter();
+        mAdapter.register(ChatRoomBean.class, new ChatRoomBinder());
         mAdapter.setItems(mRoomItems);
 
-        for(int i =0;i < 20;i++){
-            mRoomItems.add(new ChatRoomBean("频道"+i,i));
+        for (int i = 1; i < 31; i++) {
+            switch (i){
+                case 1:
+                case 2:
+                case 3:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_1),R.drawable.icon_channel_public));
+                    break;
+                case 4:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_4),R.drawable.icon_channel_community));
+                    break;
+                case 5:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_5),R.drawable.icon_channel_campus));
+                    break;
+                case 6:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_6),R.drawable.icon_channel_business));
+                    break;
+                case 7:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_7),R.drawable.icon_channel_love));
+                    break;
+                case 8:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_8),R.drawable.icon_channel_job));
+                    break;
+                case 9:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_9),R.drawable.icon_channel_travel));
+                    break;
+                case 10:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i + " | " + getString(R.string.device_channel_10),R.drawable.icon_channel_traffic));
+                    break;
+                default:
+                    mRoomItems.add(new ChatRoomBean(i, getString(R.string.chat_tx_channel) + i,R.drawable.icon_channel_normal));
+                    break;
+            }
+
         }
         mChatListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mChatListRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener(){
+        mChatListRv.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
 
             @Override
             public void onChildViewAttachedToWindow(@NonNull View view) {
                 view.setOnClickListener(v -> {
                     int position = mChatListRv.getChildAdapterPosition(view);
                     Object bean = mRoomItems.get(position);
-                    if(bean instanceof ChatRoomBean){
-                        startActivity(GroupChatActivity.class);
+                    if (bean instanceof ChatRoomBean) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("room",(ChatRoomBean)mRoomItems.get(position));
+                        startActivity(GroupChatActivity.class, bundle);
                     }
                 });
             }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_base_gray">
+
+    <!-- title -->
+    <FrameLayout style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTitleTv"
+            android:text="@string/privacy_delete_user" />
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/TitleBackButton"/>
+
+        <View style="@style/TitleBottomLine"/>
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/tv_mostly"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/privacy_delete_user_tip" />
+
+    <LinearLayout style="@style/AuthModifyInputLy">
+
+        <EditText
+            android:id="@+id/et_mail"
+            style="@style/AuthModifyInputEt"
+            android:hint="@string/privacy_delete_user_mail_hint"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btn_delete"
+        style="@style/BtnLarge"
+        android:text="@string/privacy_action_delete_user"/>
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="12dp"
+        android:textColor="@color/tv_mostly"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="90dp"/>
+
+</LinearLayout>
