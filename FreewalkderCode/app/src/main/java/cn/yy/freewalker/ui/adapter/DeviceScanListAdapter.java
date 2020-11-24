@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.entity.model.DeviceBleScan;
 
 /**
  * @author Raul.Fan
@@ -18,9 +19,9 @@ import cn.yy.freewalker.R;
  */
 public class DeviceScanListAdapter extends BaseAdapter {
 
-    private List<String> listData;
+    private List<DeviceBleScan> listData;
 
-    public DeviceScanListAdapter(List<String> data) {
+    public DeviceScanListAdapter(List<DeviceBleScan> data) {
         this.listData = data;
     }
 
@@ -42,7 +43,7 @@ public class DeviceScanListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String data = listData.get(position);
+        String data = listData.get(position).device.getName();
         Holder holder = null;
         View view = convertView;
 

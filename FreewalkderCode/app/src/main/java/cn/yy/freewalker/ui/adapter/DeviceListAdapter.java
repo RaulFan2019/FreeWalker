@@ -14,6 +14,7 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.DeviceConfig;
 import cn.yy.freewalker.entity.adapter.BindDeviceAdapterEntity;
 import cn.yy.freewalker.ui.widget.listview.SlideViewUnbindDevice;
+import cn.yy.sdk.ble.array.ConnectStates;
 
 /**
  * @author Raul.Fan
@@ -80,6 +81,7 @@ public class DeviceListAdapter extends BaseAdapter {
         slideView.shrink();
 
         holder.tvDeviceName.setText(item.deviceDbEntity.deviceName);
+
         if (item.deviceDbEntity.deviceType == DeviceConfig.Type.BLACK) {
             holder.vDevice.setBackgroundResource(R.drawable.icon_device_black);
         } else {
@@ -87,27 +89,24 @@ public class DeviceListAdapter extends BaseAdapter {
         }
 
         switch (item.status) {
-            case DeviceConfig.ConnectStates.CONNECTING:
+            case ConnectStates.CONNECTING:
                 holder.tvDeviceStatus.setText(mContext.getString(R.string.device_status_connecting));
                 holder.tvDeviceStatus.setTextColor(mContext.getResources().getColor(R.color.tv_accent));
                 break;
-            case DeviceConfig.ConnectStates.DISCONNECT:
+            case ConnectStates.DISCONNECT:
+            case ConnectStates.CONNECT_FAIL:
                 holder.tvDeviceStatus.setText(mContext.getString(R.string.device_status_disconnect));
                 holder.tvDeviceStatus.setTextColor(mContext.getResources().getColor(R.color.tv_thirdly));
                 break;
-            case DeviceConfig.ConnectStates.WORKED:
+            case ConnectStates.WORKED:
                 holder.tvDeviceStatus.setText(mContext.getString(R.string.device_status_worked));
                 holder.tvDeviceStatus.setTextColor(mContext.getResources().getColor(R.color.tv_accent));
                 break;
-
         }
 
-        holder.deleteHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onDelete(pos);
-                }
+        holder.deleteHolder.setOnClickListener(v -> {
+            if (mListener != null) {
+                mListener.onDelete(pos);
             }
         });
 
@@ -118,6 +117,7 @@ public class DeviceListAdapter extends BaseAdapter {
         public TextView tvDeviceName;
         public TextView tvDeviceStatus;
         public View vDevice;
+        public View vMore;
         public ViewGroup deleteHolder;
 
         ViewHolder(View view) {
@@ -125,6 +125,7 @@ public class DeviceListAdapter extends BaseAdapter {
             tvDeviceStatus = view.findViewById(R.id.tv_device_status);
             vDevice = view.findViewById(R.id.v_device);
             deleteHolder = view.findViewById(R.id.ll_holder);
+            vMore = view.findViewById(R.id.v_more);
         }
     }
 

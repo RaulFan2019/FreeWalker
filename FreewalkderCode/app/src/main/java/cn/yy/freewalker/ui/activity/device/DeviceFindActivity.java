@@ -2,10 +2,11 @@ package cn.yy.freewalker.ui.activity.device;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,26 +20,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.config.DeviceConfig;
+import cn.yy.freewalker.data.DBDataDevice;
+import cn.yy.freewalker.data.SPDataUser;
+import cn.yy.freewalker.data.SpAppData;
+import cn.yy.freewalker.entity.model.DeviceBleScan;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.adapter.DeviceScanListAdapter;
 import cn.yy.freewalker.ui.widget.common.RippleView;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
-import cn.yy.freewalker.ui.widget.dialog.DialogSingleSelect;
 import cn.yy.freewalker.utils.SystemU;
+import cn.yy.freewalker.utils.YLog;
+import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.array.ConnectStates;
+import cn.yy.sdk.ble.observer.ConnectListener;
 
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
  * @date 2020/6/6 22:20
  */
-public class DeviceFindActivity extends BaseActivity implements AdapterView.OnItemClickListener {
-
+public class DeviceFindActivity extends BaseActivity implements AdapterView.OnItemClickListener, ConnectListener {
 
     /* contains */
+    private static final String TAG = "DeviceFindActivity";
+
+
     private static final int MSG_STOP_SCAN = 0x01;                  //停止扫描消息
     private static final int INTERVAL_SCAN = 3 * 1000;              //扫描时间
 
@@ -77,7 +87,7 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
     private int mState = 0;
     private BluetoothAdapter mBluetoothAdapter;                     //蓝牙适配器
 
-    private List<String> listTestDeviceName = new ArrayList<>();
+    private List<DeviceBleScan> listScan = new ArrayList<>();
 
 
     @Override
@@ -116,17 +126,48 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
     }
 
 
+    @Override
+    public void connectStateChange(int state) {
+        if (state >= ConnectStates.WORKED) {
+            DBDataDevice.addNewDevice(SPDataUser.getAccount(DeviceFindActivity.this),
+                    BM.getManager().getConnectMac(),BM.getManager().getConnectName());
+            mHandler.removeMessages(MSG_STOP_CONNECT);
+            new ToastView(DeviceFindActivity.this, getString(R.string.device_tip_connect_ok), -1);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            },500);
+        }
+    }
+
+    /**
+     * BLE 扫描回调
+     */
+    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+        @Override
+        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+            //筛选设备名称不为空 && 设备名称前缀为 LIGHTEN
+            if (device.getName() != null) {
+                for (DeviceBleScan bs : listScan) {
+                    if ((bs.device.getAddress().equals(device.getAddress()))) {
+                        bs.rssi = rssi;
+                        return;
+                    }
+                }
+                DeviceBleScan bs = new DeviceBleScan(device, rssi);
+                listScan.add(bs);
+            }
+        }
+    };
+
     /**
      * 列表点击
-     *
-     * @param parent
-     * @param view
-     * @param position
-     * @param id
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        startConnect();
+        startConnect(listScan.get(position));
     }
 
     @Override
@@ -136,20 +177,22 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     protected void initViews() {
-        adapter = new DeviceScanListAdapter(listTestDeviceName);
+        adapter = new DeviceScanListAdapter(listScan);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
     }
 
     @Override
     protected void doMyCreate() {
+        BM.getManager().registerConnectListener(this);
         checkBLEFeature();
     }
 
     @Override
     protected void causeGC() {
-
+        BM.getManager().unRegisterConnectListener(this);
     }
+
 
     /**
      * 检查BLE是否可用
@@ -170,7 +213,6 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
                 .onDenied(data -> {
                     new ToastView(this, getString(R.string.device_tip_location_permission), -1);
                     finish();
-                    return;
                 })
                 .start();
         //获取蓝牙适配器
@@ -202,7 +244,7 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
      * 开始扫描
      */
     private void startScan() {
-        //TODO
+        mBluetoothAdapter.startLeScan(mLeScanCallback);
         rpv.setVisibility(View.VISIBLE);
         mHandler.sendEmptyMessageDelayed(MSG_STOP_SCAN, INTERVAL_SCAN);
         llTip.setVisibility(View.GONE);
@@ -213,9 +255,9 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
      * 停止扫描
      */
     private void stopScan() {
-        //TODO
+        mBluetoothAdapter.stopLeScan(mLeScanCallback);
         rpv.setVisibility(View.INVISIBLE);
-        if (listTestDeviceName.size() == 0) {
+        if (listScan.size() == 0) {
             showScanAgainDialog();
         } else {
             llTip.setVisibility(View.VISIBLE);
@@ -226,8 +268,9 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
     /**
      * 开始连接
      */
-    private void startConnect() {
-        //TODO
+    private void startConnect(final DeviceBleScan deviceBleScan) {
+        YLog.e(TAG,"");
+        BM.getManager().addNewConnect(deviceBleScan.device.getAddress(), deviceBleScan.device.getName(), false);
         new ToastView(DeviceFindActivity.this, getString(R.string.device_toast_connecting), -1);
         mHandler.sendEmptyMessageDelayed(MSG_STOP_CONNECT, INTERVAL_STOP_CONNECT);
     }
@@ -249,18 +292,12 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
         listSelect.add(getString(R.string.device_action_dialog_exit));
         mDialogBuilder.showSingleSelectDialog(DeviceFindActivity.this,
                 getString(R.string.device_title_dialog_scan_none), listSelect);
-        mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
-            @Override
-            public void onConfirmBtnClick(int pos) {
-                //重试
-                if (pos == 0) {
-                    listTestDeviceName.add("FW001-001");
-                    listTestDeviceName.add("FW001-002");
-                    adapter.notifyDataSetChanged();
-                    startScan();
-                } else {
-                    finish();
-                }
+        mDialogBuilder.setSingleSelectDialogListener(pos -> {
+            //重试
+            if (pos == 0) {
+                startScan();
+            } else {
+                finish();
             }
         });
     }
@@ -275,16 +312,12 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
         listSelect.add(getString(R.string.device_action_dialog_exit));
         mDialogBuilder.showSingleSelectDialog(DeviceFindActivity.this,
                 getString(R.string.device_title_dialog_connect_fail), listSelect);
-        mDialogBuilder.setSingleSelectDialogListener(new DialogSingleSelect.onItemClickListener() {
-            @Override
-            public void onConfirmBtnClick(int pos) {
-                //重试
-                if (pos == 0) {
-                    new ToastView(DeviceFindActivity.this, getString(R.string.device_toast_connected), -1);
-                    finish();
-                } else {
-                    finish();
-                }
+        mDialogBuilder.setSingleSelectDialogListener(pos -> {
+            //重试
+            if (pos == 0) {
+                startScan();
+            } else {
+                finish();
             }
         });
     }

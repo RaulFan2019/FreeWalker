@@ -38,6 +38,10 @@ public class NotifyManager {
                 case NotifyActions.CONNECT_STATE:
                     BM.getManager().notifyStateChange((Integer) msg.obj);
                     break;
+                //切换频道事件
+                case NotifyActions.SWITCH_CHANNEL:
+                    BM.getManager().notifyChannelSwitchOk();
+                    break;
             }
         }
     };
@@ -53,5 +57,12 @@ public class NotifyManager {
         mNotifyHandler.sendMessage(msg);
     }
 
+    /**
+     * 发布连接状态变化
+     */
+    public synchronized void notifySwitchChannelOK() {
+        Message msg = mNotifyHandler.obtainMessage(NotifyActions.SWITCH_CHANNEL);
+        mNotifyHandler.sendMessage(msg);
+    }
 
 }

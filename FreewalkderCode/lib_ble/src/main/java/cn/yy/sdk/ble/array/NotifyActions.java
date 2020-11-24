@@ -11,4 +11,6 @@ public class NotifyActions {
 
     public static final int BLE_STATE = 0x02;                   //蓝牙状态变化
 
+    public static final int SWITCH_CHANNEL = 0x03;              //切换频道
+
 }

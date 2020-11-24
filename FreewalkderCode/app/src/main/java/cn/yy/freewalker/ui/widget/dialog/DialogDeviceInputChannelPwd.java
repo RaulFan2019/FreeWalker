@@ -46,14 +46,11 @@ public class DialogDeviceInputChannelPwd {
         tvConfirm = mDialog.findViewById(R.id.tv_confirm);
         inputPwdBox = mDialog.findViewById(R.id.inputBox);
 
-        tvConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null){
-                    mListener.onConfirm(inputPwdBox.getInputContent());
-                }
-                mDialog.dismiss();
+        tvConfirm.setOnClickListener(v -> {
+            if (mListener != null){
+                mListener.onConfirm(inputPwdBox.getInputContent());
             }
+            mDialog.dismiss();
         });
     }
 

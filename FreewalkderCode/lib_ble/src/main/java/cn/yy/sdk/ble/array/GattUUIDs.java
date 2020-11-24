@@ -13,18 +13,18 @@ public class GattUUIDs {
 
 
     /* private Notify service */
-    public static final String YIIDA_NOTIFY_SERVICE = "0000FFE0-0000-1000-8000-00805f9b34fb";            //notify 私有服务
-    public static final String YIIDA_NOTIFY_C = "0000FFE4-0000-1000-8000-00805f9b34fb";                  //Notify 特征值
+    public static final String NOTIFY_SERVICE = "00001901-0000-1000-8000-00805f9b34fb";             //notify 私有服务
+    public static final String NOTIFY_C = "00001a03-0000-1000-8000-00805f9b34fb";                   //Notify 特征值
 
-    public final static UUID UUID_YIIDA_NOTIFY_SERVICE = UUID.fromString(YIIDA_NOTIFY_SERVICE);          //UUID of Notify 私有服务
-    public final static UUID UUID_YIIDA_NOTIFY_C = UUID.fromString(YIIDA_NOTIFY_C);                      //UUID of Notify 特征值
+    public final static UUID UUID_NOTIFY_SERVICE = UUID.fromString(NOTIFY_SERVICE);                 //UUID of Notify 私有服务
+    public final static UUID UUID_NOTIFY_C = UUID.fromString(NOTIFY_C);                             //UUID of Notify 特征值
 
 
     /* private write service */
-    public static final String YIIDA_WRITE_SERVICE = "0000FFE5-0000-1000-8000-00805f9b34fb";            //write 私有服务
-    public static final String YIIDA_WRITE_C = "0000FFE9-0000-1000-8000-00805f9b34fb";                  //write 特征值
+    public static final String WRITE_SERVICE = "00001901-0000-1000-8000-00805f9b34fb";              //write 私有服务
+    public static final String WRITE_C = "00001a01-0000-1000-8000-00805f9b34fb";                    //write 特征值
 
-    public static final UUID UUID_WRITE_SERVICE = UUID.fromString(YIIDA_WRITE_SERVICE);           //UUID of Write 私有服务
-    public static final UUID UUID_WRITE_C = UUID.fromString(YIIDA_WRITE_C);                       //UUID of Write 特征值
+    public static final UUID UUID_WRITE_SERVICE = UUID.fromString(WRITE_SERVICE);                   //UUID of Write 私有服务
+    public static final UUID UUID_WRITE_C = UUID.fromString(WRITE_C);                               //UUID of Write 特征值
 
 }

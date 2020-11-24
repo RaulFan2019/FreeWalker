@@ -24,7 +24,7 @@ public class LocalApp extends Application {
 
     /* local data about db */
     public static final String DB_NAME = "freewalker.db";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 3;
 
 
     private DbManager.DaoConfig daoConfig;

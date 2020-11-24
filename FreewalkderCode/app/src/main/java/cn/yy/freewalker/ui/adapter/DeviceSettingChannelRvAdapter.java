@@ -68,14 +68,22 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
         if (selectChannel == (position + 1)) {
             holder.llChannel.setBackgroundColor(mContext.getResources().getColor(R.color.accent));
             holder.tvChannel.setTextColor(Color.WHITE);
+            holder.tvChannelInfo.setTextColor(Color.WHITE);
             holder.vSlot.setBackgroundResource(R.drawable.bg_channel_encryption_selected);
         } else {
             holder.llChannel.setBackgroundColor(Color.WHITE);
             holder.tvChannel.setTextColor(mContext.getResources().getColor(R.color.tv_secondly));
+            holder.tvChannelInfo.setTextColor(mContext.getResources().getColor(R.color.tv_secondly));
             holder.vSlot.setBackgroundResource(R.drawable.bg_channel_encryption_normal);
         }
 
-        switch (position){
+        if (position < 10){
+            holder.vSlot.setVisibility(View.GONE);
+        }else {
+            holder.vSlot.setVisibility(View.VISIBLE);
+        }
+
+      switch (position){
             case 0:
                 holder.tvChannelInfo.setVisibility(View.VISIBLE);
                 holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_1));

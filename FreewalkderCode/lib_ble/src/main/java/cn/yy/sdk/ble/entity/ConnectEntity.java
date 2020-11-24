@@ -2,25 +2,30 @@ package cn.yy.sdk.ble.entity;
 
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 
 import java.lang.reflect.Method;
+import java.nio.channels.Channel;
 import java.util.UUID;
 
 import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.NotifyManager;
 import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.array.GattUUIDs;
+import cn.yy.sdk.ble.array.PrivatePorts;
 import cn.yy.sdk.ble.utils.BLog;
 import cn.yy.sdk.ble.utils.ByteU;
 
+import static android.bluetooth.BluetoothDevice.PHY_LE_1M_MASK;
 
 /**
  * @author Raul.Fan
@@ -40,13 +45,16 @@ public class ConnectEntity {
     private static final long DELAY_REPEAT_READ = 200;                    //重复读取延迟
     private static final long DELAY_REPEAT_WRITE = 500;                   //重复写入延迟
     private static final long DELAY_REPEAT_NOTIFY = 500;                  //重复写入延迟
-    private static final long DELAY_WAIT_CMD = 500;                       //若发送请求没有响应，再发一次命令
+    private static final long DELAY_WAIT_CMD = 1000;                       //若发送请求没有响应，再发一次命令
 
     /* contains of msg */
     private static final int MSG_REPEAT_CONNECT = 0x01;                   //重新连接
     private static final int MSG_DISCOVER_SERVICE = 0x02;                 //重新发现服务
     private static final int MSG_NOTIFY_PRIVATE_C = 0x03;                 //notify 特征值
+    private static final int MSG_GET_SYSTEM_INFO = 0x04;                  //获取系统配置
 
+    private static final int MSG_SET_CHANNEL = 0x05;                      //设置channel
+    private static final int MSG_SEND_GROUP_CHAT_MSG = 0x06;              //发送groupChat 数据
 
     /* local data of system */
     private Application mContext;                                          //上下文
@@ -56,13 +64,13 @@ public class ConnectEntity {
     public boolean mNeedConnect = true;                                    //断开后是否需要重连
     private int mState = ConnectStates.DISCONNECT;                          //连接状态
 
-
     /* local data about device*/
     public String mAddress = "";                                             //连接的mac地址
-    private String mName;                                                    //设备名称2
-    private String mType;                                                    //设备类型
+    private String mName;                                                    //设备名称
     private BluetoothGatt mBluetoothGatt;                                    //GATT实例
     private BluetoothGattCallback mGattCallback;                             //GATT回调
+
+    private DeviceSystemInfo mDeviceSystemInfo;                             //系统信息
 
     private int notifyErrorTimes = 0;                                       //无法notify的次数
     private int mRepeatConnectTimes = 0;
@@ -70,6 +78,11 @@ public class ConnectEntity {
     /* local characteristic*/
     private BluetoothGattCharacteristic mNotifyC;                      //Yiida Notify 特征
     private BluetoothGattCharacteristic mWriteC;                       //Yiida wirte  特征
+
+    private final Object LOCK = new Object();
+
+    private int mLastLength;
+    private byte mLastPort;
 
 
     /**
@@ -95,6 +108,13 @@ public class ConnectEntity {
                 case MSG_NOTIFY_PRIVATE_C:
                     notifyPrivateService();
                     break;
+                case MSG_GET_SYSTEM_INFO:
+                    writeGetSystemInfo();
+                    break;
+                //设置频道
+                case MSG_SET_CHANNEL:
+                    writeSetChannel((ChannelInfo) msg.obj);
+                    break;
             }
         }
     };
@@ -119,19 +139,19 @@ public class ConnectEntity {
 
     /**
      * 初始化
-     * @param context
-     * @param name
-     * @param mac
+     *
+     * @param context  上下文
+     * @param name     设备名称
+     * @param mac      设备地址
      * @param mAdapter
      */
-    public void init(Application context, final String name, final String mac, final BluetoothAdapter mAdapter){
+    public void init(Application context, final String name, final String mac, final BluetoothAdapter mAdapter) {
         this.mAddress = mac;
         this.mBluetoothAdapter = mAdapter;
         this.mContext = context;
         this.mName = name;
         this.mNeedConnect = true;
         this.mState = ConnectStates.CONNECTING;
-        this.mRepeatConnectTimes = 0;
 
         mHandler.removeCallbacksAndMessages(null);
 
@@ -140,8 +160,15 @@ public class ConnectEntity {
         //初始化回调
         initCallback();
         try {
-            mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mac).connectGatt(context,
-                    false, mGattCallback);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mac)
+                        .connectGatt(context, false, mGattCallback, BluetoothDevice.TRANSPORT_LE, PHY_LE_1M_MASK/*, handler*/);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mac).connectGatt(context, false, mGattCallback,
+                        BluetoothDevice.TRANSPORT_LE);
+            } else {
+                mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mac).connectGatt(context, false, mGattCallback);
+            }
 
         } catch (IllegalArgumentException ex) {
             sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
@@ -152,8 +179,8 @@ public class ConnectEntity {
     /**
      * 为了重连初始化
      */
-    public void initForReConnect(){
-        BLog.e(TAG,"initForReConnect");
+    public void initForReConnect() {
+        BLog.e(TAG, "initForReConnect");
         this.mNeedConnect = true;
         this.mState = ConnectStates.CONNECTING;
 
@@ -163,8 +190,15 @@ public class ConnectEntity {
         //初始化回调
         initCallback();
         try {
-            mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mAddress).connectGatt(mContext,
-                    false, mGattCallback);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mAddress)
+                        .connectGatt(mContext, false, mGattCallback, BluetoothDevice.TRANSPORT_LE, PHY_LE_1M_MASK);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mAddress).connectGatt(mContext, false, mGattCallback,
+                        BluetoothDevice.TRANSPORT_LE);
+            } else {
+                mBluetoothGatt = mBluetoothAdapter.getRemoteDevice(mAddress).connectGatt(mContext, false, mGattCallback);
+            }
 
         } catch (IllegalArgumentException ex) {
             sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
@@ -176,25 +210,23 @@ public class ConnectEntity {
      */
     public void disConnect() {
         BLog.e(TAG, "disConnect");
+        mState = ConnectStates.DISCONNECT;
+        NotifyManager.getManager().notifyStateChange(mState);
         mAddress = "";
         mNeedConnect = false;
-        mState = ConnectStates.DISCONNECT;
-        mRepeatConnectTimes = 0;
-        NotifyManager.getManager().notifyStateChange(mState);
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
         if (mBluetoothGatt != null) {
+            BLog.e(TAG, "mBluetoothGatt.disConnect");
             mBluetoothGatt.disconnect();
         }
-
     }
-
 
     /**
      * 获取当前连接状态
      *
-     * @return
+     * @return 连接状态
      */
     public int getState() {
         return mState;
@@ -207,6 +239,10 @@ public class ConnectEntity {
      */
     public String getName() {
         return mName;
+    }
+
+    public DeviceSystemInfo getSystemInfo() {
+        return mDeviceSystemInfo;
     }
 
     /**
@@ -282,15 +318,25 @@ public class ConnectEntity {
             sendMsg(MSG_DISCOVER_SERVICE, null, DELAY_REPEAT_DISCOVER);
             //连接断开
         } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-            BLog.i(TAG, "<" + mAddress + ">" + "Disconnected from GATT server." + ",mNeedConnect:" + mNeedConnect);
+            BLog.e(TAG, "<" + mAddress + ">" + "Disconnected from GATT server." + ",mNeedConnect:" + mNeedConnect);
             mState = ConnectStates.DISCONNECT;
             NotifyManager.getManager().notifyStateChange(mState);
-            if (!mNeedConnect && mBluetoothGatt != null) {
-                mBluetoothGatt.close();
-                mBluetoothGatt = null;
-                return;
+            if (!mNeedConnect) {
+                synchronized (LOCK) {
+                    if (mBluetoothGatt != null) {
+                        refreshDeviceCache();
+                        try {
+                            BLog.e(TAG, "BluetoothGatt close");
+                            mBluetoothGatt.close();
+                        } catch (final Throwable t) {
+                            // ignore
+                        }
+                        mBluetoothGatt = null;
+                    }
+                }
+            } else {
+                sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
             }
-            sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
         }
     }
 
@@ -317,16 +363,14 @@ public class ConnectEntity {
         BLog.e(TAG, "real connected");
         mState = ConnectStates.CONNECTED;
         NotifyManager.getManager().notifyStateChange(mState);
-        refreshDeviceCache();
 
         //扫描服务
-        BLog.e(TAG, "start scan");
         for (BluetoothGattService gattService : gatt.getServices()) {
             BLog.e(TAG, "<" + mAddress + ">" + "UUID " + gattService.getUuid().toString());
 
             //发现 Yiida notify 私有服务
-            if (gattService.getUuid().equals(GattUUIDs.UUID_YIIDA_NOTIFY_SERVICE)) {
-                mNotifyC = gattService.getCharacteristic(GattUUIDs.UUID_YIIDA_NOTIFY_C);
+            if (gattService.getUuid().equals(GattUUIDs.UUID_NOTIFY_SERVICE)) {
+                mNotifyC = gattService.getCharacteristic(GattUUIDs.UUID_NOTIFY_C);
             }
             //发现 Yiida write 私有服务
             if (gattService.getUuid().equals(GattUUIDs.UUID_WRITE_SERVICE)) {
@@ -337,12 +381,138 @@ public class ConnectEntity {
         BLog.e(TAG, "stop scan");
         //若无法获取Yiida Notify 特征，则视为无法正常工作
         if (mNotifyC == null || mWriteC == null) {
-//            refreshDeviceCache();
             sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
         } else {
             sendMsg(MSG_NOTIFY_PRIVATE_C, null, DELAY_REPEAT_NOTIFY);
         }
     }
+
+
+    /**
+     * 设置频道
+     *
+     * @param channel
+     * @param priority
+     * @param pwdStr
+     */
+    public void setChannel(final int channel, final int priority, final String pwdStr) {
+        ChannelInfo channelInfo = null;
+        if (pwdStr.isEmpty()) {
+            channelInfo = new ChannelInfo(channel, priority, null);
+        } else {
+            String[] listPwdStr = pwdStr.split(",");
+            int[] pwd = new int[6];
+            for (int i = 0; i < listPwdStr.length; i++) {
+                pwd[i] = Integer.parseInt(listPwdStr[i]);
+            }
+            channelInfo = new ChannelInfo(channel, priority, pwd);
+        }
+        sendMsg(MSG_SET_CHANNEL, channelInfo, 0);
+    }
+
+    /**
+     * 写入设置频道
+     *
+     * @param channelInfo
+     */
+    public void writeSetChannel(final ChannelInfo channelInfo) {
+        mHandler.removeMessages(MSG_SET_CHANNEL);
+        byte[] data;
+        if (channelInfo.pwd == null) {
+            data = new byte[6];
+        } else {
+            data = new byte[22];
+        }
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        if (channelInfo.pwd == null) {
+            data[2] = 0x03;
+        } else {
+            data[2] = 0x13;
+        }
+        //port
+        data[3] = PrivatePorts.SET_CHANNEL;
+        //channel
+        data[4] = (byte) channelInfo.channel;
+        //priority
+        data[5] = (byte) channelInfo.priority;
+        //pwd
+        if (channelInfo.pwd != null) {
+            data[6] = 0x12;
+            data[7] = 0x12;
+            data[8] = 0x12;
+            data[9] = 0x12;
+            data[10] = 0x12;
+            data[11] = 0x12;
+            data[12] = 0x12;
+            data[13] = 0x12;
+            data[14] = 0x12;
+            data[15] = 0x12;
+            data[16] = (byte) channelInfo.pwd[0];
+            data[17] = (byte) channelInfo.pwd[1];
+            data[18] = (byte) channelInfo.pwd[2];
+            data[19] = (byte) channelInfo.pwd[3];
+            data[20] = (byte) channelInfo.pwd[4];
+            data[21] = (byte) channelInfo.pwd[5];
+        }
+
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SET_CHANNEL, channelInfo, DELAY_REPEAT_WRITE);
+        }
+    }
+
+
+
+    /**
+     * 发送群组消息
+     *
+     * @param userId  用户ID
+     * @param content 消息内容
+     */
+    public void sendGroupChatMsg(final int userId, final String content) {
+        GroupChatInfo groupChatInfo = new GroupChatInfo(userId, content);
+        sendMsg(MSG_SEND_GROUP_CHAT_MSG, groupChatInfo, 0);
+    }
+
+
+    /**
+     * 写入发送群组消息
+     * @param groupChatInfo
+     */
+    public void writeSendGroupChatMsg(final GroupChatInfo groupChatInfo){
+        mHandler.removeMessages(MSG_SEND_GROUP_CHAT_MSG);
+        byte[] contentBytes = groupChatInfo.content.getBytes();
+        byte[] userIdBytes = ByteU.intToBytes(groupChatInfo.userId);
+        int length = 3 + 2 + 4 + contentBytes.length;
+        byte[] data = new byte[length];
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        data[3] = (byte)length;
+        //port
+        data[4] = PrivatePorts.TEXT_MESSAGE;
+        //type
+        data[5] = PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT;
+        //user Id
+        data[6] = userIdBytes[3];
+        data[7] = userIdBytes[2];
+        data[8] = userIdBytes[1];
+        data[9] = userIdBytes[0];
+        //content
+        for (int i = 0 ; i < contentBytes.length; i++){
+            data[10 + i] = contentBytes[i];
+        }
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SEND_GROUP_CHAT_MSG, groupChatInfo, DELAY_REPEAT_WRITE);
+        }
+    }
+
 
     /**
      * 读取数据成功
@@ -368,8 +538,7 @@ public class ConnectEntity {
      * @param characteristic
      */
     private synchronized void onCharacteristicChanged(final BluetoothGattCharacteristic characteristic) {
-        //识别单词
-        if (GattUUIDs.UUID_YIIDA_NOTIFY_C.equals(characteristic.getUuid())) {
+        if (GattUUIDs.UUID_NOTIFY_C.equals(characteristic.getUuid())) {
             if (characteristic.getValue() != null) {
                 byte[] data = characteristic.getValue();
                 if (data == null) {
@@ -408,6 +577,37 @@ public class ConnectEntity {
      */
     private void analysisPrivateData(final byte[] data) {
         BLog.e(TAG, "analysisData:" + ByteU.bytesToHexString(data));
+        if (data.length >= 4
+                && data[0] == (byte) 0xFE && data[1] == (byte) 0x95) {
+            switch (data[3]) {
+                case PrivatePorts.GET_SYSTEM_INFO:
+                    mLastPort = PrivatePorts.GET_SYSTEM_INFO;
+                    mLastLength = data[2];
+                    mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
+                    mState = ConnectStates.WORKED;
+                    NotifyManager.getManager().notifyStateChange(mState);
+                    break;
+                //设置频道
+                case PrivatePorts.SET_CHANNEL:
+                    mHandler.removeMessages(MSG_SET_CHANNEL);
+                    NotifyManager.getManager().notifySwitchChannelOK();
+                    mLastPort = PrivatePorts.SET_CHANNEL;
+                    mLastLength = data[2];
+                    break;
+
+            }
+            //value
+        } else if (mLastPort != 0 && mLastLength == data.length) {
+            switch (mLastPort) {
+                case PrivatePorts.GET_SYSTEM_INFO:
+                    mDeviceSystemInfo = new DeviceSystemInfo(data[0], data[1], data[2]);
+                    break;
+                //设置频道
+                case PrivatePorts.SET_CHANNEL:
+
+                    break;
+            }
+        }
     }
 
     /**
@@ -446,17 +646,23 @@ public class ConnectEntity {
      * @return boolean
      */
     public boolean refreshDeviceCache() {
-        if (mBluetoothGatt != null) {
-            try {
-                BluetoothGatt localBluetoothGatt = mBluetoothGatt;
-                Method localMethod = localBluetoothGatt.getClass().getMethod("refresh", new Class[0]);
-                if (localMethod != null) {
-                    boolean bool = ((Boolean) localMethod.invoke(localBluetoothGatt, new Object[0])).booleanValue();
-                    return bool;
-                }
-            } catch (Exception localException) {
-                BLog.i(TAG, "An exception occured while refreshing device");
-            }
+        final BluetoothGatt gatt = mBluetoothGatt;
+        if (gatt == null) // no need to be connected
+            return false;
+
+        BLog.e(TAG, "Refreshing device cache...");
+        BLog.e(TAG, "gatt.refresh() (hidden)");
+        /*
+         * There is a refresh() method in BluetoothGatt class but for now it's hidden.
+         * We will call it using reflections.
+         */
+        try {
+            final Method refresh = gatt.getClass().getMethod("refresh");
+            //noinspection ConstantConditions
+            return (Boolean) refresh.invoke(gatt);
+        } catch (final Exception e) {
+            BLog.e(TAG, "An exception occurred while refreshing device:" + e);
+            BLog.e(TAG, "gatt.refresh() method not found");
         }
         return false;
     }
@@ -496,9 +702,35 @@ public class ConnectEntity {
             } else {
                 sendMsg(MSG_NOTIFY_PRIVATE_C, null, DELAY_REPEAT_NOTIFY);
             }
+        } else {
+            sendMsg(MSG_GET_SYSTEM_INFO, null, 0);
         }
     }
 
+
+    /**
+     * 获取系统配置
+     */
+    private void writeGetSystemInfo() {
+        BLog.e(TAG, "writeGetSystemInfo");
+        mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
+        byte[] data = new byte[4];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        data[2] = 0x01;
+        //port
+        data[3] = PrivatePorts.GET_SYSTEM_INFO;
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_GET_SYSTEM_INFO, null, DELAY_REPEAT_WRITE);
+        } else {
+            sendMsg(MSG_GET_SYSTEM_INFO, null, DELAY_WAIT_CMD);
+        }
+    }
 
     /**
      * 设置当指定characteristic值变化时，发出通知

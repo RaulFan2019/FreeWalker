@@ -157,13 +157,10 @@
 
         <View style="@style/DeviceSettingsDivider" />
 
-
-
         <!-- 电量 -->
         <LinearLayout
             android:id="@+id/ll_battery"
-            style="@style/DeviceSettingsLl"
-            android:layout_marginTop="50dp">
+            style="@style/DeviceSettingsLl">
 
             <View
                 style="@style/DeviceSettingsIcon"

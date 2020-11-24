@@ -12,7 +12,10 @@ import java.util.Locale;
 
 import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.entity.ConnectEntity;
+import cn.yy.sdk.ble.entity.DeviceSystemInfo;
+import cn.yy.sdk.ble.observer.ChannelListener;
 import cn.yy.sdk.ble.observer.ConnectListener;
+import cn.yy.sdk.ble.subject.ChannelEventSubjectImp;
 import cn.yy.sdk.ble.subject.ConnectSubjectImp;
 import cn.yy.sdk.ble.utils.AppU;
 import cn.yy.sdk.ble.utils.BLog;
@@ -45,6 +48,7 @@ public class BM {
 
     /* callback 管理*/
     private ConnectSubjectImp mConnectSub;                          //连接状态变化的订阅管理
+    private ChannelEventSubjectImp mChannelSub;                     //频道订阅管理
 
     private BM() {
     }
@@ -81,6 +85,7 @@ public class BM {
      */
     private void initCallback() {
         mConnectSub = new ConnectSubjectImp();
+        mChannelSub = new ChannelEventSubjectImp();
     }
 
 
@@ -103,6 +108,10 @@ public class BM {
 
     public String getConnectName() {
         return mConnectName;
+    }
+
+    public DeviceSystemInfo getDeviceSystemInfo() {
+        return ConnectEntity.getInstance().getSystemInfo();
     }
 
     /* =============================== Callback =============================================== */
@@ -155,9 +164,9 @@ public class BM {
             ConnectEntity.getInstance().disConnect();
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
-            if (ConnectEntity.getInstance().getState() < ConnectStates.CONNECTING){
+            if (ConnectEntity.getInstance().getState() < ConnectStates.CONNECTING) {
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
-            }else {
+            } else {
                 ConnectEntity.getInstance().mNeedConnect = true;
             }
         }
@@ -175,6 +184,7 @@ public class BM {
             return;
         }
         mConnectMac = address;
+        mConnectName = deviceName;
 
         //若已连接的设备与目标设备不一致，则断开连接
         if (!ConnectEntity.getInstance().mAddress.equals(mConnectMac)) {
@@ -235,6 +245,39 @@ public class BM {
     }
 
 
+    /**
+     * 设置频道
+     *
+     * @param channel
+     * @param priority
+     * @param pwd
+     * @return
+     */
+    public int setChannel(final int channel, final int priority, final String pwd) {
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().setChannel(channel, priority, pwd);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+
+    /**
+     * 发送群聊消息
+     *
+     * @param userId
+     * @param content
+     * @return
+     */
+    public int sendGroupChatMsg(final int userId, final String content) {
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().sendGroupChatMsg(userId, content);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 
 
     /**
@@ -265,5 +308,32 @@ public class BM {
         mConnectSub.notify(connectState);
     }
 
+
+    /**
+     * 【消息】【注册】频道事件
+     *
+     * @param observer 频道事件监听回调
+     */
+    public void registerChannelListener(ChannelListener observer) {
+        mChannelSub.attach(observer);
+    }
+
+    /**
+     * 【消息】【注销】频道事件
+     *
+     * @param observer 频道事件监听回调
+     */
+    public void unRegisterChannelListener(ChannelListener observer) {
+        mChannelSub.detach(observer);
+    }
+
+
+    /**
+     * 【消息】【发布】频道事件
+     * 切换成功
+     */
+    protected void notifyChannelSwitchOk() {
+        mChannelSub.notifyChannelSwitchOk();
+    }
 
 }

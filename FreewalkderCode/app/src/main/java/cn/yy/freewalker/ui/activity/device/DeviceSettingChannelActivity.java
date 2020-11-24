@@ -11,19 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataChannel;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.ChannelDbEntity;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.adapter.DeviceSettingChannelRvAdapter;
+import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogDeviceInputChannelPwd;
-import cn.yy.freewalker.ui.widget.dialog.DialogPickView;
-import cn.yy.freewalker.utils.YLog;
+import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.observer.ChannelListener;
 
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
  * @date 2020/6/8 20:39
  */
-public class DeviceSettingChannelActivity extends BaseActivity {
+public class DeviceSettingChannelActivity extends BaseActivity implements ChannelListener {
 
     /* contains */
     private static final String TAG = "DeviceSettingChannelActivity";
@@ -35,14 +40,15 @@ public class DeviceSettingChannelActivity extends BaseActivity {
     RecyclerView rvChannel;
 
 
+    /* data */
+    ChannelDbEntity mChannel;
+    int mChanelIndex = 0;
+
     DeviceSettingChannelRvAdapter adapter;
     DialogBuilder mDialogBuilder;
 
-    /* data */
     private ArrayList<String> listAuthSelect = new ArrayList<>();           //权限选择列表
-
-    private int mChannel = 19;
-    private int mAuth = 4;
+    private UserDbEntity mUser;
 
     @Override
     protected int getLayoutId() {
@@ -67,30 +73,45 @@ public class DeviceSettingChannelActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    public void switchChannelOk() {
+        tvChannel.setText(mChannel.channel + "");
+    }
+
     @Override
     protected void initData() {
         mDialogBuilder = new DialogBuilder();
         for (int i = 0; i < 10; i++) {
             listAuthSelect.add(i + "");
         }
+        mUser = DBDataUser.getLoginUser(DeviceSettingChannelActivity.this);
+        if (BM.getManager().getDeviceSystemInfo() != null){
+            mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel + 1;
+        }else {
+            mChanelIndex = 0;
+        }
+
     }
 
     @Override
     protected void initViews() {
-        tvChannel.setText(mChannel + "");
+        tvChannel.setText("");
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 5);
 
         rvChannel.setLayoutManager(layoutManager);
 
         adapter = new DeviceSettingChannelRvAdapter(DeviceSettingChannelActivity.this,
-                mChannel,
-                new DeviceSettingChannelRvAdapter.onChannelClick() {
-                    @Override
-                    public void onClick(int channel) {
-                        mChannel = channel;
-                        tvChannel.setText(mChannel + "");
+                mChanelIndex,
+                channel -> {
+                    mChanelIndex = channel;
+                    mChannel = DBDataChannel.getChannel(mUser.userId, channel);
+                    if (mChannel == null) {
+                        mChannel = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, channel, "", 5);
+                        DBDataChannel.save(mChannel);
                     }
+                    BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
                 });
 
         rvChannel.setAdapter(adapter);
@@ -99,12 +120,12 @@ public class DeviceSettingChannelActivity extends BaseActivity {
 
     @Override
     protected void doMyCreate() {
-
+        BM.getManager().registerChannelListener(this);
     }
 
     @Override
     protected void causeGC() {
-
+        BM.getManager().unRegisterChannelListener(this);
     }
 
 
@@ -112,27 +133,46 @@ public class DeviceSettingChannelActivity extends BaseActivity {
      * 密码输入
      */
     private void onPwdInputClick() {
-        mDialogBuilder.showDeviceChannelPwdDialog(DeviceSettingChannelActivity.this);
-        mDialogBuilder.setDeviceChannelPwdDialogListener(new DialogDeviceInputChannelPwd.onConfirmListener() {
-            @Override
-            public void onConfirm(String pwd) {
-                YLog.e(TAG, "pwd:" + pwd);
-            }
-        });
+        if (mChanelIndex >= 10) {
+            mDialogBuilder.showDeviceChannelPwdDialog(DeviceSettingChannelActivity.this);
+            mDialogBuilder.setDeviceChannelPwdDialogListener(new DialogDeviceInputChannelPwd.onConfirmListener() {
+                @Override
+                public void onConfirm(String pwd) {
+                    String pwdStr = "";
+                    for (int i = 0; i < pwd.length(); i++) {
+                        if (i == 0){
+                            pwdStr += pwd.charAt(i);
+                        }else {
+                            pwdStr += "," + pwd.charAt(i);
+                        }
+                    }
+                    mChannel.pwd = pwdStr;
+                    DBDataChannel.update(mChannel);
+                    BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
+                }
+            });
+        } else {
+            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_tip_channel_can_not_set_pwd_and_priority), -1);
+        }
+
     }
 
     /**
      * 选择年龄
      */
     private void onAuthSelectClick() {
-        mDialogBuilder.showPickViewDialog(DeviceSettingChannelActivity.this,
-                getString(R.string.device_action_setting_channel_auth), listAuthSelect, mAuth);
-        mDialogBuilder.setPickViewDialogListener(new DialogPickView.onConfirmListener() {
-            @Override
-            public void onConfirm(int index) {
-                mAuth = index;
-            }
-        });
+        if (mChanelIndex >= 10){
+            mDialogBuilder.showPickViewDialog(DeviceSettingChannelActivity.this,
+                    getString(R.string.device_action_setting_channel_auth), listAuthSelect, mChannel.priority);
+            mDialogBuilder.setPickViewDialogListener(index -> {
+                mChannel.priority = index;
+                DBDataChannel.update(mChannel);
+                BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
+            });
+        }else {
+            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_tip_channel_can_not_set_pwd_and_priority), -1);
+        }
+
     }
 
 }

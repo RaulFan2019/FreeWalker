@@ -11,6 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.sdk.ble.BM;
 
 /**
  * @author Raul.Fan
@@ -78,10 +79,15 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     @Override
     protected void initViews() {
-        //TEST
-        tvDevice.setText("FW001-00");
+        tvDevice.setText(BM.getManager().getConnectName());
         tvName.setText("Raul的耳机");
-        tvChannel.setText("13");
+
+        if (BM.getManager().getDeviceSystemInfo() != null){
+            tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
+        }else {
+            tvChannel.setText("");
+        }
+
         tvVolume.setText("6");
         sbVolume.setProgress(6);
 

@@ -1,18 +1,20 @@
 package cn.yy.freewalker.entity.db;
 
 import org.xutils.db.annotation.Column;
+import org.xutils.db.annotation.Table;
 
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
  * @date 2020/6/6 11:06
  */
+@Table(name = "bindDevice")
 public class BindDeviceDbEntity {
 
     @Column(name = "deviceId", isId = true, autoGen = false)
     public long deviceId;
     @Column(name = "userId")
-    public String userId;                                       //用户Id
+    public int userId;                                         //用户Id
     @Column(name = "deviceName")
     public String deviceName;                                   //设备名称
     @Column(name = "deviceType")
@@ -24,7 +26,7 @@ public class BindDeviceDbEntity {
     public BindDeviceDbEntity() {
     }
 
-    public BindDeviceDbEntity(long deviceId, String userId, String deviceName,
+    public BindDeviceDbEntity(long deviceId, int userId, String deviceName,
                               int deviceType, String deviceMac) {
         this.deviceId = deviceId;
         this.userId = userId;

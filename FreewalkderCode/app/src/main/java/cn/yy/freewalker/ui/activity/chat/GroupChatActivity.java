@@ -33,6 +33,8 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.event.OnUserAvatarClickEvent;
 import cn.yy.freewalker.entity.model.ChatLeftTextBean;
 import cn.yy.freewalker.entity.model.ChatRightTextBean;
@@ -48,6 +50,7 @@ import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
 import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
 import cn.yy.freewalker.utils.ChatUiHelper;
 import cn.yy.freewalker.utils.DateUtils;
+import cn.yy.sdk.ble.BM;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
@@ -84,12 +87,13 @@ public class GroupChatActivity extends BaseActivity {
     private MultiTypeAdapter mChatAdapter;
     private FreePagerAdapter mVpAdapter;
 
+
     private ArrayList<Object> mChatItems = new ArrayList<>();
     private Long lastTime = 0L;
+    private UserDbEntity mUser;                                                     //用户信息
+    private ChatRoomBean mRoom;                                                     //房间信息
 
-    private ChatRoomBean mRoom;
-
-    @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text,R.id.iv_input_loc,R.id.btn_send})
+    @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text, R.id.iv_input_loc, R.id.btn_send})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_back:
@@ -108,8 +112,10 @@ public class GroupChatActivity extends BaseActivity {
 
                 break;
             case R.id.btn_send:
-                    showRightChat(mInputEt.getText().toString());
-                    mInputEt.setText("");
+                String msg = mInputEt.getText().toString();
+                showRightChat(msg);
+                BM.getManager().sendGroupChatMsg(mUser.userId, msg);
+                mInputEt.setText("");
                 break;
             default:
         }
@@ -151,6 +157,7 @@ public class GroupChatActivity extends BaseActivity {
         ChatLeftTextBinder leftTextBinder = new ChatLeftTextBinder();
 
         mRoom = (ChatRoomBean) getIntent().getExtras().get("room");
+        mUser = DBDataUser.getLoginUser(GroupChatActivity.this);
 //        leftTextBinder.setOnItemClick(new OnItemListener() {
 //            @Override
 //            public void onLongClick(View view, int pos) {
@@ -185,7 +192,7 @@ public class GroupChatActivity extends BaseActivity {
 
         FaceInputFragment inputFragment = FaceInputFragment.newInstance();
         inputFragment.setOnOutputListener(bean -> {
-                    editTextShowEmoji(bean.unicode,bean.faceId);
+                    editTextShowEmoji(bean.unicode, bean.faceId);
                 }
         );
 
@@ -225,10 +232,10 @@ public class GroupChatActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(mInputEt.getText().length() > 0 && !mSendBtn.isShown()){
+                if (mInputEt.getText().length() > 0 && !mSendBtn.isShown()) {
                     mSendBtn.setVisibility(View.VISIBLE);
                     mLocIv.setVisibility(View.GONE);
-                }else if(mInputEt.getText().length() <=0){
+                } else if (mInputEt.getText().length() <= 0) {
                     mSendBtn.setVisibility(View.GONE);
                     mLocIv.setVisibility(View.VISIBLE);
                 }
@@ -237,7 +244,7 @@ public class GroupChatActivity extends BaseActivity {
     }
 
     private void initChatUi() {
-       ChatUiHelper.with(this)
+        ChatUiHelper.with(this)
                 .bindEditText(mInputEt)
                 .bindContentLayout(mContentLl)
                 .bindBottomLayout(mBottonLl)
@@ -261,30 +268,30 @@ public class GroupChatActivity extends BaseActivity {
     }
 
     /*输入框显示表情*/
-    private void editTextShowEmoji(String unicode,int faceId) {
+    private void editTextShowEmoji(String unicode, int faceId) {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), faceId, null);
-        if(drawable != null) {
+        if (drawable != null) {
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            ImageSpan imageSpan = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
+            ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
             SpannableString spannableString = new SpannableString(unicode);
-            spannableString.setSpan(imageSpan,0,unicode.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(imageSpan, 0, unicode.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             mInputEt.append(spannableString);
         }
     }
 
-    private void showLeftChat(String chatText){
+    private void showLeftChat(String chatText) {
         mChatItems.add(new ChatLeftTextBean(chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
 
-    private void showRightChat(String chatText){
+    private void showRightChat(String chatText) {
         long currentTime = System.currentTimeMillis();
-        if(currentTime - lastTime >= 60 * 1000){
+        if (currentTime - lastTime >= 60 * 1000) {
 
             mChatItems.add(new ChatTimeBean(DateUtils.getCurrentTime()));
         }
 
-        mChatItems.add(new ChatRightTextBean(chatText,""));
+        mChatItems.add(new ChatRightTextBean(chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
 }

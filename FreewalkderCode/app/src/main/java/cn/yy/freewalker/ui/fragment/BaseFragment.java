@@ -1,9 +1,12 @@
 package cn.yy.freewalker.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,6 +31,7 @@ public abstract class BaseFragment extends Fragment {
     protected boolean mIsHidden = false;
     protected Unbinder unbinder;
     protected Bundle mSavedInstanceState;
+    protected Context mContext;
 
     protected Callback.Cancelable mCancelable;
 
@@ -68,6 +72,12 @@ public abstract class BaseFragment extends Fragment {
         if (!mIsHidden) {
             onVisible();
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
