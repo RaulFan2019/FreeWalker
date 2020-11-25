@@ -602,29 +602,34 @@ public class ConnectEntity {
         BLog.e(TAG, "analysisData:" + ByteU.bytesToHexString(data));
         if (data.length >= 4
                 && data[0] == (byte) 0xFE && data[1] == (byte) 0x95) {
-            mLastPort = data[3];
-            mLastLength = data[2] - 1;
+
             switch (data[3]) {
                 case PrivatePorts.GET_SYSTEM_INFO:
+                    mLastPort = data[3];
+                    mLastLength = data[2] - 1;
                     mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
                     mState = ConnectStates.WORKED;
                     NotifyManager.getManager().notifyStateChange(mState);
                     break;
                 //设置频道
                 case PrivatePorts.SET_CHANNEL:
+                    mLastPort = data[3];
+                    mLastLength = data[2] - 1;
                     mHandler.removeMessages(MSG_SET_CHANNEL);
                     NotifyManager.getManager().notifySwitchChannelOK();
                     break;
                 //收到文本消息
                 case PrivatePorts.TEXT_MESSAGE:
-                    byte type = data[8];
+                    BLog.e(TAG,"receive TEXT_MESSAGE");
+                    byte type = data[12];
                     switch (type) {
                         //fe95 11 01 fec192bf 0000 91 0d 01 00000009 616263
                         //群聊消息
                         case PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT:
+                            BLog.e(TAG,"receive GROUP MESSAGE");
                             try {
-                                int userId = (int) ByteU.bytesToLong(new byte[]{data[9], data[10], data[11], data[12]});
-                                byte[] contentB = new byte[mLastLength - 13];
+                                int userId = (int) ByteU.bytesToLong(new byte[]{data[13], data[14], data[15], data[16]});
+                                byte[] contentB = new byte[mLastLength - 17];
                                 System.arraycopy(data, 13, contentB, 0, contentB.length);
                                 String content = new String(contentB, "UTF-8");
                                 BLog.e(TAG, "receive group msg [userId]" + userId + "[content]" + content);

@@ -329,15 +329,24 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         }
     }
 
+
+    /**
+     * 显示左边的聊天
+     * @param chatText
+     */
     private void showLeftChat(String chatText) {
         mChatItems.add(new ChatLeftTextBean(chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
 
+
+    /**
+     * 显示右边的聊天
+     * @param chatText
+     */
     private void showRightChat(String chatText) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastTime >= 60 * 1000) {
-
             mChatItems.add(new ChatTimeBean(DateUtils.getCurrentTime()));
         }
 
@@ -345,5 +354,12 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         mChatAdapter.notifyDataSetChanged();
     }
 
+
+    /**
+     *
+     */
+    private void requestUserInfo(){
+
+    }
 
 }

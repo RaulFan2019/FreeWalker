@@ -180,6 +180,8 @@ public class RequestBuilder {
         return params;
     }
 
+
+
     public static RequestParams setUserInfo(final Context context, final int userId,
                                             final String nickName, final int gender, final int genderOri,
                                             final String avatar, final int age, final int height, final int weight,
