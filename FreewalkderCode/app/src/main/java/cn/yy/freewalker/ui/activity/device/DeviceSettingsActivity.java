@@ -90,13 +90,6 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         tvDevice.setText(BM.getManager().getConnectName());
         tvName.setText("Raul的耳机");
 
-        if (BM.getManager().getDeviceSystemInfo() != null) {
-            tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
-        } else {
-            BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
-            tvChannel.setText(String.valueOf(dbEntity.lastChannel + 1));
-        }
-
         tvVolume.setText("6");
         sbVolume.setProgress(6);
 
@@ -105,6 +98,18 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     @Override
     protected void doMyCreate() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (BM.getManager().getDeviceSystemInfo() != null) {
+            tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
+        } else {
+            BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
+            tvChannel.setText(String.valueOf(dbEntity.lastChannel + 1));
+        }
 
     }
 

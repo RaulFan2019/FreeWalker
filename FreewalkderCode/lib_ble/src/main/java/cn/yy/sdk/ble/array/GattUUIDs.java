@@ -15,9 +15,11 @@ public class GattUUIDs {
     /* private Notify service */
     public static final String NOTIFY_SERVICE = "00001901-0000-1000-8000-00805f9b34fb";             //notify 私有服务
     public static final String NOTIFY_C = "00001a03-0000-1000-8000-00805f9b34fb";                   //Notify 特征值
+    public static final String DEBUG_C = "00001a02-0000-1000-8000-00805f9b34fb";                    //debug 特征值
 
     public final static UUID UUID_NOTIFY_SERVICE = UUID.fromString(NOTIFY_SERVICE);                 //UUID of Notify 私有服务
     public final static UUID UUID_NOTIFY_C = UUID.fromString(NOTIFY_C);                             //UUID of Notify 特征值
+    public final static UUID UUID_DEBUG_C = UUID.fromString(DEBUG_C);                              //UUID of debug 特征值
 
 
     /* private write service */

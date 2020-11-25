@@ -51,10 +51,11 @@ public class ConnectEntity {
     private static final int MSG_REPEAT_CONNECT = 0x01;                   //重新连接
     private static final int MSG_DISCOVER_SERVICE = 0x02;                 //重新发现服务
     private static final int MSG_NOTIFY_PRIVATE_C = 0x03;                 //notify 特征值
-    private static final int MSG_GET_SYSTEM_INFO = 0x04;                  //获取系统配置
+    private static final int MSG_NOTIFY_PRIVATE_DEBUG = 0x04;                 //notify 特征值
+    private static final int MSG_GET_SYSTEM_INFO = 0x05;                  //获取系统配置
 
-    private static final int MSG_SET_CHANNEL = 0x05;                      //设置channel
-    private static final int MSG_SEND_GROUP_CHAT_MSG = 0x06;              //发送groupChat 数据
+    private static final int MSG_SET_CHANNEL = 0x06;                      //设置channel
+    private static final int MSG_SEND_GROUP_CHAT_MSG = 0x07;              //发送groupChat 数据
 
     /* local data of system */
     private Application mContext;                                          //上下文
@@ -76,8 +77,9 @@ public class ConnectEntity {
     private int mRepeatConnectTimes = 0;
 
     /* local characteristic*/
-    private BluetoothGattCharacteristic mNotifyC;                      //Yiida Notify 特征
-    private BluetoothGattCharacteristic mWriteC;                       //Yiida wirte  特征
+    private BluetoothGattCharacteristic mNotifyC;                      //YY Notify 特征
+    private BluetoothGattCharacteristic mWriteC;                       //YY wirte  特征
+    private BluetoothGattCharacteristic mDebugC;                       //Debug 特征
 
     private final Object LOCK = new Object();
 
@@ -107,6 +109,10 @@ public class ConnectEntity {
                 //notify 私有服务
                 case MSG_NOTIFY_PRIVATE_C:
                     notifyPrivateService();
+                    break;
+                //debug notify
+                case MSG_NOTIFY_PRIVATE_DEBUG:
+                    notifyPrivateDebug();
                     break;
                 case MSG_GET_SYSTEM_INFO:
                     writeGetSystemInfo();
@@ -376,6 +382,7 @@ public class ConnectEntity {
             //发现 Yiida notify 私有服务
             if (gattService.getUuid().equals(GattUUIDs.UUID_NOTIFY_SERVICE)) {
                 mNotifyC = gattService.getCharacteristic(GattUUIDs.UUID_NOTIFY_C);
+                mDebugC = gattService.getCharacteristic(GattUUIDs.UUID_DEBUG_C);
             }
             //发现 Yiida write 私有服务
             if (gattService.getUuid().equals(GattUUIDs.UUID_WRITE_SERVICE)) {
@@ -496,19 +503,22 @@ public class ConnectEntity {
         byte[] data = new byte[length];
         data[0] = (byte) 0xFE;
         data[1] = (byte) 0x95;
-        data[3] = (byte) length;
+        data[2] = (byte) length;
         //port
-        data[4] = PrivatePorts.TEXT_MESSAGE;
+        data[3] = PrivatePorts.TEXT_MESSAGE;
         //type
-        data[5] = PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT;
+        data[4] = PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT;
         //user Id
-        data[6] = userIdBytes[3];
-        data[7] = userIdBytes[2];
-        data[8] = userIdBytes[1];
-        data[9] = userIdBytes[0];
+        data[5] = userIdBytes[3];
+        data[6] = userIdBytes[2];
+        data[7] = userIdBytes[1];
+        data[8] = userIdBytes[0];
+
+        BLog.e(TAG,"length:" + length);
+        BLog.e(TAG,"contentBytes.length:" + contentBytes.length);
         //content
         for (int i = 0; i < contentBytes.length; i++) {
-            data[10 + i] = contentBytes[i];
+            data[9 + i] = contentBytes[i];
         }
 
         mWriteC.setValue(data);
@@ -550,6 +560,14 @@ public class ConnectEntity {
                     return;
                 }
                 analysisPrivateData(data);
+            }
+        } else if (GattUUIDs.UUID_DEBUG_C.equals(characteristic.getUuid())) {
+            if (characteristic.getValue() != null) {
+                byte[] data = characteristic.getValue();
+                if (data == null) {
+                    return;
+                }
+                BLog.e(TAG, "debug data:" + ByteU.bytesToHexString(data));
             }
         }
     }
@@ -714,6 +732,25 @@ public class ConnectEntity {
                 sendMsg(MSG_NOTIFY_PRIVATE_C, null, DELAY_REPEAT_NOTIFY);
             }
         } else {
+            notifyPrivateDebug();
+
+        }
+    }
+
+
+    /**
+     * notify debug
+     */
+    private void notifyPrivateDebug(){
+        BLog.e(TAG,"notifyPrivateDebug");
+        if (!setCharacteristicNotification(mDebugC, true)){
+            notifyErrorTimes++;
+            if (notifyErrorTimes > 5) {
+                sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
+            } else {
+                sendMsg(MSG_NOTIFY_PRIVATE_DEBUG, null, DELAY_REPEAT_NOTIFY);
+            }
+        }else {
             sendMsg(MSG_GET_SYSTEM_INFO, null, 0);
         }
     }
