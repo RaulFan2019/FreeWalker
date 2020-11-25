@@ -615,8 +615,8 @@ public class ConnectEntity {
                 case PrivatePorts.SET_CHANNEL:
                     mLastPort = data[3];
                     mLastLength = data[2] - 1;
-                    mHandler.removeMessages(MSG_SET_CHANNEL);
-                    NotifyManager.getManager().notifySwitchChannelOK();
+//                    mHandler.removeMessages(MSG_SET_CHANNEL);
+//                    NotifyManager.getManager().notifySwitchChannelOK();
                     break;
                 //收到文本消息
                 case PrivatePorts.TEXT_MESSAGE:
@@ -652,6 +652,7 @@ public class ConnectEntity {
                     break;
                 //设置频道
                 case PrivatePorts.SET_CHANNEL:
+                    BLog.e(TAG,"receive SET_CHANNEL channel:" + data[0] + ",priority:" + data[1]);
                     if (mDeviceSystemInfo == null) {
                         mDeviceSystemInfo = new DeviceSystemInfo(2, data[0], data[1]);
                     } else {

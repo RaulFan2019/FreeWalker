@@ -340,6 +340,7 @@ public class BM {
      * 切换成功
      */
     protected void notifyChannelSwitchOk() {
+        BLog.e(TAG,"notifyChannelSwitchOk channel:" + ConnectEntity.getInstance().getSystemInfo().currChannel);
         mChannelSub.notifyChannelSwitchOk();
     }
 
