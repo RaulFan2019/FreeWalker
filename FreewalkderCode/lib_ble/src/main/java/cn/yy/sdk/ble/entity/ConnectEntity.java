@@ -619,8 +619,8 @@ public class ConnectEntity {
                         if (mDeviceSystemInfo == null) {
                             mDeviceSystemInfo = new DeviceSystemInfo(2, data[4], data[5]);
                         } else {
-                            mDeviceSystemInfo.currChannel = data[5];
-                            mDeviceSystemInfo.priority = data[6];
+                            mDeviceSystemInfo.currChannel = data[4];
+                            mDeviceSystemInfo.priority = data[5];
                         }
                         NotifyManager.getManager().notifySwitchChannelOK();
                     }else if (data.length == 4){
