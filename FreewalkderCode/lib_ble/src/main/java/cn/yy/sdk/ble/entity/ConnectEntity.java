@@ -567,7 +567,7 @@ public class ConnectEntity {
                 if (data == null) {
                     return;
                 }
-                BLog.e(TAG, "debug data:" + ByteU.bytesToHexString(data));
+//                BLog.e(TAG, "debug data:" + ByteU.bytesToHexString(data));
             }
         }
     }
@@ -613,8 +613,21 @@ public class ConnectEntity {
                     break;
                 //设置频道
                 case PrivatePorts.SET_CHANNEL:
-                    mLastPort = data[3];
-                    mLastLength = data[2] - 1;
+                    //单包结束
+                    if (data.length == 6){
+                        BLog.e(TAG,"receive SET_CHANNEL channel:" + data[4] + ",priority:" + data[5]);
+                        if (mDeviceSystemInfo == null) {
+                            mDeviceSystemInfo = new DeviceSystemInfo(2, data[4], data[5]);
+                        } else {
+                            mDeviceSystemInfo.currChannel = data[5];
+                            mDeviceSystemInfo.priority = data[6];
+                        }
+                        NotifyManager.getManager().notifySwitchChannelOK();
+                    }else if (data.length == 4){
+                        mLastPort = data[3];
+                        mLastLength = data[2] - 1;
+                    }
+
 //                    mHandler.removeMessages(MSG_SET_CHANNEL);
 //                    NotifyManager.getManager().notifySwitchChannelOK();
                     break;
@@ -632,10 +645,8 @@ public class ConnectEntity {
                                 byte[] contentB = new byte[data.length - 17];
                                 System.arraycopy(data, 17, contentB, 0, contentB.length);
                                 String content = new String(contentB, "UTF-8");
-                                BLog.e(TAG, "receive group msg [userId]" + userId + "[content]" + content);
                                 GroupChatInfo groupChatInfo = new GroupChatInfo(userId, content);
                                 NotifyManager.getManager().notifyReceiveGroupMsg(groupChatInfo);
-
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
