@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import cn.yy.sdk.ble.array.NotifyActions;
+import cn.yy.sdk.ble.entity.GroupChatInfo;
 
 
 /**
@@ -42,6 +43,9 @@ public class NotifyManager {
                 case NotifyActions.SWITCH_CHANNEL:
                     BM.getManager().notifyChannelSwitchOk();
                     break;
+                case NotifyActions.RECEIVE_GROUP_MSG:
+                    BM.getManager().notifyReceiveGroupMsg((GroupChatInfo) msg.obj);
+                    break;
             }
         }
     };
@@ -65,4 +69,10 @@ public class NotifyManager {
         mNotifyHandler.sendMessage(msg);
     }
 
+
+    public synchronized void notifyReceiveGroupMsg(GroupChatInfo groupChatInfo) {
+        Message msg = mNotifyHandler.obtainMessage(NotifyActions.RECEIVE_GROUP_MSG);
+        msg.obj = groupChatInfo;
+        mNotifyHandler.sendMessage(msg);
+    }
 }

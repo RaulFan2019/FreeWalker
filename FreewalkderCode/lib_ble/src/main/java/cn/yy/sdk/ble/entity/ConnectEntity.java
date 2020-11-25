@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.nio.channels.Channel;
 import java.util.UUID;
@@ -499,8 +500,9 @@ public class ConnectEntity {
         mHandler.removeMessages(MSG_SEND_GROUP_CHAT_MSG);
         byte[] contentBytes = groupChatInfo.content.getBytes();
         byte[] userIdBytes = ByteU.intToBytes(groupChatInfo.userId);
-        int length = 3 + 2 + 4 + contentBytes.length;
-        byte[] data = new byte[length];
+        int length = 2 + 4 + contentBytes.length;
+        byte[] data = new byte[length + 3];
+
         data[0] = (byte) 0xFE;
         data[1] = (byte) 0x95;
         data[2] = (byte) length;
@@ -509,13 +511,11 @@ public class ConnectEntity {
         //type
         data[4] = PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT;
         //user Id
-        data[5] = userIdBytes[3];
-        data[6] = userIdBytes[2];
-        data[7] = userIdBytes[1];
-        data[8] = userIdBytes[0];
+        data[5] = userIdBytes[0];
+        data[6] = userIdBytes[1];
+        data[7] = userIdBytes[2];
+        data[8] = userIdBytes[3];
 
-        BLog.e(TAG,"length:" + length);
-        BLog.e(TAG,"contentBytes.length:" + contentBytes.length);
         //content
         for (int i = 0; i < contentBytes.length; i++) {
             data[9 + i] = contentBytes[i];
@@ -602,10 +602,10 @@ public class ConnectEntity {
         BLog.e(TAG, "analysisData:" + ByteU.bytesToHexString(data));
         if (data.length >= 4
                 && data[0] == (byte) 0xFE && data[1] == (byte) 0x95) {
+            mLastPort = data[3];
+            mLastLength = data[2] - 1;
             switch (data[3]) {
                 case PrivatePorts.GET_SYSTEM_INFO:
-                    mLastPort = PrivatePorts.GET_SYSTEM_INFO;
-                    mLastLength = data[2];
                     mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
                     mState = ConnectStates.WORKED;
                     NotifyManager.getManager().notifyStateChange(mState);
@@ -614,10 +614,30 @@ public class ConnectEntity {
                 case PrivatePorts.SET_CHANNEL:
                     mHandler.removeMessages(MSG_SET_CHANNEL);
                     NotifyManager.getManager().notifySwitchChannelOK();
-                    mLastPort = PrivatePorts.SET_CHANNEL;
-                    mLastLength = data[2];
                     break;
+                //收到文本消息
+                case PrivatePorts.TEXT_MESSAGE:
+                    byte type = data[8];
+                    switch (type) {
+                        //fe95 11 01 fec192bf 0000 91 0d 01 00000009 616263
+                        //群聊消息
+                        case PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT:
+                            try {
+                                int userId = (int) ByteU.bytesToLong(new byte[]{data[9], data[10], data[11], data[12]});
+                                byte[] contentB = new byte[mLastLength - 13];
+                                System.arraycopy(data, 13, contentB, 0, contentB.length);
+                                String content = new String(contentB, "UTF-8");
+                                BLog.e(TAG, "receive group msg [userId]" + userId + "[content]" + content);
+                                GroupChatInfo groupChatInfo = new GroupChatInfo(userId, content);
+                                NotifyManager.getManager().notifyReceiveGroupMsg(groupChatInfo);
 
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                    }
+                    break;
             }
             //value
         } else if (mLastPort != 0 && mLastLength == data.length) {
@@ -741,16 +761,16 @@ public class ConnectEntity {
     /**
      * notify debug
      */
-    private void notifyPrivateDebug(){
-        BLog.e(TAG,"notifyPrivateDebug");
-        if (!setCharacteristicNotification(mDebugC, true)){
+    private void notifyPrivateDebug() {
+        BLog.e(TAG, "notifyPrivateDebug");
+        if (!setCharacteristicNotification(mDebugC, true)) {
             notifyErrorTimes++;
             if (notifyErrorTimes > 5) {
                 sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
             } else {
                 sendMsg(MSG_NOTIFY_PRIVATE_DEBUG, null, DELAY_REPEAT_NOTIFY);
             }
-        }else {
+        } else {
             sendMsg(MSG_GET_SYSTEM_INFO, null, 0);
         }
     }

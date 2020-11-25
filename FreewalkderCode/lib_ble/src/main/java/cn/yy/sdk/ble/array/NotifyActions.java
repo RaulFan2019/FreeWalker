@@ -13,4 +13,6 @@ public class NotifyActions {
 
     public static final int SWITCH_CHANNEL = 0x03;              //切换频道
 
+    public static final int RECEIVE_GROUP_MSG = 0x04;              //收到群消息
+
 }

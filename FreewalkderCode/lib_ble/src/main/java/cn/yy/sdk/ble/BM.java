@@ -14,10 +14,13 @@ import java.util.Locale;
 import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.entity.ConnectEntity;
 import cn.yy.sdk.ble.entity.DeviceSystemInfo;
+import cn.yy.sdk.ble.entity.GroupChatInfo;
 import cn.yy.sdk.ble.observer.ChannelListener;
 import cn.yy.sdk.ble.observer.ConnectListener;
+import cn.yy.sdk.ble.observer.ReceiveMsgListener;
 import cn.yy.sdk.ble.subject.ChannelEventSubjectImp;
 import cn.yy.sdk.ble.subject.ConnectSubjectImp;
+import cn.yy.sdk.ble.subject.ReceiveMsgSubjectImp;
 import cn.yy.sdk.ble.utils.AppU;
 import cn.yy.sdk.ble.utils.BLog;
 
@@ -50,6 +53,7 @@ public class BM {
     /* callback 管理*/
     private ConnectSubjectImp mConnectSub;                          //连接状态变化的订阅管理
     private ChannelEventSubjectImp mChannelSub;                     //频道订阅管理
+    private ReceiveMsgSubjectImp mReceiveMsgSub;                    //接收消息订阅管理
 
     private BM() {
     }
@@ -87,6 +91,7 @@ public class BM {
     private void initCallback() {
         mConnectSub = new ConnectSubjectImp();
         mChannelSub = new ChannelEventSubjectImp();
+        mReceiveMsgSub = new ReceiveMsgSubjectImp();
     }
 
 
@@ -336,6 +341,35 @@ public class BM {
      */
     protected void notifyChannelSwitchOk() {
         mChannelSub.notifyChannelSwitchOk();
+    }
+
+
+    /**
+     * 【消息】【注册】消息事件
+     *
+     * @param observer 频道事件监听回调
+     */
+    public void registerReceiveMsgListener(ReceiveMsgListener observer) {
+        mReceiveMsgSub.attach(observer);
+    }
+
+    /**
+     * 【消息】【注销】消息事件
+     *
+     * @param observer 频道事件监听回调
+     */
+    public void unRegisterReceiveMsgListener(ReceiveMsgListener observer) {
+        mReceiveMsgSub.detach(observer);
+    }
+
+
+    /**
+     * 【消息】【发布】消息事件
+     * 切换成功
+     */
+    protected void notifyReceiveGroupMsg(GroupChatInfo groupChatInfo) {
+        BLog.e(TAG,"notify group msg");
+        mReceiveMsgSub.notifyReceiveGroupMsg(groupChatInfo);
     }
 
 }

@@ -53,9 +53,12 @@ import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.utils.ChatUiHelper;
 import cn.yy.freewalker.utils.DateUtils;
+import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.array.ConnectStates;
+import cn.yy.sdk.ble.entity.GroupChatInfo;
 import cn.yy.sdk.ble.observer.ConnectListener;
+import cn.yy.sdk.ble.observer.ReceiveMsgListener;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
@@ -63,8 +66,9 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * @version 1.0
  * @date 2020/6/3 22:00
  */
-public class GroupChatActivity extends BaseActivity implements ConnectListener {
+public class GroupChatActivity extends BaseActivity implements ConnectListener, ReceiveMsgListener {
 
+    private static final String TAG = "GroupChatActivity";
 
     @BindView(R.id.tv_chat_user_title)
     TextView mUserTitleTv;
@@ -161,6 +165,14 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener {
     @Override
     public void connectStateChange(int state) {
         updateViewByConnectState(state);
+    }
+
+
+    @Override
+    public void receiveGroupMsg(GroupChatInfo groupChatInfo) {
+        YLog.e(TAG,"receiveGroupMsg userId:" + groupChatInfo.userId
+                + "groupChatInfo.content:" + groupChatInfo.content);
+        showLeftChat(groupChatInfo.content);
     }
 
     /**
@@ -332,5 +344,6 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener {
         mChatItems.add(new ChatRightTextBean(chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
+
 
 }

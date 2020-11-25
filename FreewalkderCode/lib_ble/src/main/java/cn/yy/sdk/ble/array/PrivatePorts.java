@@ -7,7 +7,7 @@ package cn.yy.sdk.ble.array;
  */
 public class PrivatePorts {
 
-    public static final byte GET_SYSTEM_INFO = 0x64;                            //包长度错误
+    public static final byte GET_SYSTEM_INFO = 0x64;                        //包长度错误
 
     public static final byte SET_CHANNEL = 0x65;                            //包长度错误
 
