@@ -77,6 +77,9 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
                 if (listDevice.size() == 0) {
                     tvNone.setVisibility(View.VISIBLE);
                     lvDevice.setVisibility(View.GONE);
+                }else {
+                    tvNone.setVisibility(View.GONE);
+                    lvDevice.setVisibility(View.VISIBLE);
                 }
                 break;
         }

@@ -149,7 +149,7 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
             //筛选设备名称不为空 && 设备名称前缀为 LIGHTEN
-            if (device.getName() != null) {
+            if (device.getName() != null && device.getName().equals("FreeWLK")) {
                 for (DeviceBleScan bs : listScan) {
                     if ((bs.device.getAddress().equals(device.getAddress()))) {
                         bs.rssi = rssi;

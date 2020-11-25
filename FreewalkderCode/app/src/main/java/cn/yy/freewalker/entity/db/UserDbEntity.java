@@ -38,6 +38,7 @@ public class UserDbEntity {
 
     @Column(name = "phone")
     public String phone;
+
     public UserDbEntity() {
     }
 

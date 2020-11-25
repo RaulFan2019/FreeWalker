@@ -9,7 +9,7 @@ import cn.yy.sdk.ble.BM;
  */
 public class BLog {
 
-    private static final String TAG_PRE = "[YIIDA_SDK]";
+    private static final String TAG_PRE = "[YY_SDK]";
 
     /**
      * 根据debug判断是否发送log信息 - 等级v

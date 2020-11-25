@@ -43,7 +43,7 @@ public class DeviceScanListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String data = listData.get(position).device.getName();
+        DeviceBleScan data = listData.get(position);
         Holder holder = null;
         View view = convertView;
 
@@ -71,8 +71,8 @@ public class DeviceScanListAdapter extends BaseAdapter {
             tvDeviceName = (TextView) view.findViewById(R.id.tv_device_name);
         }
 
-        public void UpdateUI(Context context, String data, int position) {
-            tvDeviceName.setText(data);
+        public void UpdateUI(Context context, DeviceBleScan data, int position) {
+            tvDeviceName.setText(data.device.getName() + "_" + data.device.getAddress().substring(5).replace(":",""));
         }
     }
 

@@ -21,17 +21,19 @@ public class BindDeviceDbEntity {
     public int deviceType;                                      //设备类型
     @Column(name = "deviceMac")
     public String deviceMac;                                    //设备地址
-
+    @Column(name = "lastChannel")
+    public int lastChannel;                                     //上一次频道
 
     public BindDeviceDbEntity() {
     }
 
     public BindDeviceDbEntity(long deviceId, int userId, String deviceName,
-                              int deviceType, String deviceMac) {
+                              int deviceType, String deviceMac, int lastChannel) {
         this.deviceId = deviceId;
         this.userId = userId;
         this.deviceName = deviceName;
         this.deviceType = deviceType;
         this.deviceMac = deviceMac;
+        this.lastChannel = lastChannel;
     }
 }

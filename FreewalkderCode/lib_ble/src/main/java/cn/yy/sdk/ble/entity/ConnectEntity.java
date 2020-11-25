@@ -115,6 +115,10 @@ public class ConnectEntity {
                 case MSG_SET_CHANNEL:
                     writeSetChannel((ChannelInfo) msg.obj);
                     break;
+                //发送群消息
+                case MSG_SEND_GROUP_CHAT_MSG:
+                    writeSendGroupChatMsg((GroupChatInfo) msg.obj);
+                    break;
             }
         }
     };
@@ -152,6 +156,7 @@ public class ConnectEntity {
         this.mName = name;
         this.mNeedConnect = true;
         this.mState = ConnectStates.CONNECTING;
+        this.mDeviceSystemInfo = null;
 
         mHandler.removeCallbacksAndMessages(null);
 
@@ -466,7 +471,6 @@ public class ConnectEntity {
     }
 
 
-
     /**
      * 发送群组消息
      *
@@ -481,9 +485,10 @@ public class ConnectEntity {
 
     /**
      * 写入发送群组消息
+     *
      * @param groupChatInfo
      */
-    public void writeSendGroupChatMsg(final GroupChatInfo groupChatInfo){
+    public void writeSendGroupChatMsg(final GroupChatInfo groupChatInfo) {
         mHandler.removeMessages(MSG_SEND_GROUP_CHAT_MSG);
         byte[] contentBytes = groupChatInfo.content.getBytes();
         byte[] userIdBytes = ByteU.intToBytes(groupChatInfo.userId);
@@ -491,7 +496,7 @@ public class ConnectEntity {
         byte[] data = new byte[length];
         data[0] = (byte) 0xFE;
         data[1] = (byte) 0x95;
-        data[3] = (byte)length;
+        data[3] = (byte) length;
         //port
         data[4] = PrivatePorts.TEXT_MESSAGE;
         //type
@@ -502,7 +507,7 @@ public class ConnectEntity {
         data[8] = userIdBytes[1];
         data[9] = userIdBytes[0];
         //content
-        for (int i = 0 ; i < contentBytes.length; i++){
+        for (int i = 0; i < contentBytes.length; i++) {
             data[10 + i] = contentBytes[i];
         }
 
@@ -604,7 +609,13 @@ public class ConnectEntity {
                     break;
                 //设置频道
                 case PrivatePorts.SET_CHANNEL:
-
+                    if (mDeviceSystemInfo == null) {
+                        mDeviceSystemInfo = new DeviceSystemInfo(2, data[0], data[1]);
+                    } else {
+                        mDeviceSystemInfo.currChannel = data[0];
+                        mDeviceSystemInfo.priority = data[1];
+                    }
+                    NotifyManager.getManager().notifySwitchChannelOK();
                     break;
             }
         }

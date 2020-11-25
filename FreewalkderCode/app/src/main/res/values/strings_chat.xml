@@ -37,4 +37,6 @@
 
     <string name="chat_title_channel">频道</string>
     <string name="chat_tx_channel">频道</string>
+
+    <string name="chat_error_group_channel_not_same">不能再不同的频道发消息</string>
 </resources>

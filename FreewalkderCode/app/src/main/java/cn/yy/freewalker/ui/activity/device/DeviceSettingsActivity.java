@@ -10,6 +10,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataDevice;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.sdk.ble.BM;
 
@@ -34,6 +38,10 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
     SeekBar sbVolume;
     @BindView(R.id.tv_channel)
     TextView tvChannel;
+
+
+    /* data */
+    private UserDbEntity mUser;
 
     @Override
     protected int getLayoutId() {
@@ -74,7 +82,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     @Override
     protected void initData() {
-
+        mUser = DBDataUser.getLoginUser(DeviceSettingsActivity.this);
     }
 
     @Override
@@ -82,10 +90,11 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         tvDevice.setText(BM.getManager().getConnectName());
         tvName.setText("Raul的耳机");
 
-        if (BM.getManager().getDeviceSystemInfo() != null){
+        if (BM.getManager().getDeviceSystemInfo() != null) {
             tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
-        }else {
-            tvChannel.setText("");
+        } else {
+            BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
+            tvChannel.setText(String.valueOf(dbEntity.lastChannel + 1));
         }
 
         tvVolume.setText("6");

@@ -232,39 +232,36 @@ public class LoginActivity extends BaseActivity implements TextWatcher {
             return;
         }
 
-        x.task().post(new Runnable() {
-            @Override
-            public void run() {
-                RequestParams params = RequestBuilder.loginByPwd(LoginActivity.this, mAccount, pwd);
-                x.http().post(params, new Callback.CommonCallback<BaseResult>() {
-                    @Override
-                    public void onSuccess(BaseResult result) {
-                        YLog.e(TAG, "onSuccess:" + result.msg + "," + result.data);
-                        if (result.code == 200) {
-                            mLoginResult = JSON.parseObject(result.data, LoginResult.class);
-                            mHandler.sendEmptyMessage(MSG_LOGIN_OK);
-                        } else {
-                            mHandler.obtainMessage(MSG_LOGIN_ERROR, result.msg).sendToTarget();
-                        }
+        x.task().post(() -> {
+            RequestParams params = RequestBuilder.loginByPwd(LoginActivity.this, mAccount, pwd);
+            x.http().post(params, new Callback.CommonCallback<BaseResult>() {
+                @Override
+                public void onSuccess(BaseResult result) {
+                    YLog.e(TAG, "onSuccess:" + result.msg + "," + result.data);
+                    if (result.code == 200) {
+                        mLoginResult = JSON.parseObject(result.data, LoginResult.class);
+                        mHandler.sendEmptyMessage(MSG_LOGIN_OK);
+                    } else {
+                        mHandler.obtainMessage(MSG_LOGIN_ERROR, result.msg).sendToTarget();
                     }
+                }
 
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-                        YLog.e(TAG, "onError:" + ex.getMessage());
-                        mHandler.obtainMessage(MSG_LOGIN_ERROR, ex.getMessage()).sendToTarget();
-                    }
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    YLog.e(TAG, "onError:" + ex.getMessage());
+                    mHandler.obtainMessage(MSG_LOGIN_ERROR, ex.getMessage()).sendToTarget();
+                }
 
-                    @Override
-                    public void onCancelled(CancelledException cex) {
+                @Override
+                public void onCancelled(CancelledException cex) {
 
-                    }
+                }
 
-                    @Override
-                    public void onFinished() {
+                @Override
+                public void onFinished() {
 
-                    }
-                });
-            }
+                }
+            });
         });
     }
 

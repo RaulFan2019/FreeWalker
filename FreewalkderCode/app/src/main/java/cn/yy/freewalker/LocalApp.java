@@ -8,14 +8,19 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import cn.yy.freewalker.data.DBDataDevice;
+import cn.yy.freewalker.data.SPDataUser;
+import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
 import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.array.ConnectStates;
+import cn.yy.sdk.ble.observer.ChannelListener;
 
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
  * @date 2020/5/28 16:27
  */
-public class LocalApp extends Application {
+public class LocalApp extends Application implements ChannelListener {
 
     private static final String TAG = "LocalApp";
 
@@ -24,7 +29,7 @@ public class LocalApp extends Application {
 
     /* local data about db */
     public static final String DB_NAME = "freewalker.db";
-    public static final int DB_VERSION = 3;
+    public static final int DB_VERSION = 4;
 
 
     private DbManager.DaoConfig daoConfig;
@@ -56,6 +61,20 @@ public class LocalApp extends Application {
         //初始化蓝牙
         BM.getManager().init(this);
         BM.getManager().setDebug(true);
+
+        BM.getManager().registerChannelListener(this);
+    }
+
+
+    @Override
+    public void switchChannelOk() {
+        if (BM.getManager().getConnectState() >= ConnectStates.WORKED
+                && BM.getManager().getDeviceSystemInfo() != null) {
+            BindDeviceDbEntity deviceDbEntity = DBDataDevice.findDeviceByUser(SPDataUser.getAccount(this),
+                    BM.getManager().getConnectMac());
+            deviceDbEntity.lastChannel = BM.getManager().getDeviceSystemInfo().currChannel;
+            DBDataDevice.update(deviceDbEntity);
+        }
     }
 
     /**

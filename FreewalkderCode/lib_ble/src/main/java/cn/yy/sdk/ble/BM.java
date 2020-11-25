@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.LocaleList;
 
 import java.io.File;
+import java.time.Year;
 import java.util.Locale;
 
 import cn.yy.sdk.ble.array.ConnectStates;
@@ -271,6 +272,7 @@ public class BM {
      * @return
      */
     public int sendGroupChatMsg(final int userId, final String content) {
+        BLog.e(TAG,"sendGroupChatMsg userId:" + userId + ", content:" + content);
         if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
             ConnectEntity.getInstance().sendGroupChatMsg(userId, content);
             return 0;

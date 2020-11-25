@@ -106,7 +106,8 @@
         <View style="@style/DeviceSettingsDivider" />
 
         <!-- 音量 -->
-        <LinearLayout style="@style/DeviceSettingsLl">
+        <LinearLayout style="@style/DeviceSettingsLl"
+            android:visibility="gone">
 
             <View
                 style="@style/DeviceSettingsIcon"

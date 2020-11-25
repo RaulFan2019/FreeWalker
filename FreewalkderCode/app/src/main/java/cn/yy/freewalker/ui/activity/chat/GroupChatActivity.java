@@ -33,7 +33,9 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataDevice;
 import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.event.OnUserAvatarClickEvent;
 import cn.yy.freewalker.entity.model.ChatLeftTextBean;
@@ -48,9 +50,12 @@ import cn.yy.freewalker.ui.adapter.binder.ChatRightTextBinder;
 import cn.yy.freewalker.ui.adapter.binder.ChatTimeBinder;
 import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
 import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
+import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.utils.ChatUiHelper;
 import cn.yy.freewalker.utils.DateUtils;
 import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.array.ConnectStates;
+import cn.yy.sdk.ble.observer.ConnectListener;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
@@ -58,7 +63,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * @version 1.0
  * @date 2020/6/3 22:00
  */
-public class GroupChatActivity extends BaseActivity {
+public class GroupChatActivity extends BaseActivity implements ConnectListener {
 
 
     @BindView(R.id.tv_chat_user_title)
@@ -84,14 +89,17 @@ public class GroupChatActivity extends BaseActivity {
     @BindView(R.id.iv_input_loc)
     ImageView mLocIv;
 
+    @BindView(R.id.tv_not_connect_tip)
+    TextView tvNotConnectTip;
+
     private MultiTypeAdapter mChatAdapter;
     private FreePagerAdapter mVpAdapter;
-
 
     private ArrayList<Object> mChatItems = new ArrayList<>();
     private Long lastTime = 0L;
     private UserDbEntity mUser;                                                     //用户信息
     private ChatRoomBean mRoom;                                                     //房间信息
+    private BindDeviceDbEntity mDeviceDbEntity;
 
     @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text, R.id.iv_input_loc, R.id.btn_send})
     public void onClick(View v) {
@@ -112,10 +120,15 @@ public class GroupChatActivity extends BaseActivity {
 
                 break;
             case R.id.btn_send:
-                String msg = mInputEt.getText().toString();
-                showRightChat(msg);
-                BM.getManager().sendGroupChatMsg(mUser.userId, msg);
-                mInputEt.setText("");
+                if (mDeviceDbEntity == null ||
+                        mRoom.id != (mDeviceDbEntity.lastChannel + 1)) {
+                    new ToastView(GroupChatActivity.this, getString(R.string.chat_error_group_channel_not_same), -1);
+                } else {
+                    String msg = mInputEt.getText().toString();
+                    showRightChat(msg);
+                    BM.getManager().sendGroupChatMsg(mUser.userId, msg);
+                    mInputEt.setText("");
+                }
                 break;
             default:
         }
@@ -141,6 +154,16 @@ public class GroupChatActivity extends BaseActivity {
     }
 
     /**
+     * 连接事件
+     *
+     * @param state
+     */
+    @Override
+    public void connectStateChange(int state) {
+        updateViewByConnectState(state);
+    }
+
+    /**
      * 附近的人相关事件
      *
      * @param event
@@ -158,6 +181,7 @@ public class GroupChatActivity extends BaseActivity {
 
         mRoom = (ChatRoomBean) getIntent().getExtras().get("room");
         mUser = DBDataUser.getLoginUser(GroupChatActivity.this);
+        mDeviceDbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
 //        leftTextBinder.setOnItemClick(new OnItemListener() {
 //            @Override
 //            public void onLongClick(View view, int pos) {
@@ -241,6 +265,9 @@ public class GroupChatActivity extends BaseActivity {
                 }
             }
         });
+
+        updateViewByConnectState(BM.getManager().getConnectState());
+
     }
 
     private void initChatUi() {
@@ -252,14 +279,25 @@ public class GroupChatActivity extends BaseActivity {
                 .bindToEmojiButton(mInputTypeIv);
     }
 
+
+    private void updateViewByConnectState(int state) {
+        if (state >= ConnectStates.WORKED) {
+            tvNotConnectTip.setVisibility(View.GONE);
+        } else {
+            tvNotConnectTip.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void doMyCreate() {
         LocalApp.getInstance().getEventBus().register(this);
+        BM.getManager().registerConnectListener(this);
     }
 
     @Override
     protected void causeGC() {
         LocalApp.getInstance().getEventBus().unregister(this);
+        BM.getManager().unRegisterConnectListener(this);
     }
 
     @Override
@@ -294,4 +332,5 @@ public class GroupChatActivity extends BaseActivity {
         mChatItems.add(new ChatRightTextBean(chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
+
 }

@@ -12,7 +12,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.data.DBDataChannel;
+import cn.yy.freewalker.data.DBDataDevice;
 import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
 import cn.yy.freewalker.entity.db.ChannelDbEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
@@ -20,6 +22,7 @@ import cn.yy.freewalker.ui.adapter.DeviceSettingChannelRvAdapter;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogDeviceInputChannelPwd;
+import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.observer.ChannelListener;
 
@@ -76,7 +79,11 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
 
     @Override
     public void switchChannelOk() {
+        YLog.e(TAG,"switchChannelOk");
         tvChannel.setText(mChannel.channel + "");
+        BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
+        dbEntity.lastChannel = mChannel.channel - 1;
+        DBDataDevice.update(dbEntity);
     }
 
     @Override
@@ -86,17 +93,18 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
             listAuthSelect.add(i + "");
         }
         mUser = DBDataUser.getLoginUser(DeviceSettingChannelActivity.this);
-        if (BM.getManager().getDeviceSystemInfo() != null){
-            mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel + 1;
-        }else {
-            mChanelIndex = 0;
-        }
 
+        if (BM.getManager().getDeviceSystemInfo() != null) {
+            mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel + 1;
+        } else {
+            BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
+            mChanelIndex = dbEntity.lastChannel + 1;
+        }
     }
 
     @Override
     protected void initViews() {
-        tvChannel.setText("");
+        tvChannel.setText(String.valueOf(mChanelIndex));
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 5);
 
@@ -140,9 +148,9 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
                 public void onConfirm(String pwd) {
                     String pwdStr = "";
                     for (int i = 0; i < pwd.length(); i++) {
-                        if (i == 0){
+                        if (i == 0) {
                             pwdStr += pwd.charAt(i);
-                        }else {
+                        } else {
                             pwdStr += "," + pwd.charAt(i);
                         }
                     }
@@ -161,7 +169,7 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
      * 选择年龄
      */
     private void onAuthSelectClick() {
-        if (mChanelIndex >= 10){
+        if (mChanelIndex >= 10) {
             mDialogBuilder.showPickViewDialog(DeviceSettingChannelActivity.this,
                     getString(R.string.device_action_setting_channel_auth), listAuthSelect, mChannel.priority);
             mDialogBuilder.setPickViewDialogListener(index -> {
@@ -169,7 +177,7 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
                 DBDataChannel.update(mChannel);
                 BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
             });
-        }else {
+        } else {
             new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_tip_channel_can_not_set_pwd_and_priority), -1);
         }
 
