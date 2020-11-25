@@ -304,12 +304,14 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
     protected void doMyCreate() {
         LocalApp.getInstance().getEventBus().register(this);
         BM.getManager().registerConnectListener(this);
+        BM.getManager().registerReceiveMsgListener(this);
     }
 
     @Override
     protected void causeGC() {
         LocalApp.getInstance().getEventBus().unregister(this);
         BM.getManager().unRegisterConnectListener(this);
+        BM.getManager().unRegisterReceiveMsgListener(this);
     }
 
     @Override
