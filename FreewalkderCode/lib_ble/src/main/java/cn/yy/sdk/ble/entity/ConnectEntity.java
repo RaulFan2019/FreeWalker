@@ -630,6 +630,7 @@ public class ConnectEntity {
                             try {
                                 int userId = (int) ByteU.bytesToLong(new byte[]{data[13], data[14], data[15], data[16]});
                                 byte[] contentB = new byte[data.length - 17];
+                                BLog.e(TAG,"contentB length:" + contentB.length);
                                 System.arraycopy(data, 13, contentB, 0, contentB.length);
                                 String content = new String(contentB, "UTF-8");
                                 BLog.e(TAG, "receive group msg [userId]" + userId + "[content]" + content);
