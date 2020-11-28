@@ -1,6 +1,5 @@
 package cn.yy.freewalker.ui.fragment.main;
 
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,18 +30,22 @@ import butterknife.OnClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
-import cn.yy.freewalker.entity.net.UserInfoResult;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.AmapNearbyUserView;
 import cn.yy.freewalker.ui.widget.radarview.RadarView;
 import cn.yy.freewalker.utils.YLog;
+import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.entity.GroupChatInfo;
+import cn.yy.sdk.ble.entity.LocationInfo;
+import cn.yy.sdk.ble.entity.SingleChatInfo;
+import cn.yy.sdk.ble.observer.ReceiveMsgListener;
 
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
  * @date 2020/6/6 0:03
  */
-public class MainNearbyFragment extends BaseFragment implements AMapLocationListener {
+public class MainNearbyFragment extends BaseFragment implements AMapLocationListener, ReceiveMsgListener {
 
 
     private static final String TAG = "MainNearbyFragment";
@@ -70,12 +73,14 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     /* data */
     AMap mAMap;                                                     //地图
-    AMapLocation mLocation;                                         //当前位置
-    boolean mFirstLocation = true;                                   //首次定位
-    List<UserInfoResult> listUser = new ArrayList<>();
+
+    List<Marker> listMarker = new ArrayList<>();
     List<LatLng> listLat = new ArrayList<>();
+    List<LocationInfo> listScan = new ArrayList<>();
 
     /* 定位相关 */
+    AMapLocation mLocation;                                         //当前位置
+    boolean mFirstLocation = true;                                   //首次定位
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption = null;
 
@@ -90,6 +95,19 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main_nearby;
+    }
+
+
+    @Override
+    public void receiveLocationMsg(LocationInfo locationInfo) {
+        YLog.e(TAG,"receiveLocationMsg  locationInfo");
+        double latitude = (locationInfo.latitude / 1000000.0) - 90;
+        double longitude = (locationInfo.longtitude / 1000000.0) - 180;
+        YLog.e(TAG,"latitude:" + latitude);
+        YLog.e(TAG,"longitude:" + longitude);
+
+        listLat.add(new LatLng(latitude,longitude));
+        listScan.add(locationInfo);
     }
 
     @OnClick({R.id.btn_zoom_in, R.id.btn_zoom_out, R.id.btn_location, R.id.btn_scan})
@@ -111,10 +129,17 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                 }
                 break;
             case R.id.btn_scan:
-                mHandler.sendEmptyMessageDelayed(MSG_SHOW_TEST_USER, INTERVAL_SHOW_TEST_USER);
+                listScan.clear();
+                listLat.clear();
+                for (Marker maker : listMarker){
+                     maker.destroy();
+                }
+                listMarker.clear();
                 mHandler.sendEmptyMessageDelayed(MSG_STOP_SCAN, INTERVAL_SCAN);
                 scanView.setVisibility(View.VISIBLE);
                 btnScan.setVisibility(View.GONE);
+
+                BM.getManager().queryNearbyUsers();
                 break;
         }
     }
@@ -125,11 +150,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             case MSG_STOP_SCAN:
                 scanView.setVisibility(View.INVISIBLE);
                 btnScan.setVisibility(View.VISIBLE);
-//                showTestMarker();
-                break;
-            //Add Test Data
-            case MSG_SHOW_TEST_USER:
-                showTestMarker();
+                showMarker();
                 break;
         }
     }
@@ -156,6 +177,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         mapView.onCreate(mSavedInstanceState);
         initLocationClient();
         setUpMap();
+        BM.getManager().registerReceiveMsgListener(this);
     }
 
     @Override
@@ -178,9 +200,10 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     @Override
     protected void causeGC() {
-        if(mapView != null) {
+        if (mapView != null) {
             mapView.onDestroy();
         }
+        BM.getManager().unRegisterReceiveMsgListener(this);
     }
 
     @Override
@@ -231,26 +254,23 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                             .setStyleExtraPath(Environment.getExternalStoragePublicDirectory("data").getPath() + "style_extra.data")
 
             );
-            mAMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    for (int i = 0; i < listLat.size(); i++) {
-                        if (listLat.get(i).latitude == marker.getPosition().latitude
-                            && listLat.get(i).longitude == marker.getPosition().longitude){
-                            LocalApp.getInstance().getEventBus().post(
-                                    new NearbyUserCartEvent(NearbyUserCartEvent.SHOW, listUser.get(i)));
-                            break;
-                        }
+            mAMap.setOnMarkerClickListener(marker -> {
+                YLog.e(TAG,"listLat.size():" + listLat.size());
+                for (int i = 0; i < listLat.size(); i++) {
+                    if (listLat.get(i).latitude == marker.getPosition().latitude
+                            && listLat.get(i).longitude == marker.getPosition().longitude) {
+                        LocalApp.getInstance().getEventBus().post(
+                                new NearbyUserCartEvent(NearbyUserCartEvent.SHOW, listScan.get(i)));
+                        break;
                     }
-
-                    return false;
                 }
+
+                return false;
             });
 
             initMyLocation();
 
         }
-//        initMyLocation();
     }
 
 
@@ -268,32 +288,27 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     }
 
 
-    private void showTestMarker() {
+    private void showMarker(){
         if (mLocation != null) {
-//            listUser.add(new UserInfoResult("贝吉塔", 0, 1, "", "工程师",
-//                    "160~170", "60~70", "25"));
-//            listUser.add(new UserInfoResult("孙悟空", 0, 2, "", "律师",
-//                    "160~170", "60~70", "25"));
-//            listUser.add(new UserInfoResult("短笛", 0, 1, "", "建筑师",
-//                    "160~170", "60~70", "25"));
-//            listUser.add(new UserInfoResult("魔人布欧", 1, 3, "", "销售员",
-//                    "160~170", "60~70", "25"));
-
-
-            listLat.add(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
-            listLat.add(new LatLng(mLocation.getLatitude() + 0.001, mLocation.getLongitude() + 0.001));
-            listLat.add(new LatLng(mLocation.getLatitude() + 0.002, mLocation.getLongitude() + 0.002));
-            listLat.add(new LatLng(mLocation.getLatitude() - 0.001, mLocation.getLongitude() + 0.003));
-            listLat.add(new LatLng(mLocation.getLatitude() - 0.002, mLocation.getLongitude() + 0.002));
-
-            for (int i = 0; i < listUser.size(); i++) {
+            for (int i = 0; i < listScan.size(); i++) {
                 AmapNearbyUserView nearbyUserView = new AmapNearbyUserView(getActivity());
-                nearbyUserView.bindView(listUser.get(i));
-                mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
+                nearbyUserView.bindView(listScan.get(i));
+                Marker marker = mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
                         .position(listLat.get(i))
                         .icon(BitmapDescriptorFactory.fromView(nearbyUserView)));
+                listMarker.add(marker);
             }
         }
+    }
+
+    @Override
+    public void receiveGroupMsg(GroupChatInfo groupChatInfo) {
 
     }
+
+    @Override
+    public void receiveSingleMsg(SingleChatInfo singleChatInfo) {
+
+    }
+
 }

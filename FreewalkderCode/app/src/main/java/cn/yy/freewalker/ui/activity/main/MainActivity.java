@@ -36,6 +36,7 @@ import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.entity.net.BaseResult;
 import cn.yy.freewalker.entity.net.CheckVersionResult;
 import cn.yy.freewalker.network.RequestBuilder;
+import cn.yy.freewalker.service.UserDeviceCallbackService;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.fragment.main.MainChatFragment;
@@ -159,7 +160,7 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void NearbyCardEvent(NearbyUserCartEvent event) {
         if (event.type == NearbyUserCartEvent.SHOW) {
-            fragmentNearbyUserCard.updateViews(event.user);
+            fragmentNearbyUserCard.updateViews(event.locationInfo);
             llFragmentUserCard.setVisibility(View.VISIBLE);
         } else if (event.type == NearbyUserCartEvent.CLOSE) {
             if (fragmentNearbyUserCard != null) {
@@ -196,6 +197,8 @@ public class MainActivity extends BaseActivity {
         LocalApp.getInstance().getEventBus().register(this);
 
         postCheckVersion();
+
+        startService(UserDeviceCallbackService.class);
     }
 
     @Override

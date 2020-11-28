@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.yy.sdk.ble.entity.GroupChatInfo;
+import cn.yy.sdk.ble.entity.LocationInfo;
+import cn.yy.sdk.ble.entity.SingleChatInfo;
 import cn.yy.sdk.ble.observer.ConnectListener;
 import cn.yy.sdk.ble.observer.ReceiveMsgListener;
 
@@ -30,6 +32,19 @@ public class ReceiveMsgSubjectImp implements ReceiveMsgSubject {
     public void notifyReceiveGroupMsg(GroupChatInfo groupChatInfo) {
         for (ReceiveMsgListener observer : mObservers) {
             observer.receiveGroupMsg(groupChatInfo);
+        }
+    }
+
+    @Override
+    public void notifyReceiveSingleMsg(SingleChatInfo singleChatInfo) {
+        for (ReceiveMsgListener observer : mObservers) {
+            observer.receiveSingleMsg(singleChatInfo);
+        }
+    }
+
+    public void notifyReceiveLocationMsg(LocationInfo locationInfo){
+        for (ReceiveMsgListener observer : mObservers) {
+            observer.receiveLocationMsg(locationInfo);
         }
     }
 }

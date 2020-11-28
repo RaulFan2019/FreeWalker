@@ -120,6 +120,8 @@
         <activity android:name=".ui.activity.chat.RecordListActivity"
             android:screenOrientation="portrait"/>
 
+        <service android:name=".service.UserDeviceCallbackService"/>
+
         <!-- 系统事件广播接收器 -->
         <receiver android:name="cn.yy.sdk.ble.receiver.BluetoothReceiver">
             <intent-filter>

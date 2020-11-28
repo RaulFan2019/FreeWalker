@@ -27,6 +27,7 @@ public class UrlConfig {
     public static final String MODIFY_PHONE_BY_PWD = HOST + "/user/modTel";
     //获取用户信息
     public static final String GET_USER_INFO = HOST + "/userInfo/getInfo";
+    public static final String GET_OTHER_USER_INFO = HOST + "/userInfo/getOtherInfo";
     //设置用户信息
     public static final String SET_USER_INFO = HOST + "/userInfo/setInfo";
     //获取用户照片

@@ -5,6 +5,8 @@ import android.os.Message;
 
 import cn.yy.sdk.ble.array.NotifyActions;
 import cn.yy.sdk.ble.entity.GroupChatInfo;
+import cn.yy.sdk.ble.entity.LocationInfo;
+import cn.yy.sdk.ble.entity.SingleChatInfo;
 
 
 /**
@@ -46,6 +48,16 @@ public class NotifyManager {
                 case NotifyActions.RECEIVE_GROUP_MSG:
                     BM.getManager().notifyReceiveGroupMsg((GroupChatInfo) msg.obj);
                     break;
+                case NotifyActions.RECEIVE_SINGLE_MSG:
+                    BM.getManager().notifyReceiveSingleMsg((SingleChatInfo) msg.obj);
+                    break;
+                case NotifyActions.QUERY_LOCATION:
+                    BM.getManager().notifyQueryLocationMsg();
+                    break;
+                case NotifyActions.RECEIVE_LOCATION_INFO:
+                    BM.getManager().notifyReceiveLocationMsg((LocationInfo) msg.obj);
+                    break;
+
             }
         }
     };
@@ -73,6 +85,23 @@ public class NotifyManager {
     public synchronized void notifyReceiveGroupMsg(GroupChatInfo groupChatInfo) {
         Message msg = mNotifyHandler.obtainMessage(NotifyActions.RECEIVE_GROUP_MSG);
         msg.obj = groupChatInfo;
+        mNotifyHandler.sendMessage(msg);
+    }
+
+    public synchronized void notifyReceiveSingleChatMsg(SingleChatInfo singleChatInfo) {
+        Message msg = mNotifyHandler.obtainMessage(NotifyActions.RECEIVE_SINGLE_MSG);
+        msg.obj = singleChatInfo;
+        mNotifyHandler.sendMessage(msg);
+    }
+
+    public synchronized void notifyQueryLocation() {
+        Message msg = mNotifyHandler.obtainMessage(NotifyActions.QUERY_LOCATION);
+        mNotifyHandler.sendMessage(msg);
+    }
+
+    public synchronized void notifyReceiveLocationMsg(LocationInfo locationInfo) {
+        Message msg = mNotifyHandler.obtainMessage(NotifyActions.RECEIVE_LOCATION_INFO);
+        msg.obj = locationInfo;
         mNotifyHandler.sendMessage(msg);
     }
 }

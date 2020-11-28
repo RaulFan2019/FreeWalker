@@ -16,13 +16,14 @@ import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.observer.ChannelListener;
 
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
  * @date 2020/6/7 11:52
  */
-public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
+public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener, ChannelListener {
 
 
     /* contains */
@@ -48,6 +49,11 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         return R.layout.activity_device_settings;
     }
 
+
+    @Override
+    public void switchChannelOk() {
+        tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
+    }
 
     @OnClick({R.id.btn_back, R.id.ll_device, R.id.ll_name, R.id.ll_update, R.id.ll_channel})
     public void onViewClicked(View view) {
@@ -98,7 +104,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     @Override
     protected void doMyCreate() {
-
+        BM.getManager().registerChannelListener(this);
     }
 
     @Override
@@ -115,7 +121,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     @Override
     protected void causeGC() {
-
+        BM.getManager().unRegisterChannelListener(this);
     }
 
     @Override
@@ -127,4 +133,6 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
+
 }

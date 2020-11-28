@@ -93,6 +93,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivityForResult(intent, requestCode);
     }
 
+    protected void startService(Class<?> cls) {
+        Intent intent = new Intent();
+        intent.setClass(getApplicationContext(), cls);
+        startService(intent);
+    }
 
     protected abstract int getLayoutId();
     //消息管理

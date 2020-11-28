@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.entity.net.UserInfoResult;
 import cn.yy.freewalker.utils.ImageU;
+import cn.yy.sdk.ble.entity.LocationInfo;
 
 /**
  * @author Raul.Fan
@@ -63,6 +64,17 @@ public class AmapNearbyUserView extends FrameLayout {
         ImageU.loadUserImage(user.avatar, vAvatar);
         tvName.setText(user.nickName);
         if (user.gender == 0) {
+            llBg.setBackgroundResource(R.drawable.bg_nearby_map_marker_male);
+        } else {
+            llBg.setBackgroundResource(R.drawable.bg_nearby_map_marker_female);
+        }
+    }
+
+
+    public void bindView(LocationInfo locationInfo){
+        ImageU.loadUserImage("", vAvatar);
+        tvName.setText(locationInfo.userName);
+        if (locationInfo.gender == 0) {
             llBg.setBackgroundResource(R.drawable.bg_nearby_map_marker_male);
         } else {
             llBg.setBackgroundResource(R.drawable.bg_nearby_map_marker_female);

@@ -1,5 +1,6 @@
 package cn.yy.freewalker.ui.fragment.main;
 
+import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.utils.ImageU;
 import cn.yy.freewalker.utils.UserInfoU;
+import cn.yy.sdk.ble.entity.LocationInfo;
 
 /**
  * @author Raul.Fan
@@ -41,6 +43,9 @@ public class MainNearbyUserCardFragment extends BaseFragment {
     @BindView(R.id.tv_weight)
     TextView tvWeight;
 
+    /* data */
+    private int mDestUserId;
+
     /* 构造函数 */
     public static MainNearbyUserCardFragment newInstance() {
         MainNearbyUserCardFragment fragment = new MainNearbyUserCardFragment();
@@ -60,7 +65,9 @@ public class MainNearbyUserCardFragment extends BaseFragment {
                 //TODO
                 break;
             case R.id.btn_chat:
-                startActivity(SingleChatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("destUserId", mDestUserId);
+                startActivity(SingleChatActivity.class, bundle);
                 break;
             case R.id.btn_close:
                 LocalApp.getInstance().getEventBus().post(new NearbyUserCartEvent(NearbyUserCartEvent.CLOSE, null));
@@ -106,5 +113,17 @@ public class MainNearbyUserCardFragment extends BaseFragment {
         tvProfession.setText(UserInfoU.getJobStr(getActivity(), user.job));
     }
 
+    public void updateViews(LocationInfo user) {
+        mDestUserId = user.userId;
+        ImageU.loadUserImage("", ivAvatar);
+
+        tvName.setText(user.userName);
+        tvAge.setText(UserInfoU.getAgeStr(user.age));
+        tvHeight.setText(UserInfoU.getHeightStr(user.height));
+        tvWeight.setText(UserInfoU.getHeightStr(user.weight));
+        tvGender.setText(UserInfoU.getGenderStr(getActivity(), user.gender));
+        tvLike.setText(UserInfoU.getGenderOriStr(getActivity(), user.sex));
+        tvProfession.setText(UserInfoU.getJobStr(getActivity(), user.job));
+    }
 
 }

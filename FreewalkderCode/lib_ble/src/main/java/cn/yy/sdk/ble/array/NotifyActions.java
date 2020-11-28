@@ -15,4 +15,9 @@ public class NotifyActions {
 
     public static final int RECEIVE_GROUP_MSG = 0x04;              //收到群消息
 
+    public static final int RECEIVE_SINGLE_MSG = 0x05;              //收到单聊消息
+
+    public static final int QUERY_LOCATION = 0x06;              //查询位置信息
+
+    public static final int RECEIVE_LOCATION_INFO = 0x07;           //收到位置信息
 }

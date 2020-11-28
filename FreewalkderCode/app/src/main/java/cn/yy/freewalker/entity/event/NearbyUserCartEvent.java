@@ -1,6 +1,7 @@
 package cn.yy.freewalker.entity.event;
 
 import cn.yy.freewalker.entity.net.UserInfoResult;
+import cn.yy.sdk.ble.entity.LocationInfo;
 
 /**
  * @author Raul.Fan
@@ -15,13 +16,15 @@ public class NearbyUserCartEvent {
     public static final int CHAT = 4;
 
     public int type;
-    public UserInfoResult user;
+    public LocationInfo locationInfo;
+
+//    public UserInfoResult user;
 
     public NearbyUserCartEvent() {
     }
 
-    public NearbyUserCartEvent(int type, UserInfoResult user) {
+    public NearbyUserCartEvent(int type, LocationInfo locationInfo) {
         this.type = type;
-        this.user = user;
+        this.locationInfo = locationInfo;
     }
 }

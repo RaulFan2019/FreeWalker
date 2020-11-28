@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +17,7 @@ import android.os.Message;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.nio.channels.Channel;
+import java.time.Year;
 import java.util.UUID;
 
 import cn.yy.sdk.ble.BM;
@@ -57,6 +59,12 @@ public class ConnectEntity {
 
     private static final int MSG_SET_CHANNEL = 0x06;                      //设置channel
     private static final int MSG_SEND_GROUP_CHAT_MSG = 0x07;              //发送groupChat 数据
+    private static final int MSG_SEND_SINGLE_CHAT_MSG = 0x08;             //发送单聊消息
+
+    private static final int MSG_QUERY_NEARBY_USERS = 0x09;               //查询附近的人
+
+    private static final int MSG_SEND_LOCATION_INFO = 0x10;               //发送位置信息
+
 
     /* local data of system */
     private Application mContext;                                          //上下文
@@ -83,6 +91,8 @@ public class ConnectEntity {
     private BluetoothGattCharacteristic mDebugC;                       //Debug 特征
 
     private final Object LOCK = new Object();
+
+    private GroupPkgEntity mGroupPkg;                                 //拼包信息
 
     private int mLastLength;
     private byte mLastPort;
@@ -126,6 +136,17 @@ public class ConnectEntity {
                 case MSG_SEND_GROUP_CHAT_MSG:
                     writeSendGroupChatMsg((GroupChatInfo) msg.obj);
                     break;
+                case MSG_SEND_SINGLE_CHAT_MSG:
+                    writeSendSingleChatMsg((SingleChatInfo) msg.obj);
+                    break;
+                //查询附近的人
+                case MSG_QUERY_NEARBY_USERS:
+                    writeQueryNearbyUsers();
+                    break;
+                //发送位置信息
+                case MSG_SEND_LOCATION_INFO:
+                    writeSendLocationInfo((LocationInfo) msg.obj);
+                    break;
             }
         }
     };
@@ -164,6 +185,7 @@ public class ConnectEntity {
         this.mNeedConnect = true;
         this.mState = ConnectStates.CONNECTING;
         this.mDeviceSystemInfo = null;
+        this.mGroupPkg = new GroupPkgEntity();
 
         mHandler.removeCallbacksAndMessages(null);
 
@@ -402,6 +424,33 @@ public class ConnectEntity {
 
 
     /**
+     * 查询附近的用户
+     */
+    public void queryNearbyUsers() {
+        sendMsg(MSG_QUERY_NEARBY_USERS, null, 0);
+    }
+
+
+    public void writeQueryNearbyUsers() {
+        mHandler.removeMessages(MSG_QUERY_NEARBY_USERS);
+        byte[] data = new byte[5];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        data[2] = (byte) 2;
+        //port
+        data[3] = PrivatePorts.QUERY_MESSAGE;
+        //type
+        data[4] = PrivatePorts.TYPE_QUERY_MESSAGE_LOCATION;
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_QUERY_NEARBY_USERS, null, DELAY_REPEAT_WRITE);
+        }
+    }
+
+    /**
      * 设置频道
      *
      * @param channel
@@ -490,7 +539,6 @@ public class ConnectEntity {
         sendMsg(MSG_SEND_GROUP_CHAT_MSG, groupChatInfo, 0);
     }
 
-
     /**
      * 写入发送群组消息
      *
@@ -528,6 +576,135 @@ public class ConnectEntity {
         }
     }
 
+
+    /**
+     * 发送单聊消息
+     *
+     * @param userId     本人ID
+     * @param destUserId 目标ID
+     * @param content    消息内容
+     */
+    public void sendSingleChatMsg(final int userId, final int destUserId, final String content) {
+        SingleChatInfo singleChatInfo = new SingleChatInfo(userId, destUserId, content);
+        sendMsg(MSG_SEND_SINGLE_CHAT_MSG, singleChatInfo, 0);
+    }
+
+
+    public void writeSendSingleChatMsg(final SingleChatInfo singleChatInfo) {
+        mHandler.removeMessages(MSG_SEND_SINGLE_CHAT_MSG);
+        byte[] contentBytes = singleChatInfo.content.getBytes();
+        byte[] userIdBytes = ByteU.intToBytes(singleChatInfo.userId);
+        byte[] destUserIdBytes = ByteU.intToBytes(singleChatInfo.destUserId);
+
+        int length = 2 + 4 + 4 + contentBytes.length;
+        byte[] data = new byte[length + 3];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        data[2] = (byte) length;
+        //port
+        data[3] = PrivatePorts.TEXT_MESSAGE;
+        //type
+        data[4] = PrivatePorts.TYPE_TEXT_MESSAGE_SINGLE_CHAT;
+        //user Id
+        data[5] = userIdBytes[0];
+        data[6] = userIdBytes[1];
+        data[7] = userIdBytes[2];
+        data[8] = userIdBytes[3];
+        //dest user id
+        data[9] = destUserIdBytes[0];
+        data[10] = destUserIdBytes[1];
+        data[11] = destUserIdBytes[2];
+        data[12] = destUserIdBytes[3];
+
+        //content
+        for (int i = 0; i < contentBytes.length; i++) {
+            data[13 + i] = contentBytes[i];
+        }
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SEND_SINGLE_CHAT_MSG, singleChatInfo, DELAY_REPEAT_WRITE);
+        }
+    }
+
+    /**
+     * 发送位置信息
+     */
+    public void sendLocationInfo(final int userId, final double latitude, final double longtitude,
+                                 final int gender, final int age, final int sex, final int job,
+                                 final int height, final int weight, final String userName) {
+
+        int sendLatitude = (int) ((latitude + 90) * 1000000);
+        int sendLongtitude = (int) ((longtitude + 180) * 1000000);
+        BLog.e(TAG,"sendLocationInfo sendLatitude:" + sendLatitude);
+        BLog.e(TAG,"sendLocationInfo sendLongtitude:" + sendLongtitude);
+
+        LocationInfo locationInfo = new LocationInfo(mDeviceSystemInfo.currChannel,
+                userId,  sendLatitude, sendLongtitude,
+                gender, age, sex, job, height, weight, userName);
+        sendMsg(MSG_SEND_LOCATION_INFO, locationInfo, 0);
+    }
+
+
+    public void writeSendLocationInfo(final LocationInfo locationInfo) {
+        BLog.e(TAG, "writeSendLocationInfo userId:" + locationInfo.userId);
+        mHandler.removeMessages(MSG_SEND_LOCATION_INFO);
+        byte[] nameBytes = locationInfo.userName.getBytes();
+        byte[] userIdBytes = ByteU.intToBytes(locationInfo.userId);
+        byte[] latitudeBytes = ByteU.intToBytes(locationInfo.latitude);
+        byte[] longtitudeBytes = ByteU.intToBytes(locationInfo.longtitude);
+        int length = 2 + 19 + nameBytes.length;
+        byte[] data = new byte[length + 3];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        data[2] = (byte) length;
+        //port
+        data[3] = PrivatePorts.TEXT_MESSAGE;
+        //type
+        data[4] = PrivatePorts.TYPE_TEXT_MESSAGE_LOCATION;
+        //channel
+        data[5] = (byte) locationInfo.channel;
+        //user Id
+        data[6] = userIdBytes[0];
+        data[7] = userIdBytes[1];
+        data[8] = userIdBytes[2];
+        data[9] = userIdBytes[3];
+        //latitude
+        data[10] = latitudeBytes[0];
+        data[11] = latitudeBytes[1];
+        data[12] = latitudeBytes[2];
+        data[13] = latitudeBytes[3];
+        //longtitude
+        data[14] = longtitudeBytes[0];
+        data[15] = longtitudeBytes[1];
+        data[16] = longtitudeBytes[2];
+        data[17] = longtitudeBytes[3];
+        //gender
+        data[18] = (byte) locationInfo.gender;
+        //age
+        data[19] = (byte) locationInfo.age;
+        //sex
+        data[20] = (byte) locationInfo.sex;
+        //job
+        data[21] = (byte) locationInfo.job;
+        //height
+        data[22] = (byte) locationInfo.height;
+        //weight
+        data[23] = (byte) locationInfo.weight;
+        //userNam
+        for (int i = 0; i < nameBytes.length; i++) {
+            data[24 + i] = nameBytes[i];
+        }
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SEND_LOCATION_INFO, locationInfo, DELAY_REPEAT_WRITE);
+        }
+    }
 
     /**
      * 读取数据成功
@@ -600,79 +777,133 @@ public class ConnectEntity {
      */
     private void analysisPrivateData(final byte[] data) {
         BLog.e(TAG, "analysisData:" + ByteU.bytesToHexString(data));
+        //抓到头信息
         if (data.length >= 4
                 && data[0] == (byte) 0xFE && data[1] == (byte) 0x95) {
-
-            switch (data[3]) {
-                case PrivatePorts.GET_SYSTEM_INFO:
-                    mLastPort = data[3];
-                    mLastLength = data[2] - 1;
-                    mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
-                    mState = ConnectStates.WORKED;
-                    NotifyManager.getManager().notifyStateChange(mState);
-                    break;
-                //设置频道
-                case PrivatePorts.SET_CHANNEL:
-                    //单包结束
-                    if (data.length == 6){
-                        BLog.e(TAG,"receive SET_CHANNEL channel:" + data[4] + ",priority:" + data[5]);
-                        if (mDeviceSystemInfo == null) {
-                            mDeviceSystemInfo = new DeviceSystemInfo(2, data[4], data[5]);
-                        } else {
-                            mDeviceSystemInfo.currChannel = data[4];
-                            mDeviceSystemInfo.priority = data[5];
-                        }
-                        NotifyManager.getManager().notifySwitchChannelOK();
-                    }else if (data.length == 4){
-                        mLastPort = data[3];
-                        mLastLength = data[2] - 1;
-                    }
-
-//                    mHandler.removeMessages(MSG_SET_CHANNEL);
-//                    NotifyManager.getManager().notifySwitchChannelOK();
-                    break;
-                //收到文本消息
-                case PrivatePorts.TEXT_MESSAGE:
-                    BLog.e(TAG,"receive TEXT_MESSAGE");
-                    byte type = data[12];
-                    switch (type) {
-                        //fe95 11 01 fec192bf 0000 91 0d 01 00000009 616263
-                        //群聊消息
-                        case PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT:
-                            BLog.e(TAG,"receive GROUP MESSAGE");
-                            try {
-                                int userId = (int) ByteU.bytesToLong(new byte[]{data[13], data[14], data[15], data[16]});
-                                byte[] contentB = new byte[data.length - 17];
-                                System.arraycopy(data, 17, contentB, 0, contentB.length);
-                                String content = new String(contentB, "UTF-8");
-                                GroupChatInfo groupChatInfo = new GroupChatInfo(userId, content);
-                                NotifyManager.getManager().notifyReceiveGroupMsg(groupChatInfo);
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                            break;
-
-                    }
-                    break;
+            if (mGroupPkg.insertPkgHead(data) == GroupPkgEntity.INSERT_FINISH) {
+                analysisGroupData();
             }
             //value
-        } else if (mLastPort != 0 && mLastLength == data.length) {
-            switch (mLastPort) {
-                case PrivatePorts.GET_SYSTEM_INFO:
-                    mDeviceSystemInfo = new DeviceSystemInfo(data[0], data[1], data[2]);
-                    break;
-                //设置频道
-                case PrivatePorts.SET_CHANNEL:
-                    BLog.e(TAG,"receive SET_CHANNEL channel:" + data[0] + ",priority:" + data[1]);
-                    if (mDeviceSystemInfo == null) {
-                        mDeviceSystemInfo = new DeviceSystemInfo(2, data[0], data[1]);
-                    } else {
-                        mDeviceSystemInfo.currChannel = data[0];
-                        mDeviceSystemInfo.priority = data[1];
-                    }
-                    NotifyManager.getManager().notifySwitchChannelOK();
-                    break;
+        } else {
+            if (mGroupPkg.insertPkgLeft(data) == GroupPkgEntity.INSERT_FINISH) {
+                analysisGroupData();
             }
+        }
+    }
+
+
+    /**
+     * 解析拼包完成的数据
+     */
+    private void analysisGroupData() {
+        switch (mGroupPkg.port) {
+            //设备系统信息
+            case PrivatePorts.GET_SYSTEM_INFO:
+                mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
+                mState = ConnectStates.WORKED;
+                mDeviceSystemInfo = new DeviceSystemInfo(mGroupPkg.listData.get(0), mGroupPkg.listData.get(1), mGroupPkg.listData.get(2));
+                NotifyManager.getManager().notifyStateChange(mState);
+                break;
+            //设置频道成功
+            case PrivatePorts.SET_CHANNEL:
+                BLog.e(TAG, "receive SET_CHANNEL channel:" + mGroupPkg.listData.get(0) + ",priority:" + mGroupPkg.listData.get(1));
+                mDeviceSystemInfo.currChannel = mGroupPkg.listData.get(0);
+                mDeviceSystemInfo.priority = mGroupPkg.listData.get(1);
+                mHandler.removeMessages(MSG_SET_CHANNEL);
+                NotifyManager.getManager().notifySwitchChannelOK();
+                break;
+            //接收消息
+            case PrivatePorts.TEXT_MESSAGE:
+                switch (mGroupPkg.listData.get(8)) {
+                    //fe95 11 01 fec192bf 0000 91 0d 01 00000009 616263
+                    //群聊消息
+                    case PrivatePorts.TYPE_TEXT_MESSAGE_GROUP_CHAT:
+                        BLog.e(TAG, "receive GROUP MESSAGE");
+                        try {
+                            int userId = (int) ByteU.bytesToLong(
+                                    new byte[]{mGroupPkg.listData.get(9), mGroupPkg.listData.get(10),
+                                            mGroupPkg.listData.get(11), mGroupPkg.listData.get(12)});
+                            byte[] contentB = new byte[mGroupPkg.targetSize - 13];
+                            for (int i = 0; i < contentB.length; i++) {
+                                contentB[i] = mGroupPkg.listData.get(i + 13);
+                            }
+                            String content = new String(contentB, "UTF-8");
+                            GroupChatInfo groupChatInfo = new GroupChatInfo(userId, content);
+                            NotifyManager.getManager().notifyReceiveGroupMsg(groupChatInfo);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                        //0000000f 0000000a 68656c70
+                    case PrivatePorts.TYPE_TEXT_MESSAGE_SINGLE_CHAT:
+                        BLog.e(TAG, "receive SINGLE MESSAGE");
+                        try {
+                            int userId = (int) ByteU.bytesToLong(
+                                    new byte[]{mGroupPkg.listData.get(9), mGroupPkg.listData.get(10),
+                                            mGroupPkg.listData.get(11), mGroupPkg.listData.get(12)});
+                            int destUserId = (int) ByteU.bytesToLong(
+                                    new byte[]{mGroupPkg.listData.get(13), mGroupPkg.listData.get(14),
+                                            mGroupPkg.listData.get(15), mGroupPkg.listData.get(16)});
+                            byte[] contentB = new byte[mGroupPkg.targetSize - 17];
+                            for (int i = 0; i < contentB.length; i++) {
+                                contentB[i] = mGroupPkg.listData.get(i + 17);
+                            }
+                            String content = new String(contentB, "UTF-8");
+                            SingleChatInfo singleChatInfo = new SingleChatInfo(userId, destUserId, content);
+                            NotifyManager.getManager().notifyReceiveSingleChatMsg(singleChatInfo);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    //获取位置信息
+                    //17 0000000a 073a2058 11f9bd00 07 02 01 02 02 e88c83e6809de8bf9c00
+                    case PrivatePorts.TYPE_TEXT_MESSAGE_LOCATION:
+                        BLog.e(TAG, "receive LOCATION MESSAGE");
+                        try {
+                            int channel = mGroupPkg.listData.get(9);
+                            int userId = (int) ByteU.bytesToLong(
+                                    new byte[]{mGroupPkg.listData.get(10), mGroupPkg.listData.get(11),
+                                            mGroupPkg.listData.get(12), mGroupPkg.listData.get(13)});
+                            int latitude = (int) ByteU.bytesToLong(
+                                    new byte[]{mGroupPkg.listData.get(14), mGroupPkg.listData.get(15),
+                                            mGroupPkg.listData.get(16), mGroupPkg.listData.get(17)});
+                            int longtitude = (int) ByteU.bytesToLong(
+                                    new byte[]{mGroupPkg.listData.get(18), mGroupPkg.listData.get(19),
+                                            mGroupPkg.listData.get(20), mGroupPkg.listData.get(21)});
+                            int gender = mGroupPkg.listData.get(22);
+                            int age = mGroupPkg.listData.get(23);
+                            int sex = mGroupPkg.listData.get(24);
+                            int job = mGroupPkg.listData.get(25);
+                            int height = mGroupPkg.listData.get(26);
+                            int weight = mGroupPkg.listData.get(27);
+
+                            byte[] userNameB = new byte[mGroupPkg.targetSize - 28];
+                            for (int i = 0; i < userNameB.length; i++) {
+                                userNameB[i] = mGroupPkg.listData.get(i + 28);
+                            }
+                            String userName = new String(userNameB, "UTF-8");
+
+                            BLog.e(TAG, "userName:" + userName);
+                            NotifyManager.getManager().notifyReceiveLocationMsg(new LocationInfo(channel, userId, latitude,
+                                    longtitude, gender, age, sex, job, height, weight, userName));
+
+                        } catch (UnsupportedEncodingException e) {
+                            BLog.e(TAG, "e:" + e.getMessage());
+                            e.printStackTrace();
+                        }
+
+
+                        break;
+                }
+                //查询消息
+            case PrivatePorts.QUERY_MESSAGE:
+                switch (mGroupPkg.listData.get(8)) {
+                    //查询位置的消息
+                    case PrivatePorts.TYPE_QUERY_MESSAGE_LOCATION:
+                        NotifyManager.getManager().notifyQueryLocation();
+                        break;
+                }
+                break;
         }
     }
 

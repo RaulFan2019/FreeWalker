@@ -29,14 +29,14 @@ public class ChatLeftTextBinder extends ItemViewBinder<ChatLeftTextBean, ChatTex
         holder.setContentText(item.chatText);
         holder.setUserPhoto(item.photoUrl);
 
-//        holder.mChatUserPhotoIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(listener != null){
-//                    listener.onClick(v,holder.getAdapterPosition());
-//                }
-//            }
-//        });
+        holder.mChatUserPhotoIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onClick(v,holder.getAdapterPosition());
+                }
+            }
+        });
     }
 
     public void setOnItemClick(OnItemListener listener){

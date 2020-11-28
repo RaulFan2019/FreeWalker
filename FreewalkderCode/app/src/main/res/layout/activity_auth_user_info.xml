@@ -190,11 +190,39 @@
 
         <View style="@style/AuthMeSettingsDivider" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp">
+
+            <ImageView
+                android:id="@+id/img_photo_1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"/>
+
+            <ImageView
+                android:id="@+id/img_photo_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"/>
+
+            <ImageView
+                android:id="@+id/img_photo_3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"/>
+
+            <ImageView
+                android:id="@+id/img_photo_4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="11dp"/>
+
+        </LinearLayout>
 
         <View style="@style/AuthMeDivider" />
 
@@ -216,7 +244,7 @@
             android:id="@+id/btn_chat"
             style="@style/BtnLarge"
             android:text="@string/auth_action_chat"
-            android:layout_marginTop="159dp"
+            android:layout_marginTop="100dp"
             android:layout_marginBottom="55dp"/>
     </LinearLayout>
 

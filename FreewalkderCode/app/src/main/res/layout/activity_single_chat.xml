@@ -4,11 +4,13 @@
     android:background="@color/bg_chat_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <View
         android:id="@+id/v_status_bar"
         android:background="@color/tv_white"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp" />
+
     <FrameLayout
         android:id="@+id/rl_title"
         android:layout_height="40dp"
@@ -24,11 +26,11 @@
         <ImageButton
             android:id="@+id/btn_back"
             android:layout_centerVertical="true"
-            style="@style/TitleBackButton"/>
+            style="@style/TitleBackButton" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp" />
 
         <TextView
             android:layout_width="22dp"
@@ -39,8 +41,7 @@
             android:text="12"
             android:textSize="10sp"
             android:layout_marginEnd="15dp"
-            android:background="@drawable/bg_channel"
-            />
+            android:background="@drawable/bg_channel" />
     </FrameLayout>
 
     <RelativeLayout
@@ -57,6 +58,7 @@
             android:gravity="center"
             android:background="@drawable/bg_chat_user_info"
             android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="12dp"
                 android:layout_height="12dp"
@@ -124,7 +126,7 @@
             android:drawableStart="@drawable/icon_notice_red"
             android:drawablePadding="5dp"
             android:textColor="#FF414F"
-            android:text="@string/tips_no_connect_headset"/>
+            android:text="@string/tips_no_connect_headset" />
     </RelativeLayout>
 
     <LinearLayout
@@ -133,6 +135,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat_list"
             android:layout_width="match_parent"
@@ -140,13 +143,15 @@
             android:layout_weight="1">
 
         </androidx.recyclerview.widget.RecyclerView>
+
         <LinearLayout
 
             style="@style/ChatInputNavLayout">
+
             <ImageView
                 android:id="@+id/iv_input_type"
                 style="@style/ChatInputLeftBtn"
-                android:src="@drawable/btn_voice"/>
+                android:src="@drawable/btn_voice" />
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -154,12 +159,13 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp">
+
                 <EditText
                     android:id="@+id/et_input_text"
                     android:minLines="3"
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_chat_input"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/tv_input_speak"
@@ -170,20 +176,19 @@
                     android:textSize="15sp"
                     android:background="@drawable/bg_chat_input"
                     android:textColor="@color/tv_secondly"
-                    android:text="@string/btn_press_hold_and_speak"
-                    />
+                    android:text="@string/btn_press_hold_and_speak" />
             </RelativeLayout>
 
 
             <ImageView
                 android:id="@+id/iv_input_face"
                 style="@style/ChatInputLeftBtn"
-                android:src="@drawable/btn_emoji"
-                />
+                android:src="@drawable/btn_emoji" />
+
             <ImageView
                 android:id="@+id/iv_input_loc"
                 style="@style/ChatInputRightBtn"
-                android:src="@drawable/btn_location"/>
+                android:src="@drawable/btn_location" />
 
             <Button
                 android:id="@+id/btn_send"
@@ -191,7 +196,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_send_chat"/>
+                android:text="@string/btn_send_chat" />
         </LinearLayout>
     </LinearLayout>
 
@@ -200,15 +205,16 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:id="@+id/ll_face_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vp_face_input"
                 android:layout_width="match_parent"
-                android:layout_height="282dp">
-            </androidx.viewpager.widget.ViewPager>
+                android:layout_height="282dp"></androidx.viewpager.widget.ViewPager>
         </LinearLayout>
     </LinearLayout>
 

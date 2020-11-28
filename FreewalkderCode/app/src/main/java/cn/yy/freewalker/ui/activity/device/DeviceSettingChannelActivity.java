@@ -80,6 +80,10 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
     @Override
     public void switchChannelOk() {
         YLog.e(TAG,"switchChannelOk");
+        updateChannelData(BM.getManager().getDeviceSystemInfo().currChannel + 1);
+        mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel + 1;
+
+        initAdapter();
         tvChannel.setText(mChannel.channel + "");
         BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
         dbEntity.lastChannel = mChannel.channel - 1;
@@ -110,21 +114,27 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
 
         rvChannel.setLayoutManager(layoutManager);
 
+        initAdapter();
+
+
+
+    }
+
+
+    /**
+     * 初始化adapter
+     */
+    private void initAdapter(){
         adapter = new DeviceSettingChannelRvAdapter(DeviceSettingChannelActivity.this,
                 mChanelIndex,
                 channel -> {
                     mChanelIndex = channel;
-                    mChannel = DBDataChannel.getChannel(mUser.userId, channel);
-                    if (mChannel == null) {
-                        mChannel = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, channel, "", 5);
-                        DBDataChannel.save(mChannel);
-                    }
+                    updateChannelData(mChanelIndex);
                     BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
                 });
-
         rvChannel.setAdapter(adapter);
-
     }
+
 
     @Override
     protected void doMyCreate() {
@@ -180,7 +190,17 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
         } else {
             new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_tip_channel_can_not_set_pwd_and_priority), -1);
         }
-
     }
 
+
+    /**
+     * 更新频道信息
+     */
+    private void updateChannelData(final int channel){
+        mChannel = DBDataChannel.getChannel(mUser.userId, channel);
+        if (mChannel == null) {
+            mChannel = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, channel, "", 5);
+            DBDataChannel.save(mChannel);
+        }
+    }
 }

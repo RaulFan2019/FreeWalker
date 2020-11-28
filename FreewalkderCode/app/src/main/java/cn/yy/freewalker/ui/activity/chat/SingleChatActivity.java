@@ -33,6 +33,8 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.entity.event.OnUserAvatarClickEvent;
 import cn.yy.freewalker.ui.activity.auth.UserInfoActivity;
@@ -47,14 +49,26 @@ import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.fragment.face.FaceInputFragment;
 import cn.yy.freewalker.utils.ChatUiHelper;
 import cn.yy.freewalker.utils.DateUtils;
+import cn.yy.freewalker.utils.YLog;
+import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.array.ConnectStates;
+import cn.yy.sdk.ble.entity.GroupChatInfo;
+import cn.yy.sdk.ble.entity.LocationInfo;
+import cn.yy.sdk.ble.entity.SingleChatInfo;
+import cn.yy.sdk.ble.observer.ConnectListener;
+import cn.yy.sdk.ble.observer.ReceiveMsgListener;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
- * @author zhao
+ * @author Raul
  * @version 1.0
  * @date 2020/6/3 22:00
  */
-public class SingleChatActivity extends BaseActivity {
+public class SingleChatActivity extends BaseActivity implements ConnectListener, ReceiveMsgListener {
+
+    private static final String TAG = "SingleChatActivity";
+
+    /* views */
     @BindView(R.id.tv_chat_user_title)
     TextView mUserTitleTv;
     @BindView(R.id.rv_chat_list)
@@ -77,6 +91,8 @@ public class SingleChatActivity extends BaseActivity {
     Button mSendBtn;
     @BindView(R.id.iv_input_loc)
     ImageView mLocIv;
+    @BindView(R.id.tv_not_connect_tip)
+    TextView tvNotConnectTip;
 
     private MultiTypeAdapter mChatAdapter;
     private FreePagerAdapter mVpAdapter;
@@ -84,7 +100,11 @@ public class SingleChatActivity extends BaseActivity {
     private ArrayList<Object> mChatItems = new ArrayList<>();
     private Long lastTime = 0L;
 
-    @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text,R.id.iv_input_loc,R.id.btn_send})
+    /* data */
+    private UserDbEntity mUser;
+    private int mDestUserId;
+
+    @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text, R.id.iv_input_loc, R.id.btn_send})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_back:
@@ -103,8 +123,12 @@ public class SingleChatActivity extends BaseActivity {
 
                 break;
             case R.id.btn_send:
-                    showRightChat(mInputEt.getText().toString());
-                    mInputEt.setText("");
+                String msg = mInputEt.getText().toString();
+                showRightChat(msg);
+                mInputEt.setText("");
+
+                BM.getManager().sendSingleChatMsg(mUser.userId, mDestUserId, msg);
+
                 break;
             default:
         }
@@ -117,6 +141,11 @@ public class SingleChatActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    @Override
+    public void connectStateChange(int state) {
+        updateViewByConnectState(state);
     }
 
     @Override
@@ -136,25 +165,45 @@ public class SingleChatActivity extends BaseActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void NearbyCardEvent(OnUserAvatarClickEvent event) {
-        startActivity(UserInfoActivity.class);
+
     }
 
 
     @Override
+    public void receiveGroupMsg(GroupChatInfo groupChatInfo) {
+
+    }
+
+    @Override
+    public void receiveSingleMsg(SingleChatInfo singleChatInfo) {
+        if (singleChatInfo.userId == mDestUserId) {
+            showLeftChat(singleChatInfo.content);
+        }
+    }
+
+    @Override
+    public void receiveLocationMsg(LocationInfo locationInfo) {
+
+    }
+
+    @Override
     protected void initData() {
+        mUser = DBDataUser.getLoginUser(SingleChatActivity.this);
+        mDestUserId = getIntent().getExtras().getInt("destUserId");
+
         mChatAdapter = new MultiTypeAdapter();
         mChatAdapter.register(ChatTimeBean.class, new ChatTimeBinder());
         mChatAdapter.register(ChatLeftTextBean.class, new ChatLeftTextBinder());
         mChatAdapter.register(ChatRightTextBean.class, new ChatRightTextBinder());
 
-        mChatItems.add(new ChatTimeBean("12:18"));
-        mChatItems.add(new ChatLeftTextBean("你好[微笑][微笑][微笑][微笑][微笑]", ""));
+//        mChatItems.add(new ChatTimeBean("12:18"));
+//        mChatItems.add(new ChatLeftTextBean(mDestUserId, "你好[微笑][微笑][微笑][微笑][微笑]", ""));
 
         mChatAdapter.setItems(mChatItems);
 
         FaceInputFragment inputFragment = FaceInputFragment.newInstance();
         inputFragment.setOnOutputListener(bean -> {
-                    editTextShowEmoji(bean.unicode,bean.faceId);
+                    editTextShowEmoji(bean.unicode, bean.faceId);
                 }
         );
 
@@ -192,19 +241,20 @@ public class SingleChatActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(mInputEt.getText().length() > 0 && !mSendBtn.isShown()){
+                if (mInputEt.getText().length() > 0 && !mSendBtn.isShown()) {
                     mSendBtn.setVisibility(View.VISIBLE);
                     mLocIv.setVisibility(View.GONE);
-                }else if(mInputEt.getText().length() <=0){
+                } else if (mInputEt.getText().length() <= 0) {
                     mSendBtn.setVisibility(View.GONE);
                     mLocIv.setVisibility(View.VISIBLE);
                 }
             }
         });
+        updateViewByConnectState(BM.getManager().getConnectState());
     }
 
     private void initChatUi() {
-       ChatUiHelper.with(this)
+        ChatUiHelper.with(this)
                 .bindEditText(mInputEt)
                 .bindContentLayout(mContentLl)
                 .bindBottomLayout(mBottonLl)
@@ -215,11 +265,15 @@ public class SingleChatActivity extends BaseActivity {
     @Override
     protected void doMyCreate() {
         LocalApp.getInstance().getEventBus().register(this);
+        BM.getManager().registerReceiveMsgListener(this);
+        BM.getManager().registerConnectListener(this);
     }
 
     @Override
     protected void causeGC() {
         LocalApp.getInstance().getEventBus().unregister(this);
+        BM.getManager().unRegisterReceiveMsgListener(this);
+        BM.getManager().unRegisterConnectListener(this);
     }
 
     @Override
@@ -228,29 +282,38 @@ public class SingleChatActivity extends BaseActivity {
     }
 
     /*输入框显示表情*/
-    private void editTextShowEmoji(String unicode,int faceId) {
+    private void editTextShowEmoji(String unicode, int faceId) {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), faceId, null);
-        if(drawable != null) {
+        if (drawable != null) {
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-            ImageSpan imageSpan = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
+            ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
             SpannableString spannableString = new SpannableString(unicode);
-            spannableString.setSpan(imageSpan,0,unicode.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(imageSpan, 0, unicode.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             mInputEt.append(spannableString);
         }
     }
 
-    private void showLeftChat(String chatText){
-        mChatItems.add(new ChatLeftTextBean(chatText, ""));
+    private void showLeftChat(String chatText) {
+        mChatItems.add(new ChatLeftTextBean(mDestUserId, chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
 
-    private void showRightChat(String chatText){
-        if(System.currentTimeMillis() - lastTime >= 60 * 1000){
+    private void showRightChat(String chatText) {
+        if (System.currentTimeMillis() - lastTime >= 60 * 1000) {
             mChatItems.add(new ChatTimeBean(DateUtils.getCurrentTime()));
             lastTime = System.currentTimeMillis();
         }
 
-        mChatItems.add(new ChatRightTextBean(chatText,""));
+        mChatItems.add(new ChatRightTextBean(chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
+
+    private void updateViewByConnectState(int state) {
+        if (state >= ConnectStates.WORKED) {
+            tvNotConnectTip.setVisibility(View.GONE);
+        } else {
+            tvNotConnectTip.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

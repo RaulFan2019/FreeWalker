@@ -1,6 +1,7 @@
 package cn.yy.freewalker.ui.activity.chat;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
 import android.text.Spannable;
@@ -57,12 +58,14 @@ import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.entity.GroupChatInfo;
+import cn.yy.sdk.ble.entity.LocationInfo;
+import cn.yy.sdk.ble.entity.SingleChatInfo;
 import cn.yy.sdk.ble.observer.ConnectListener;
 import cn.yy.sdk.ble.observer.ReceiveMsgListener;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
- * @author zhao
+ * @author Raul
  * @version 1.0
  * @date 2020/6/3 22:00
  */
@@ -104,6 +107,13 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
     private UserDbEntity mUser;                                                     //用户信息
     private ChatRoomBean mRoom;                                                     //房间信息
     private BindDeviceDbEntity mDeviceDbEntity;
+
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_group_chat;
+    }
+
 
     @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text, R.id.iv_input_loc, R.id.btn_send})
     public void onClick(View v) {
@@ -147,10 +157,6 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         }
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_group_chat;
-    }
 
     @Override
     protected void myHandleMsg(Message msg) {
@@ -170,9 +176,18 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
 
     @Override
     public void receiveGroupMsg(GroupChatInfo groupChatInfo) {
-        YLog.e(TAG,"receiveGroupMsg userId:" + groupChatInfo.userId
-                + "groupChatInfo.content:" + groupChatInfo.content);
-        showLeftChat(groupChatInfo.content);
+        YLog.e(TAG,"receiveGroupMsg groupChatInfo.userId:" + groupChatInfo.userId);
+        showLeftChat(groupChatInfo.userId, groupChatInfo.content);
+    }
+
+    @Override
+    public void receiveSingleMsg(SingleChatInfo singleChatInfo) {
+
+    }
+
+    @Override
+    public void receiveLocationMsg(LocationInfo locationInfo) {
+
     }
 
     /**
@@ -182,7 +197,7 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void NearbyCardEvent(OnUserAvatarClickEvent event) {
-        startActivity(UserInfoActivity.class);
+//        startActivity(UserInfoActivity.class);
     }
 
     @Override
@@ -194,17 +209,22 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         mRoom = (ChatRoomBean) getIntent().getExtras().get("room");
         mUser = DBDataUser.getLoginUser(GroupChatActivity.this);
         mDeviceDbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
-//        leftTextBinder.setOnItemClick(new OnItemListener() {
-//            @Override
-//            public void onLongClick(View view, int pos) {
-//
-//            }
-//
-//            @Override
-//            public void onClick(View view, int pos) {
-//                startActivity(UserInfoActivity.class);
-//            }
-//        });
+        leftTextBinder.setOnItemClick(new OnItemListener() {
+            @Override
+            public void onLongClick(View view, int pos) {
+
+            }
+
+            @Override
+            public void onClick(View view, int pos) {
+                ChatLeftTextBean leftTextBean = (ChatLeftTextBean) mChatItems.get(pos);
+
+                YLog.e(TAG,"leftTextBean.userId:" + leftTextBean.userId);
+                Bundle bundle = new Bundle();
+                bundle.putInt("destUserId", leftTextBean.userId);
+                startActivity(UserInfoActivity.class, bundle);
+            }
+        });
 
         ChatRightTextBinder rightTextBinder = new ChatRightTextBinder();
 //        rightTextBinder.setOnItemClick(new OnItemListener() {
@@ -221,8 +241,8 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         mChatAdapter.register(ChatLeftTextBean.class, leftTextBinder);
         mChatAdapter.register(ChatRightTextBean.class, rightTextBinder);
 
-        mChatItems.add(new ChatTimeBean("12:18"));
-        mChatItems.add(new ChatLeftTextBean("你好[微笑][微笑][微笑][微笑][微笑]", ""));
+//        mChatItems.add(new ChatTimeBean("12:18"));
+//        mChatItems.add(new ChatLeftTextBean(9, "你好[微笑][微笑][微笑][微笑][微笑]", ""));
 
         mChatAdapter.setItems(mChatItems);
 
@@ -334,16 +354,18 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
 
     /**
      * 显示左边的聊天
+     *
      * @param chatText
      */
-    private void showLeftChat(String chatText) {
-        mChatItems.add(new ChatLeftTextBean(chatText, ""));
+    private void showLeftChat(int userId, String chatText) {
+        mChatItems.add(new ChatLeftTextBean(userId, chatText, ""));
         mChatAdapter.notifyDataSetChanged();
     }
 
 
     /**
      * 显示右边的聊天
+     *
      * @param chatText
      */
     private void showRightChat(String chatText) {
@@ -354,14 +376,6 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
 
         mChatItems.add(new ChatRightTextBean(chatText, ""));
         mChatAdapter.notifyDataSetChanged();
-    }
-
-
-    /**
-     *
-     */
-    private void requestUserInfo(){
-
     }
 
 }

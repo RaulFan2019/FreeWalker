@@ -181,6 +181,25 @@ public class RequestBuilder {
     }
 
 
+    /**
+     * 获取用户信息
+     *
+     * @param context
+     * @param userId
+     * @param token
+     * @return
+     */
+    public static RequestParams getOtherUserInfo(final Context context, final int userId, final String token) {
+        RequestParams params = new RequestParams(UrlConfig.GET_OTHER_USER_INFO);
+
+        params.addBodyParameter("l", SystemU.isZh(context) ? "zh_CN" : "en_US");
+
+        params.addBodyParameter("targetId", userId);
+        params.addBodyParameter("token", token);
+
+        return params;
+    }
+
 
     public static RequestParams setUserInfo(final Context context, final int userId,
                                             final String nickName, final int gender, final int genderOri,

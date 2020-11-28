@@ -15,11 +15,15 @@ import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.entity.ConnectEntity;
 import cn.yy.sdk.ble.entity.DeviceSystemInfo;
 import cn.yy.sdk.ble.entity.GroupChatInfo;
+import cn.yy.sdk.ble.entity.LocationInfo;
+import cn.yy.sdk.ble.entity.SingleChatInfo;
 import cn.yy.sdk.ble.observer.ChannelListener;
 import cn.yy.sdk.ble.observer.ConnectListener;
+import cn.yy.sdk.ble.observer.QueryMsgListener;
 import cn.yy.sdk.ble.observer.ReceiveMsgListener;
 import cn.yy.sdk.ble.subject.ChannelEventSubjectImp;
 import cn.yy.sdk.ble.subject.ConnectSubjectImp;
+import cn.yy.sdk.ble.subject.QueryMsgSubjectImp;
 import cn.yy.sdk.ble.subject.ReceiveMsgSubjectImp;
 import cn.yy.sdk.ble.utils.AppU;
 import cn.yy.sdk.ble.utils.BLog;
@@ -54,6 +58,7 @@ public class BM {
     private ConnectSubjectImp mConnectSub;                          //连接状态变化的订阅管理
     private ChannelEventSubjectImp mChannelSub;                     //频道订阅管理
     private ReceiveMsgSubjectImp mReceiveMsgSub;                    //接收消息订阅管理
+    private QueryMsgSubjectImp mQueryMsgSub;                        //查询消息订阅管理
 
     private BM() {
     }
@@ -92,6 +97,7 @@ public class BM {
         mConnectSub = new ConnectSubjectImp();
         mChannelSub = new ChannelEventSubjectImp();
         mReceiveMsgSub = new ReceiveMsgSubjectImp();
+        mQueryMsgSub= new QueryMsgSubjectImp();
     }
 
 
@@ -252,6 +258,20 @@ public class BM {
 
 
     /**
+     * 查询附近的用户
+     *
+     * @return
+     */
+    public int queryNearbyUsers() {
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().queryNearbyUsers();
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
      * 设置频道
      *
      * @param channel
@@ -277,7 +297,7 @@ public class BM {
      * @return
      */
     public int sendGroupChatMsg(final int userId, final String content) {
-        BLog.e(TAG,"sendGroupChatMsg userId:" + userId + ", content:" + content);
+        BLog.e(TAG, "sendGroupChatMsg userId:" + userId + ", content:" + content);
         if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
             ConnectEntity.getInstance().sendGroupChatMsg(userId, content);
             return 0;
@@ -286,6 +306,45 @@ public class BM {
         }
     }
 
+
+    public int sendSingleChatMsg(final int userId, final int destUserId, final String content) {
+        BLog.e(TAG, "sendSingleChatMsg userId:" + userId + ",destUserId:" + destUserId + ",content:" + content);
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().sendSingleChatMsg(userId, destUserId, content);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+
+    /**
+     * 发送用户的位置信息
+     * @param userId
+     * @param latitude
+     * @param longtitude
+     * @param gender
+     * @param age
+     * @param sex
+     * @param job
+     * @param height
+     * @param weight
+     * @param userName
+     * @return
+     */
+    public int sendLocationInfo(final int userId, final double latitude, final double longtitude,
+                                final int gender, final int age, final int sex, final int job,
+                                final int height, final int weight, final String userName) {
+
+        BLog.e(TAG, "sendLocationInfo");
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().sendLocationInfo(userId, latitude, longtitude, gender, age,
+                    sex, job, height, weight, userName);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 
     /**
      * 【消息】【注册】连接状态
@@ -340,7 +399,7 @@ public class BM {
      * 切换成功
      */
     protected void notifyChannelSwitchOk() {
-        BLog.e(TAG,"notifyChannelSwitchOk channel:" + ConnectEntity.getInstance().getSystemInfo().currChannel);
+        BLog.e(TAG, "notifyChannelSwitchOk channel:" + ConnectEntity.getInstance().getSystemInfo().currChannel);
         mChannelSub.notifyChannelSwitchOk();
     }
 
@@ -369,8 +428,40 @@ public class BM {
      * 切换成功
      */
     protected void notifyReceiveGroupMsg(GroupChatInfo groupChatInfo) {
-        BLog.e(TAG,"notify group msg");
+        BLog.e(TAG, "notify group msg");
         mReceiveMsgSub.notifyReceiveGroupMsg(groupChatInfo);
     }
 
+
+    protected void notifyReceiveSingleMsg(SingleChatInfo singleChatInfo) {
+        BLog.e(TAG, "notify single msg");
+        mReceiveMsgSub.notifyReceiveSingleMsg(singleChatInfo);
+    }
+
+    protected void notifyReceiveLocationMsg(LocationInfo locationInfo){
+        BLog.e(TAG,"notifyReceiveLocationMsg");
+        mReceiveMsgSub.notifyReceiveLocationMsg(locationInfo);
+    }
+
+    /**
+     * 【消息】【注册】消息事件
+     *
+     * @param observer 频道事件监听回调
+     */
+    public void registerQueryMsgListener(QueryMsgListener observer) {
+        mQueryMsgSub.attach(observer);
+    }
+
+    /**
+     * 【消息】【注销】消息事件
+     *
+     * @param observer 频道事件监听回调
+     */
+    public void unRegisterQueryMsgListener(QueryMsgListener observer) {
+        mQueryMsgSub.detach(observer);
+    }
+
+    protected void notifyQueryLocationMsg() {
+        mQueryMsgSub.notifyQueryLocationMsg();
+    }
 }
