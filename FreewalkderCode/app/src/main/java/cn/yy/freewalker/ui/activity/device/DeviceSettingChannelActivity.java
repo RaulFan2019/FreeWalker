@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,8 +45,8 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
 
 
     /* data */
-    ChannelDbEntity mChannel;
-    int mChanelIndex = 0;
+    List<ChannelDbEntity> listChannel = new ArrayList<>();
+    int mChanelIndex = -1;
 
     DeviceSettingChannelRvAdapter adapter;
     DialogBuilder mDialogBuilder;
@@ -63,10 +64,14 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_set_pwd:
-                onPwdInputClick();
+                if (mChanelIndex > 9){
+                    onPwdInputClick();
+                }
                 break;
             case R.id.btn_set_auth:
-                onAuthSelectClick();
+                if (mChanelIndex > 9){
+                    onAuthSelectClick();
+                }
                 break;
         }
     }
@@ -79,14 +84,13 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
 
     @Override
     public void switchChannelOk() {
-        YLog.e(TAG,"switchChannelOk");
-        updateChannelData(BM.getManager().getDeviceSystemInfo().currChannel + 1);
-        mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel + 1;
-
+        YLog.e(TAG, "switchChannelOk");
+        mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel;
+        tvChannel.setText(String.valueOf(listChannel.get(mChanelIndex).channel + 1));
         initAdapter();
-        tvChannel.setText(mChannel.channel + "");
+        //更改用户最后一次频道记录
         BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
-        dbEntity.lastChannel = mChannel.channel - 1;
+        dbEntity.lastChannel = mChanelIndex;
         DBDataDevice.update(dbEntity);
     }
 
@@ -98,17 +102,27 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
         }
         mUser = DBDataUser.getLoginUser(DeviceSettingChannelActivity.this);
 
+        //初始化频道
+        for (int i = 0; i < 30; i++) {
+            ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(mUser.userId, i);
+            if (channelDbEntity == null) {
+                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, i, "", 5);
+                DBDataChannel.save(channelDbEntity);
+            }
+            listChannel.add(channelDbEntity);
+        }
+
         if (BM.getManager().getDeviceSystemInfo() != null) {
-            mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel + 1;
+            mChanelIndex = BM.getManager().getDeviceSystemInfo().currChannel;
         } else {
             BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
-            mChanelIndex = dbEntity.lastChannel + 1;
+            mChanelIndex = dbEntity.lastChannel;
         }
     }
 
     @Override
     protected void initViews() {
-        tvChannel.setText(String.valueOf(mChanelIndex));
+        tvChannel.setText(String.valueOf(mChanelIndex + 1));
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 5);
 
@@ -117,20 +131,21 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
         initAdapter();
 
 
-
     }
 
 
     /**
      * 初始化adapter
      */
-    private void initAdapter(){
+    private void initAdapter() {
         adapter = new DeviceSettingChannelRvAdapter(DeviceSettingChannelActivity.this,
-                mChanelIndex,
+                mChanelIndex, listChannel,
                 channel -> {
                     mChanelIndex = channel;
-                    updateChannelData(mChanelIndex);
-                    BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
+
+                    BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
+                            listChannel.get(mChanelIndex).priority,
+                            listChannel.get(mChanelIndex).pwd);
                 });
         rvChannel.setAdapter(adapter);
     }
@@ -164,9 +179,13 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
                             pwdStr += "," + pwd.charAt(i);
                         }
                     }
-                    mChannel.pwd = pwdStr;
-                    DBDataChannel.update(mChannel);
-                    BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
+
+                    ChannelDbEntity channelDbEntity = listChannel.get(mChanelIndex);
+                    channelDbEntity.pwd = pwdStr;
+                    listChannel.set(mChanelIndex, channelDbEntity);
+                    DBDataChannel.update(channelDbEntity);
+                    BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
+                            listChannel.get(mChanelIndex).priority, listChannel.get(mChanelIndex).pwd);
                 }
             });
         } else {
@@ -176,31 +195,25 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
     }
 
     /**
-     * 选择年龄
+     * 选择权限
      */
     private void onAuthSelectClick() {
         if (mChanelIndex >= 10) {
             mDialogBuilder.showPickViewDialog(DeviceSettingChannelActivity.this,
-                    getString(R.string.device_action_setting_channel_auth), listAuthSelect, mChannel.priority);
+                    getString(R.string.device_action_setting_channel_auth), listAuthSelect, listChannel.get(mChanelIndex).priority);
             mDialogBuilder.setPickViewDialogListener(index -> {
-                mChannel.priority = index;
-                DBDataChannel.update(mChannel);
-                BM.getManager().setChannel(mChannel.channel - 1, mChannel.priority, mChannel.pwd);
+                ChannelDbEntity channelDbEntity = listChannel.get(mChanelIndex);
+                channelDbEntity.priority = index;
+                listChannel.set(mChanelIndex, channelDbEntity);
+                DBDataChannel.update(channelDbEntity);
+                BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
+                        listChannel.get(mChanelIndex).priority, listChannel.get(mChanelIndex).pwd);
+
+                adapter.notifyDataSetChanged();
             });
         } else {
             new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_tip_channel_can_not_set_pwd_and_priority), -1);
         }
     }
 
-
-    /**
-     * 更新频道信息
-     */
-    private void updateChannelData(final int channel){
-        mChannel = DBDataChannel.getChannel(mUser.userId, channel);
-        if (mChannel == null) {
-            mChannel = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, channel, "", 5);
-            DBDataChannel.save(mChannel);
-        }
-    }
 }

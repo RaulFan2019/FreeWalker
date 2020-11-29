@@ -30,6 +30,7 @@ public class ChatPersonBinder extends ItemViewBinder<ChatPersonBean, ChatPersonH
     @Override
     protected void onBindViewHolder(@NonNull ChatPersonHolder holder, @NonNull ChatPersonBean chatRoomBean) {
         holder.showName(chatRoomBean.name);
+        holder.showPhoto(chatRoomBean.photoUrl);
         holder.mDelConfirmBtn.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onDelConfirm(v,getPosition(holder));

@@ -7,11 +7,14 @@ package cn.yy.freewalker.entity.model;
  */
 public class ChatPersonBean {
 
+
+    public String photoUrl;
     public String name;
     public int id;
 
-    public ChatPersonBean(String name, int id) {
+    public ChatPersonBean(String name, String photoUrl, int id) {
         this.name = name;
+        this.photoUrl = photoUrl;
         this.id = id;
     }
 }

@@ -1,5 +1,6 @@
 package cn.yy.freewalker.ui.fragment.main;
 
+import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -9,9 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.config.UrlConfig;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.model.ChatPersonBean;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.adapter.binder.ChatPersonBinder;
@@ -24,6 +29,9 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * @date 2020/6/11 下午11:52
  */
 public class SingleChatListFragment extends BaseFragment {
+
+
+    /* views */
     @BindView(R.id.iv_single_chat_list)
     RecyclerView mChatListRv;
     @BindView(R.id.rl_no_content_tip)
@@ -50,37 +58,39 @@ public class SingleChatListFragment extends BaseFragment {
 
     @Override
     protected void initParams() {
-
-        mAdapter  = new MultiTypeAdapter();
+        mAdapter = new MultiTypeAdapter();
         ChatPersonBinder binder = new ChatPersonBinder();
         binder.setOnItemListener(new ChatPersonBinder.OnPersonClickListener() {
             @Override
-            public void onDelConfirm(View v,int pos) {
+            public void onDelConfirm(View v, int pos) {
                 mFriendItems.remove(pos);
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onShield(View view,int pos) {
+            public void onShield(View view, int pos) {
                 ChatPersonBean bean = (ChatPersonBean) mFriendItems.get(pos);
-                Toast.makeText(getContext(),"屏蔽好友："+bean.name,Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "屏蔽好友：" + bean.name, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onItem(View view, int pos) {
                 ChatPersonBean bean = (ChatPersonBean) mFriendItems.get(pos);
 
-                Toast.makeText(getContext(),bean.name,Toast.LENGTH_LONG).show();
-                startActivity(SingleChatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("destUserId", bean.id);
+                startActivity(SingleChatActivity.class, bundle);
             }
         });
 
-        mAdapter.register(ChatPersonBean.class,binder);
+        mAdapter.register(ChatPersonBean.class, binder);
         mAdapter.setItems(mFriendItems);
 
-        for(int i =0;i < 20;i++){
-            mFriendItems.add(new ChatPersonBean("好友"+i,i));
+        List<UserDbEntity> listFriends = DBDataUser.getAllFriends(mContext);
+        for (UserDbEntity dbEntity : listFriends) {
+            mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar, dbEntity.userId));
         }
+
         mChatListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mChatListRv.setAdapter(mAdapter);
     }

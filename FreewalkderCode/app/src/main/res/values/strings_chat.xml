@@ -2,6 +2,7 @@
 <resources>
     <string name="tips_no_friends">你还没有和好友单聊过，\n快去群聊里找个好友聊天吧~</string>
     <string name="tips_no_connect_headset">未连接蓝牙耳机，聊天功能暂不可用，请先连接耳机。</string>
+    <string name="tips_group_chat_channel_not_match">设备频道不匹配，请检查</string>
     <string name="btn_send_chat">发送</string>
     <string name="btn_press_hold_and_speak">按住说话</string>
 

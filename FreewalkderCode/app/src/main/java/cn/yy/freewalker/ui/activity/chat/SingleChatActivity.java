@@ -27,13 +27,19 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.config.UrlConfig;
+import cn.yy.freewalker.data.DBDataGroupChatMsg;
+import cn.yy.freewalker.data.DBDataSingleChatMsg;
 import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.GroupChatMsgEntity;
+import cn.yy.freewalker.entity.db.SingleChatMsgEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.entity.event.OnUserAvatarClickEvent;
@@ -103,6 +109,8 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
     /* data */
     private UserDbEntity mUser;
     private int mDestUserId;
+    private String mDestUserPhotoUrl;
+    private String mDestUserName;
 
     @OnClick({R.id.btn_back, R.id.iv_input_type, R.id.iv_input_face, R.id.et_input_text, R.id.iv_input_loc, R.id.btn_send})
     public void onClick(View v) {
@@ -190,14 +198,31 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
     protected void initData() {
         mUser = DBDataUser.getLoginUser(SingleChatActivity.this);
         mDestUserId = getIntent().getExtras().getInt("destUserId");
+        UserDbEntity userDbEntity = DBDataUser.getUserInfoByUserId(mDestUserId);
+        if (userDbEntity == null) {
+            mDestUserPhotoUrl = "";
+            mDestUserName = "??";
+        } else {
+            mDestUserPhotoUrl = UrlConfig.IMAGE_HOST + userDbEntity.avatar;
+            mDestUserName = userDbEntity.name;
+        }
+
+        //初始化群聊消息
+        List<SingleChatMsgEntity> listMsg = DBDataSingleChatMsg.getAllGroupChatMsg(mUser.userId, mDestUserId);
+        for (SingleChatMsgEntity chatMsgEntity : listMsg) {
+            //自己的
+            if (chatMsgEntity.isSelf) {
+                mChatItems.add(new ChatRightTextBean(chatMsgEntity.content, UrlConfig.IMAGE_HOST + mUser.avatar));
+                //别人的
+            } else {
+                mChatItems.add(new ChatLeftTextBean(chatMsgEntity.destUserId, mDestUserName, chatMsgEntity.content, mDestUserPhotoUrl));
+            }
+        }
 
         mChatAdapter = new MultiTypeAdapter();
         mChatAdapter.register(ChatTimeBean.class, new ChatTimeBinder());
         mChatAdapter.register(ChatLeftTextBean.class, new ChatLeftTextBinder());
         mChatAdapter.register(ChatRightTextBean.class, new ChatRightTextBinder());
-
-//        mChatItems.add(new ChatTimeBean("12:18"));
-//        mChatItems.add(new ChatLeftTextBean(mDestUserId, "你好[微笑][微笑][微笑][微笑][微笑]", ""));
 
         mChatAdapter.setItems(mChatItems);
 
@@ -294,17 +319,25 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
     }
 
     private void showLeftChat(String chatText) {
-        mChatItems.add(new ChatLeftTextBean(mDestUserId, chatText, ""));
+        SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(), mUser.userId,
+                mDestUserId, chatText, false);
+        DBDataSingleChatMsg.save(singleChatMsgEntity);
+
+        mChatItems.add(new ChatLeftTextBean(mDestUserId, mDestUserName, chatText, mDestUserPhotoUrl));
         mChatAdapter.notifyDataSetChanged();
     }
 
     private void showRightChat(String chatText) {
+        SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(), mUser.userId,
+                mDestUserId, chatText, true);
+        DBDataSingleChatMsg.save(singleChatMsgEntity);
+
         if (System.currentTimeMillis() - lastTime >= 60 * 1000) {
             mChatItems.add(new ChatTimeBean(DateUtils.getCurrentTime()));
             lastTime = System.currentTimeMillis();
         }
 
-        mChatItems.add(new ChatRightTextBean(chatText, ""));
+        mChatItems.add(new ChatRightTextBean(chatText, UrlConfig.IMAGE_HOST + mUser.avatar));
         mChatAdapter.notifyDataSetChanged();
     }
 

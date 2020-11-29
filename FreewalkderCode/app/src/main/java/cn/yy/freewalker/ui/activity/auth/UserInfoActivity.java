@@ -188,6 +188,9 @@ public class UserInfoActivity extends BaseActivity {
                         YLog.e(TAG, "onSuccess:" + result.msg + "," + result.data);
                         if (result.code == 200) {
                             mDestUserInfo = JSON.parseObject(result.data, UserInfoResult.class);
+                            //保存用户信息
+                            DBDataUser.saveOrUpdateUserInfo(mDestUserId, mDestUserInfo);
+
                             mHandler.sendEmptyMessage(MSG_GET_USER_INFO_OK);
                         } else {
                             mHandler.obtainMessage(MSG_GET_USER_INFO_ERROR,

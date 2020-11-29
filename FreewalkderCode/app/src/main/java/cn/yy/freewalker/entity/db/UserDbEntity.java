@@ -65,6 +65,34 @@ public class UserDbEntity {
         this.phone = phone;
     }
 
+    public UserDbEntity(final int userId, final UserInfoResult userInfoResult){
+        this.userId = userId;
+
+        this.avatar = userInfoResult.avatar;
+        this.name = userInfoResult.nickName;
+        this.genderIndex = userInfoResult.gender;
+        this.genderOriIndex = userInfoResult.genderOri;
+        this.ageIndex = userInfoResult.age;
+        this.professionIndex = userInfoResult.job;
+        this.heightIndex = userInfoResult.bodyLong;
+        this.weightIndex = userInfoResult.bodyWeight;
+    }
+
+    /**
+     * 更新用户信息
+     * @param userInfoResult
+     */
+    public void update(final UserInfoResult userInfoResult){
+        this.avatar = userInfoResult.avatar;
+        this.name = userInfoResult.nickName;
+        this.genderIndex = userInfoResult.gender;
+        this.genderOriIndex = userInfoResult.genderOri;
+        this.ageIndex = userInfoResult.age;
+        this.professionIndex = userInfoResult.job;
+        this.heightIndex = userInfoResult.bodyLong;
+        this.weightIndex = userInfoResult.bodyWeight;
+    }
+
 
     /**
      * 更新用户信息

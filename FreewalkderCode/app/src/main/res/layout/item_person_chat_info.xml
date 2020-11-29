@@ -8,6 +8,7 @@
         android:id="@+id/rl_person_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/iv_channel_icon"
             android:layout_width="40dp"
@@ -23,7 +24,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="48dp"
             android:layout_toEndOf="@id/iv_channel_icon"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tv_person_name"
@@ -42,7 +44,8 @@
                 android:lines="1"
                 android:text="频道1频道1频道1频道1频道1频道1频道1频道1频道1频道1"
                 android:textColor="@color/tv_thirdly"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -57,7 +60,6 @@
                 android:id="@+id/tv_last_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:12"
                 android:textColor="@color/tv_thirdly"
                 android:textSize="12sp" />
 
@@ -99,17 +101,19 @@
             android:gravity="center"
             android:background="@color/tv_tag_normal"
             android:layout_height="match_parent">
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/btn_shield"/>
+                android:src="@drawable/btn_shield" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/tv_white"
-                android:text="屏蔽"/>
+                android:text="屏蔽" />
         </LinearLayout>
 
         <LinearLayout
@@ -119,17 +123,19 @@
             android:gravity="center"
             android:background="@color/bg_tag_selected"
             android:layout_height="match_parent">
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/btn_delete"/>
+                android:src="@drawable/btn_delete" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/tv_white"
-                android:text="删除"/>
+                android:text="删除" />
         </LinearLayout>
     </LinearLayout>
 

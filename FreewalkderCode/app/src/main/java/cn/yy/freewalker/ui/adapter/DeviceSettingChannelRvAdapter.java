@@ -10,9 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.entity.db.ChannelDbEntity;
 import cn.yy.freewalker.utils.YLog;
 
 /**
@@ -27,16 +30,19 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
     private Context mContext;
     private int selectChannel;
     private onChannelClick mListener;
+    private List<ChannelDbEntity> mData;
 
 
     public interface onChannelClick {
         void onClick(int channel);
     }
 
-    public DeviceSettingChannelRvAdapter(Context context,int selectChannel, onChannelClick listener) {
+    public DeviceSettingChannelRvAdapter(Context context, int selectChannel, List<ChannelDbEntity> listChannel,
+                                         onChannelClick listener) {
         this.mContext = context;
         this.selectChannel = selectChannel;
         this.mListener = listener;
+        this.mData = listChannel;
     }
 
     @NonNull
@@ -45,14 +51,13 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_rv_device_setting_channel, parent, false);
         ViewHolder holder = new ViewHolder(view);
-//        holder.llChannel.setWeightSum(1.0f);
 
         holder.llChannel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                selectChannel = position + 1;
-                mListener.onClick(position + 1);
+                selectChannel = position;
+                mListener.onClick(position);
                 notifyDataSetChanged();
             }
         });
@@ -64,8 +69,8 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
 //        holder.llChannel.setWeightSum(1.0f);
-        holder.tvChannel.setText((position + 1) + "");
-        if (selectChannel == (position + 1)) {
+        holder.tvChannel.setText(String.valueOf(position + 1));
+        if (selectChannel == position) {
             holder.llChannel.setBackgroundColor(mContext.getResources().getColor(R.color.accent));
             holder.tvChannel.setTextColor(Color.WHITE);
             holder.tvChannelInfo.setTextColor(Color.WHITE);
@@ -77,13 +82,13 @@ public class DeviceSettingChannelRvAdapter extends RecyclerView.Adapter<DeviceSe
             holder.vSlot.setBackgroundResource(R.drawable.bg_channel_encryption_normal);
         }
 
-        if (position < 10){
+        if (mData.get(position).pwd.isEmpty()) {
             holder.vSlot.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.vSlot.setVisibility(View.VISIBLE);
         }
 
-      switch (position){
+        switch (position) {
             case 0:
                 holder.tvChannelInfo.setVisibility(View.VISIBLE);
                 holder.tvChannelInfo.setText(mContext.getString(R.string.device_channel_1));

@@ -10,23 +10,42 @@
         android:layout_width="40dp"
         android:layout_height="40dp" />
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:minHeight="40dp"
-        android:gravity="center_vertical"
-        android:minWidth="20dp"
-        android:background="@drawable/bg_chat_left"
-        android:padding="8dp">
+        android:layout_marginRight="8dp">
 
-        <cn.yy.freewalker.ui.widget.faceView.QQFaceTextView
-            android:id="@+id/qtv_chat_content"
-            android:textSize="15sp"
-            android:textColor="@color/tv_mostly"
-            android:maxWidth="250dp"
+        <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/tv_secondly"
+            android:textSize="10dp"
+            android:layout_marginBottom="6dp"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:gravity="center_vertical"
+            android:minWidth="20dp"
+            android:background="@drawable/bg_chat_left"
+            android:padding="8dp">
+
+            <cn.yy.freewalker.ui.widget.faceView.QQFaceTextView
+                android:id="@+id/qtv_chat_content"
+                android:textSize="15sp"
+                android:textColor="@color/tv_mostly"
+                android:maxWidth="250dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
     </LinearLayout>
+
+
 </LinearLayout>

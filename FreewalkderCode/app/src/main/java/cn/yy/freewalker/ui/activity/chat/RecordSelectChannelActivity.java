@@ -15,7 +15,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataChannel;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.ChannelDbEntity;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.activity.device.DeviceSettingChannelActivity;
 import cn.yy.freewalker.ui.adapter.DeviceSettingChannelRvAdapter;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogChoice;
@@ -48,6 +53,8 @@ public class RecordSelectChannelActivity extends BaseActivity {
 
     private int mState = STATE_INIT;
 
+    private UserDbEntity mUser;
+    List<ChannelDbEntity> listChannel = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -76,6 +83,16 @@ public class RecordSelectChannelActivity extends BaseActivity {
     @Override
     protected void initData() {
         mDialogBuilder = new DialogBuilder();
+        mUser = DBDataUser.getLoginUser(RecordSelectChannelActivity.this);
+        //初始化频道
+        for (int i = 0; i < 30; i++) {
+            ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(mUser.userId, i);
+            if (channelDbEntity == null) {
+                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, i, "", 5);
+                DBDataChannel.save(channelDbEntity);
+            }
+            listChannel.add(channelDbEntity);
+        }
     }
 
     @Override
@@ -85,7 +102,7 @@ public class RecordSelectChannelActivity extends BaseActivity {
         rvChannel.setLayoutManager(layoutManager);
 
         adapter = new DeviceSettingChannelRvAdapter(RecordSelectChannelActivity.this,
-                mChannel,
+                mChannel,listChannel,
                 new DeviceSettingChannelRvAdapter.onChannelClick() {
                     @Override
                     public void onClick(int channel) {

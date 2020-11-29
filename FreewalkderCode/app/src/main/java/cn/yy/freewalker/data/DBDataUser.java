@@ -4,10 +4,14 @@ import android.content.Context;
 
 import org.xutils.ex.DbException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.net.LoginResult;
 import cn.yy.freewalker.entity.net.UserInfoResult;
+import cn.yy.freewalker.utils.YLog;
 
 
 /**
@@ -16,6 +20,8 @@ import cn.yy.freewalker.entity.net.UserInfoResult;
  * @date 2020/6/5 14:37
  */
 public class DBDataUser {
+
+    private static final String TAG = "DBDataUser";
 
 
     /**
@@ -64,17 +70,42 @@ public class DBDataUser {
 
 
     /**
-     * 获取token
+     * 找到所有的朋友
      * @param context
+     * @return
      */
-//    public static String getToken(final Context context){
-//        UserDbEntity userDbEntity = getUserInfoByUserId(SPDataUser.getAccount(context));
-//        if (userDbEntity != null){
-//            return userDbEntity.token;
-//        }else {
-//            return "";
-//        }
-//    }
+    public static List<UserDbEntity> getAllFriends(final Context context){
+        List<UserDbEntity> listResult = new ArrayList<>();
+
+        try {
+            List<UserDbEntity> listTmp = LocalApp.getInstance()
+                    .getDb().selector(UserDbEntity.class)
+                    .where("userId","<>",SPDataUser.getAccount(context))
+                    .findAll();
+            if (listTmp != null){
+                listResult.addAll(listTmp);
+            }
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return listResult;
+    }
+
+    /**
+     * 保存或更新用户信息
+     * @param userInfoResult
+     */
+    public static void saveOrUpdateUserInfo(final int userId, final UserInfoResult userInfoResult){
+        YLog.e(TAG,"saveOrUpdateUserInfo userId:" + userId);
+        UserDbEntity userDbEntity = getUserInfoByUserId(userId);
+        if (userDbEntity == null){
+            userDbEntity = new UserDbEntity(userId, userInfoResult);
+            save(userDbEntity);
+        }else {
+            userDbEntity.update(userInfoResult);
+            update(userDbEntity);
+        }
+    }
 
     /**
      * 获取用户信息
@@ -96,9 +127,11 @@ public class DBDataUser {
      * @param userDbEntity
      */
     public static synchronized void save(final UserDbEntity userDbEntity) {
+        YLog.e(TAG,"save");
         try {
             LocalApp.getInstance().getDb().save(userDbEntity);
         } catch (DbException e) {
+            YLog.e(TAG,"save e:" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -109,6 +142,7 @@ public class DBDataUser {
      * @param userDbEntity
      */
     public static synchronized void update(final UserDbEntity userDbEntity) {
+        YLog.e(TAG,"update");
         try {
             LocalApp.getInstance().getDb().update(userDbEntity);
         } catch (DbException e) {

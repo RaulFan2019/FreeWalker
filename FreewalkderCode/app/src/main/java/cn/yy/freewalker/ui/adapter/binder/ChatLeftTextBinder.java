@@ -9,6 +9,7 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.adapter.holder.ChatTextHolder;
 import cn.yy.freewalker.entity.model.ChatLeftTextBean;
 import cn.yy.freewalker.ui.adapter.listener.OnItemListener;
+import cn.yy.freewalker.utils.ImageU;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -28,6 +29,7 @@ public class ChatLeftTextBinder extends ItemViewBinder<ChatLeftTextBean, ChatTex
     protected void onBindViewHolder(@NonNull ChatTextHolder holder, @NonNull ChatLeftTextBean item) {
         holder.setContentText(item.chatText);
         holder.setUserPhoto(item.photoUrl);
+        holder.setUserName(item.userName);
 
         holder.mChatUserPhotoIv.setOnClickListener(new View.OnClickListener() {
             @Override

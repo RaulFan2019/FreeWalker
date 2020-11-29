@@ -2,6 +2,7 @@ package cn.yy.freewalker.ui.adapter.holder;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.widget.listview.SwipeMenuLayout;
+import cn.yy.freewalker.utils.ImageU;
 
 /**
  * @author zhao
@@ -21,6 +23,10 @@ import cn.yy.freewalker.ui.widget.listview.SwipeMenuLayout;
  * @date 2020/6/13 下午4:23
  */
 public class ChatPersonHolder extends RecyclerView.ViewHolder {
+
+
+    @BindView(R.id.iv_channel_icon)
+    ImageView ivAvatar;
     @BindView(R.id.tv_person_name)
     TextView mNameTv;
     @BindView(R.id.ll_del_friend)
@@ -42,6 +48,10 @@ public class ChatPersonHolder extends RecyclerView.ViewHolder {
 
     public void showName(String name){
         mNameTv.setText(name);
+    }
+
+    public void showPhoto(String photoUrl){
+        ImageU.loadUserImage(photoUrl, ivAvatar);
     }
 
     private void initEvent(){

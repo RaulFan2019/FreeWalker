@@ -29,7 +29,7 @@ public class LocalApp extends Application implements ChannelListener {
 
     /* local data about db */
     public static final String DB_NAME = "freewalker.db";
-    public static final int DB_VERSION = 4;
+    public static final int DB_VERSION = 5;
 
 
     private DbManager.DaoConfig daoConfig;
