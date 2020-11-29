@@ -86,11 +86,6 @@ public class SingleChatListFragment extends BaseFragment {
         mAdapter.register(ChatPersonBean.class, binder);
         mAdapter.setItems(mFriendItems);
 
-        List<UserDbEntity> listFriends = DBDataUser.getAllFriends(mContext);
-        for (UserDbEntity dbEntity : listFriends) {
-            mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar, dbEntity.userId));
-        }
-
         mChatListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mChatListRv.setAdapter(mAdapter);
     }
@@ -102,7 +97,12 @@ public class SingleChatListFragment extends BaseFragment {
 
     @Override
     protected void onVisible() {
-
+        List<UserDbEntity> listFriends = DBDataUser.getAllFriends(mContext);
+        mFriendItems.clear();
+        for (UserDbEntity dbEntity : listFriends) {
+            mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar, dbEntity.userId));
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
