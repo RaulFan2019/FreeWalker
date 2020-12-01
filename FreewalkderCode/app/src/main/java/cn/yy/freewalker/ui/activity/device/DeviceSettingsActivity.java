@@ -107,13 +107,10 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
         sbVolume.setOnSeekBarChangeListener(this);
 
-        cbPower.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                BM.getManager().setSignal(isChecked);
-                if (isChecked) {
-                    showPowerEnhanceDialog();
-                }
+        cbPower.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            BM.getManager().setSignal(isChecked);
+            if (isChecked) {
+                showPowerEnhanceDialog();
             }
         });
     }
@@ -128,7 +125,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         super.onResume();
         if (BM.getManager().getDeviceSystemInfo() != null) {
             tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
-            if (BM.getManager().getDeviceSystemInfo().power == 22) {
+            if (BM.getManager().getDeviceSystemInfo().power == 0x16) {
                 cbPower.setChecked(true);
             }
         } else {
@@ -158,8 +155,10 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
      * 显示强度Dialog
      */
     private void showPowerEnhanceDialog() {
-        mDialogBuilder.showSingleMsgDialog(DeviceSettingsActivity.this, getString(R.string.device_tip_setting_power_title),
-                getString(R.string.device_tip_setting_power_content), getString(R.string.app_action_confirm));
+        mDialogBuilder.showSingleMsgDialog(DeviceSettingsActivity.this,
+                getString(R.string.device_tip_setting_power_title),
+                getString(R.string.device_tip_setting_power_content),
+                getString(R.string.app_action_confirm));
     }
 
 }

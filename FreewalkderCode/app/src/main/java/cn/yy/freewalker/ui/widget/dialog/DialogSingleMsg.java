@@ -31,9 +31,9 @@ public class DialogSingleMsg {
         mDialog.setCancelable(true);
         mDialog.setCanceledOnTouchOutside(true);
 
-        tvTitle = (TextView) mDialog.findViewById(R.id.tv_title);
+        tvTitle = mDialog.findViewById(R.id.tv_title);
         tvContent = mDialog.findViewById(R.id.tv_content);
-        btnConfirm = (TextView) mDialog.findViewById(R.id.tv_confirm);
+        btnConfirm =  mDialog.findViewById(R.id.tv_confirm);
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override

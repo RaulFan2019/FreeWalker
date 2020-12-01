@@ -468,6 +468,7 @@ public class ConnectEntity {
 
     public void writeSetSignal(final boolean isEnhance) {
         mHandler.removeMessages(MSG_SET_SIGNAL);
+
         byte[] data = new byte[6];
 
         data[0] = (byte) 0xFE;
@@ -478,9 +479,11 @@ public class ConnectEntity {
         data[3] = PrivatePorts.SET_SYSTEM;
         //power
         if (isEnhance) {
-            data[4] = 17;
+            data[4] = 0x16;
+            mDeviceSystemInfo.power = 0x16;
         } else {
-            data[4] = 22;
+            data[4] = 0x11;
+            mDeviceSystemInfo.power = 0x11;
         }
         //max channel
         data[5] = 30;
