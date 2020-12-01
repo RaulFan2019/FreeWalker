@@ -3,6 +3,8 @@ package cn.yy.freewalker.ui.activity.device;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import cn.yy.freewalker.data.DBDataUser;
 import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.observer.ChannelListener;
 
@@ -39,10 +42,12 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
     SeekBar sbVolume;
     @BindView(R.id.tv_channel)
     TextView tvChannel;
-
+    @BindView(R.id.cb_power)
+    CheckBox cbPower;
 
     /* data */
     private UserDbEntity mUser;
+    private DialogBuilder mDialogBuilder;
 
     @Override
     protected int getLayoutId() {
@@ -89,6 +94,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
     @Override
     protected void initData() {
         mUser = DBDataUser.getLoginUser(DeviceSettingsActivity.this);
+        mDialogBuilder = new DialogBuilder();
     }
 
     @Override
@@ -100,6 +106,16 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         sbVolume.setProgress(6);
 
         sbVolume.setOnSeekBarChangeListener(this);
+
+        cbPower.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                BM.getManager().setSignal(isChecked);
+                if (isChecked) {
+                    showPowerEnhanceDialog();
+                }
+            }
+        });
     }
 
     @Override
@@ -112,6 +128,9 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         super.onResume();
         if (BM.getManager().getDeviceSystemInfo() != null) {
             tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
+            if (BM.getManager().getDeviceSystemInfo().power == 22) {
+                cbPower.setChecked(true);
+            }
         } else {
             BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
             tvChannel.setText(String.valueOf(dbEntity.lastChannel + 1));
@@ -134,5 +153,13 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     }
 
+
+    /**
+     * 显示强度Dialog
+     */
+    private void showPowerEnhanceDialog() {
+        mDialogBuilder.showSingleMsgDialog(DeviceSettingsActivity.this, getString(R.string.device_tip_setting_power_title),
+                getString(R.string.device_tip_setting_power_content), getString(R.string.app_action_confirm));
+    }
 
 }

@@ -20,6 +20,7 @@ public class DialogBuilder {
     private DialogChoice dialogChoice;
     private DialogDeviceInputChannelPwd dialogDeviceInputChannelPwd;
     private DialogSaveFile dialogSaveFile;
+    private DialogSingleMsg dialogSingleMsg;
 
     /**
      * 显示隐私询问对话框
@@ -64,7 +65,7 @@ public class DialogBuilder {
      * @param context
      * @param data
      */
-    public void showSingleSelectDialog(final Context context,final List<String> data) {
+    public void showSingleSelectDialog(final Context context, final List<String> data) {
         if (dialogSingleSelect == null) {
             dialogSingleSelect = new DialogSingleSelect(context);
         }
@@ -99,7 +100,7 @@ public class DialogBuilder {
     }
 
 
-    public void setPickViewDialogListener(DialogPickView.onConfirmListener listener){
+    public void setPickViewDialogListener(DialogPickView.onConfirmListener listener) {
         dialogPickView.setListener(listener);
     }
 
@@ -119,12 +120,29 @@ public class DialogBuilder {
     }
 
 
-    public void setTagSelectDialogListener(DialogTagSelect.onConfirmListener listener){
+    public void setTagSelectDialogListener(DialogTagSelect.onConfirmListener listener) {
         dialogTagSelect.setListener(listener);
+    }
+
+
+    /**
+     * 显示简单消息对话框
+     * @param context
+     * @param title
+     * @param content
+     * @param confirm
+     */
+    public void showSingleMsgDialog(final Context context, final String title, final String content,
+                                    final String confirm) {
+        if (dialogSingleMsg == null) {
+            dialogSingleMsg = new DialogSingleMsg(context);
+        }
+        dialogSingleMsg.show(title, content, confirm);
     }
 
     /**
      * 显示选择对话框
+     *
      * @param context
      * @param title
      * @param confirm
@@ -140,13 +158,14 @@ public class DialogBuilder {
 
     /**
      * 显示选择对话框
+     *
      * @param context
      * @param title
      * @param confirm
      * @param cancel
      */
     public void showChoiceDialog(final Context context, final String title,
-                                 final String confirm, final String cancel,final boolean cancelable) {
+                                 final String confirm, final String cancel, final boolean cancelable) {
         if (dialogChoice == null) {
             dialogChoice = new DialogChoice(context);
         }
@@ -156,6 +175,7 @@ public class DialogBuilder {
 
     /**
      * 显示选择对话框
+     *
      * @param context
      * @param title
      * @param confirm
@@ -169,12 +189,13 @@ public class DialogBuilder {
         dialogChoice.show(title, confirm, cancel);
     }
 
-    public void setChoiceDialogListener(DialogChoice.onBtnClickListener listener){
+    public void setChoiceDialogListener(DialogChoice.onBtnClickListener listener) {
         dialogChoice.setListener(listener);
     }
 
     /**
      * 显示设备频道密码对话框
+     *
      * @param context
      */
     public void showDeviceChannelPwdDialog(final Context context) {
@@ -185,13 +206,14 @@ public class DialogBuilder {
     }
 
 
-    public void setDeviceChannelPwdDialogListener(DialogDeviceInputChannelPwd.onConfirmListener listener){
+    public void setDeviceChannelPwdDialogListener(DialogDeviceInputChannelPwd.onConfirmListener listener) {
         dialogDeviceInputChannelPwd.setListener(listener);
     }
 
 
     /**
      * 显示设备频道密码对话框
+     *
      * @param context
      */
     public void showSaveFileDialog(final Context context) {
@@ -202,10 +224,9 @@ public class DialogBuilder {
     }
 
 
-    public void setSaveFileDialogListener(DialogSaveFile.onBtnClickListener listener){
+    public void setSaveFileDialogListener(DialogSaveFile.onBtnClickListener listener) {
         dialogSaveFile.setListener(listener);
     }
-
 
 
     /**
@@ -233,7 +254,6 @@ public class DialogBuilder {
         }
         dialogWait.show(content, cancelable);
     }
-
 
 
     /**

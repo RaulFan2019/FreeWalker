@@ -65,6 +65,8 @@ public class ConnectEntity {
 
     private static final int MSG_SEND_LOCATION_INFO = 0x10;               //发送位置信息
 
+    private static final int MSG_SET_SIGNAL = 0x11;                        //设置系统信息
+
 
     /* local data of system */
     private Application mContext;                                          //上下文
@@ -146,6 +148,10 @@ public class ConnectEntity {
                 //发送位置信息
                 case MSG_SEND_LOCATION_INFO:
                     writeSendLocationInfo((LocationInfo) msg.obj);
+                    break;
+                //设置信号
+                case MSG_SET_SIGNAL:
+                    writeSetSignal((Boolean) msg.obj);
                     break;
             }
         }
@@ -450,6 +456,42 @@ public class ConnectEntity {
         }
     }
 
+
+    /**
+     * 设置信号是否是增强模式
+     *
+     * @param isEnhance
+     */
+    public void setSignal(final boolean isEnhance) {
+        sendMsg(MSG_SET_SIGNAL, isEnhance, 0);
+    }
+
+    public void writeSetSignal(final boolean isEnhance) {
+        mHandler.removeMessages(MSG_SET_SIGNAL);
+        byte[] data = new byte[6];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        data[2] = 0x03;
+        //port
+        data[3] = PrivatePorts.SET_SYSTEM;
+        //power
+        if (isEnhance) {
+            data[4] = 17;
+        } else {
+            data[4] = 22;
+        }
+        //max channel
+        data[5] = 30;
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SET_SIGNAL, isEnhance, DELAY_REPEAT_WRITE);
+        }
+    }
+
     /**
      * 设置频道
      *
@@ -638,11 +680,11 @@ public class ConnectEntity {
 
         int sendLatitude = (int) ((latitude + 90) * 1000000);
         int sendLongtitude = (int) ((longtitude + 180) * 1000000);
-        BLog.e(TAG,"sendLocationInfo sendLatitude:" + sendLatitude);
-        BLog.e(TAG,"sendLocationInfo sendLongtitude:" + sendLongtitude);
+        BLog.e(TAG, "sendLocationInfo sendLatitude:" + sendLatitude);
+        BLog.e(TAG, "sendLocationInfo sendLongtitude:" + sendLongtitude);
 
         LocationInfo locationInfo = new LocationInfo(mDeviceSystemInfo.currChannel,
-                userId,  sendLatitude, sendLongtitude,
+                userId, sendLatitude, sendLongtitude,
                 gender, age, sex, job, height, weight, userName);
         sendMsg(MSG_SEND_LOCATION_INFO, locationInfo, 0);
     }
@@ -801,7 +843,8 @@ public class ConnectEntity {
             case PrivatePorts.GET_SYSTEM_INFO:
                 mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
                 mState = ConnectStates.WORKED;
-                mDeviceSystemInfo = new DeviceSystemInfo(mGroupPkg.listData.get(0), mGroupPkg.listData.get(1), mGroupPkg.listData.get(2));
+                mDeviceSystemInfo = new DeviceSystemInfo(mGroupPkg.listData.get(0),
+                        mGroupPkg.listData.get(1), mGroupPkg.listData.get(2), mGroupPkg.listData.get(3));
                 NotifyManager.getManager().notifyStateChange(mState);
                 break;
             //设置频道成功
@@ -834,7 +877,7 @@ public class ConnectEntity {
                             e.printStackTrace();
                         }
                         break;
-                        //0000000f 0000000a 68656c70
+                    //0000000f 0000000a 68656c70
                     case PrivatePorts.TYPE_TEXT_MESSAGE_SINGLE_CHAT:
                         BLog.e(TAG, "receive SINGLE MESSAGE");
                         try {

@@ -54,7 +54,11 @@
     <string name="device_tx_settings_ota_update">固件升级</string>
     <string name="device_tx_settings_volume">音量</string>
     <string name="device_tx_settings_channel">当前频道</string>
+    <string name="device_tx_settings_power">信号增强模式</string>
     <string name="device_tx_settings_battery">电量</string>
+
+    <string name="device_tip_setting_power_title">该模式使功率增大，请遵循当地无线电管理规范，一般在求助救援等必要情况下使用。</string>
+    <string name="device_tip_setting_power_content">注：功率增大，会降低使用时长。</string>
 
     <string name="device_tip_channel_can_not_set_pwd_and_priority">该频道不能设置密码和权限</string>
 

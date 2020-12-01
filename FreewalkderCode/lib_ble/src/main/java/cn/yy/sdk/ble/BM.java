@@ -290,6 +290,21 @@ public class BM {
 
 
     /**
+     * 设置信号是否增强
+     * @param isEnhance
+     * @return
+     */
+    public int setSignal(boolean isEnhance){
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().setSignal(isEnhance);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+
+    /**
      * 发送群聊消息
      *
      * @param userId
