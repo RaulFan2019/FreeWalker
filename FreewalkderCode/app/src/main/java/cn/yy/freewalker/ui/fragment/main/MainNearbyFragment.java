@@ -161,7 +161,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                 break;
             case MSG_NEXT_SCAN:
                 mScanTimes++;
-                if (mScanTimes > 29) {
+                if (mScanTimes > 30) {
                     scanView.setVisibility(View.INVISIBLE);
                     btnScan.setVisibility(View.VISIBLE);
                 } else {
