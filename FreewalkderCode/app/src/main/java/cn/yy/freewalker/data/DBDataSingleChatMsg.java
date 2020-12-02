@@ -8,6 +8,7 @@ import java.util.List;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.entity.db.GroupChatMsgEntity;
 import cn.yy.freewalker.entity.db.SingleChatMsgEntity;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -16,15 +17,19 @@ import cn.yy.freewalker.entity.db.SingleChatMsgEntity;
  */
 public class DBDataSingleChatMsg {
 
+    private static final String TAG ="DBDataSingleChatMsg";
+
     /**
      * 保存
      *
      * @param singleChatMsgEntity
      */
     public static void save(final SingleChatMsgEntity singleChatMsgEntity) {
+        YLog.e(TAG,"save");
         try {
             LocalApp.getInstance().getDb().save(singleChatMsgEntity);
         } catch (DbException e) {
+            YLog.e(TAG,"save e:" + e.getMessage());
             e.printStackTrace();
         }
     }

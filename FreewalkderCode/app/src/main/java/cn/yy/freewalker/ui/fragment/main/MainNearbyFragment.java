@@ -3,6 +3,7 @@ package cn.yy.freewalker.ui.fragment.main;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,6 +52,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     private static final String TAG = "MainNearbyFragment";
 
     private static final int MSG_STOP_SCAN = 0x01;
+    private static final int MSG_NEXT_SCAN = 0x02;
     private static final int MSG_SHOW_TEST_USER = 0x02;
 
     private static final long INTERVAL_SHOW_TEST_USER = 2 * 1000;
@@ -60,6 +62,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     private static final int GPSInterval = 2000;//获取GPS信息时间频率 单位:毫秒
     private static final int GpsAccuracy = 250;//精度控制
     private static final int LIMIT_MIN_PACE = 50;//速度过滤参数(最快速度)
+
 
     /* views */
     @BindView(R.id.map)
@@ -77,6 +80,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     List<Marker> listMarker = new ArrayList<>();
     List<LatLng> listLat = new ArrayList<>();
     List<LocationInfo> listScan = new ArrayList<>();
+
+    private int mScanTimes = 0;
 
     /* 定位相关 */
     AMapLocation mLocation;                                         //当前位置
@@ -100,14 +105,14 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     @Override
     public void receiveLocationMsg(LocationInfo locationInfo) {
-        YLog.e(TAG,"receiveLocationMsg  locationInfo");
+
         double latitude = (locationInfo.latitude / 1000000.0) - 90;
         double longitude = (locationInfo.longtitude / 1000000.0) - 180;
-        YLog.e(TAG,"latitude:" + latitude);
-        YLog.e(TAG,"longitude:" + longitude);
 
-        listLat.add(new LatLng(latitude,longitude));
+        listLat.add(new LatLng(latitude, longitude));
         listScan.add(locationInfo);
+
+        showAddMarker(listScan.size() - 1);
     }
 
     @OnClick({R.id.btn_zoom_in, R.id.btn_zoom_out, R.id.btn_location, R.id.btn_scan})
@@ -131,11 +136,13 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             case R.id.btn_scan:
                 listScan.clear();
                 listLat.clear();
-                for (Marker maker : listMarker){
-                     maker.destroy();
+                for (Marker maker : listMarker) {
+                    maker.destroy();
                 }
                 listMarker.clear();
-                mHandler.sendEmptyMessageDelayed(MSG_STOP_SCAN, INTERVAL_SCAN);
+
+                mScanTimes = 0;
+                mHandler.sendEmptyMessageDelayed(MSG_NEXT_SCAN, INTERVAL_SCAN);
                 scanView.setVisibility(View.VISIBLE);
                 btnScan.setVisibility(View.GONE);
 
@@ -152,6 +159,27 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                 btnScan.setVisibility(View.VISIBLE);
                 showMarker();
                 break;
+            case MSG_NEXT_SCAN:
+                mScanTimes++;
+                if (mScanTimes > 29) {
+                    scanView.setVisibility(View.INVISIBLE);
+                    btnScan.setVisibility(View.VISIBLE);
+                } else {
+                    int currChannel = BM.getManager().getDeviceSystemInfo().currChannel;
+                    currChannel++;
+                    if (currChannel > 29) {
+                        currChannel = 0;
+                    }
+                    BM.getManager().setChannel(currChannel, 5, "");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            BM.getManager().queryNearbyUsers();
+                        }
+                    }, 200);
+                    mHandler.sendEmptyMessageDelayed(MSG_NEXT_SCAN, INTERVAL_SCAN);
+                }
+                break;
         }
     }
 
@@ -164,7 +192,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
         mLocation = location;
         if (mFirstLocation) {
-            mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+            mAMap.moveCamera(CameraUpdateFactory.zoomTo(16));
             mAMap.animateCamera(CameraUpdateFactory.changeLatLng(
                     new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
             mFirstLocation = false;
@@ -255,7 +283,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
             );
             mAMap.setOnMarkerClickListener(marker -> {
-                YLog.e(TAG,"listLat.size():" + listLat.size());
+                YLog.e(TAG, "listLat.size():" + listLat.size());
                 for (int i = 0; i < listLat.size(); i++) {
                     if (listLat.get(i).latitude == marker.getPosition().latitude
                             && listLat.get(i).longitude == marker.getPosition().longitude) {
@@ -288,7 +316,23 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     }
 
 
-    private void showMarker(){
+    /**
+     * 增加一个 marker
+     */
+    private void showAddMarker(int index) {
+        AmapNearbyUserView nearbyUserView = new AmapNearbyUserView(getActivity());
+        nearbyUserView.bindView(listScan.get(index));
+        Marker marker = mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
+                .position(listLat.get(index))
+                .icon(BitmapDescriptorFactory.fromView(nearbyUserView)));
+        listMarker.add(marker);
+    }
+
+
+    /**
+     * 一次显示所有marker
+     */
+    private void showMarker() {
         if (mLocation != null) {
             for (int i = 0; i < listScan.size(); i++) {
                 AmapNearbyUserView nearbyUserView = new AmapNearbyUserView(getActivity());

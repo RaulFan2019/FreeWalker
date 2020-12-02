@@ -29,6 +29,11 @@ public class ChatPersonHolder extends RecyclerView.ViewHolder {
     ImageView ivAvatar;
     @BindView(R.id.tv_person_name)
     TextView mNameTv;
+    @BindView(R.id.tv_last_chat)
+    TextView tvLastChat;
+    @BindView(R.id.tv_last_time)
+    TextView tvLastTime;
+
     @BindView(R.id.ll_del_friend)
     LinearLayout mDeleteBtn;
     @BindView(R.id.btn_shield_confirm)
@@ -52,6 +57,14 @@ public class ChatPersonHolder extends RecyclerView.ViewHolder {
 
     public void showPhoto(String photoUrl){
         ImageU.loadUserImage(photoUrl, ivAvatar);
+    }
+
+    public void showContent(String content){
+        tvLastChat.setText(content);
+    }
+
+    public void showLastTime(String lastTime){
+        tvLastTime.setText(lastTime);
     }
 
     private void initEvent(){

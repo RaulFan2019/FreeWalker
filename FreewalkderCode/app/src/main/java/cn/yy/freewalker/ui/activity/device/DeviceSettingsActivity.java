@@ -107,12 +107,21 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
         sbVolume.setOnSeekBarChangeListener(this);
 
-        cbPower.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            BM.getManager().setSignal(isChecked);
-            if (isChecked) {
-                showPowerEnhanceDialog();
+        cbPower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BM.getManager().setSignal(cbPower.isChecked());
+                if (cbPower.isChecked()){
+                    showPowerEnhanceDialog();
+                }
             }
         });
+//        cbPower.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            BM.getManager().setSignal(isChecked);
+//            if (isChecked) {
+//                showPowerEnhanceDialog();
+//            }
+//        });
     }
 
     @Override

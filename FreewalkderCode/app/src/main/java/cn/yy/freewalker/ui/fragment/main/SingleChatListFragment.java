@@ -11,16 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.UrlConfig;
+import cn.yy.freewalker.data.DBDataSingleChatMsg;
 import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.SingleChatMsgEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.model.ChatPersonBean;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
 import cn.yy.freewalker.ui.adapter.binder.ChatPersonBinder;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
+import cn.yy.freewalker.utils.TimeU;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
@@ -39,6 +43,7 @@ public class SingleChatListFragment extends BaseFragment {
 
     private MultiTypeAdapter mAdapter;
 
+    private UserDbEntity mUser;
     private ArrayList<Object> mFriendItems = new ArrayList<>();
 
     public static SingleChatListFragment newInstance() {
@@ -58,6 +63,8 @@ public class SingleChatListFragment extends BaseFragment {
 
     @Override
     protected void initParams() {
+        mUser = DBDataUser.getLoginUser(mContext);
+
         mAdapter = new MultiTypeAdapter();
         ChatPersonBinder binder = new ChatPersonBinder();
         binder.setOnItemListener(new ChatPersonBinder.OnPersonClickListener() {
@@ -100,7 +107,15 @@ public class SingleChatListFragment extends BaseFragment {
         List<UserDbEntity> listFriends = DBDataUser.getAllFriends(mContext);
         mFriendItems.clear();
         for (UserDbEntity dbEntity : listFriends) {
-            mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar, dbEntity.userId));
+            List<SingleChatMsgEntity> listMsg = DBDataSingleChatMsg.getAllGroupChatMsg(mUser.userId, dbEntity.userId);
+            String content = "";
+            String time = "";
+            if (listMsg.size() > 0) {
+                content = listMsg.get(listMsg.size() - 1).content;
+                time = TimeU.timeToTimeStr(listMsg.get(listMsg.size() - 1).singleChatId, TimeU.FORMAT_TYPE_2);
+            }
+            mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar,
+                    dbEntity.userId, content, time));
         }
         mAdapter.notifyDataSetChanged();
     }

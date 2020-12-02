@@ -11,10 +11,14 @@ public class ChatPersonBean {
     public String photoUrl;
     public String name;
     public int id;
+    public String lastContent;
+    public String lastTime;
 
-    public ChatPersonBean(String name, String photoUrl, int id) {
+    public ChatPersonBean(String name, String photoUrl, int id, String lastContent, String lastTime) {
         this.name = name;
         this.photoUrl = photoUrl;
         this.id = id;
+        this.lastContent = lastContent;
+        this.lastTime = lastTime;
     }
 }

@@ -1,5 +1,6 @@
 package cn.yy.freewalker.ui.activity.chat;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -151,6 +153,10 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
                     showRightChat(msg);
                     BM.getManager().sendGroupChatMsg(mUser.userId, msg);
                     mInputEt.setText("");
+
+                    // 隐藏软键盘
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 }
                 break;
             default:
@@ -192,6 +198,7 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
             userName = userDbEntity.name;
             photoUrl = UrlConfig.IMAGE_HOST + userDbEntity.avatar;
         }
+
         showLeftChat(groupChatInfo.userId, userName, photoUrl, groupChatInfo.content);
     }
 
@@ -394,8 +401,11 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         GroupChatMsgEntity groupChatMsgEntity = new GroupChatMsgEntity(System.currentTimeMillis(), mUser.userId,
                 mRoom.id - 1, userId, chatText);
         DBDataGroupChatMsg.save(groupChatMsgEntity);
+
         mChatItems.add(new ChatLeftTextBean(userId, userName, chatText, photoUrl));
         mChatAdapter.notifyDataSetChanged();
+
+        mChatRv.scrollToPosition(mChatAdapter.getItemCount()-1);
     }
 
 
@@ -416,6 +426,8 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
 
         mChatItems.add(new ChatRightTextBean(chatText, UrlConfig.IMAGE_HOST + mUser.avatar));
         mChatAdapter.notifyDataSetChanged();
+
+        mChatRv.scrollToPosition(mChatAdapter.getItemCount()-1);
     }
 
 

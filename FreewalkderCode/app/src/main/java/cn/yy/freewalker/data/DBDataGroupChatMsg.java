@@ -17,6 +17,8 @@ import cn.yy.freewalker.utils.YLog;
  */
 public class DBDataGroupChatMsg {
 
+    private static final String TAG = "DBDataGroupChatMsg";
+
     /**
      * 保存
      *

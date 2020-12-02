@@ -16,11 +16,16 @@ import com.amap.api.maps.model.LatLng;
 import java.lang.ref.WeakReference;
 
 import androidx.annotation.Nullable;
+import cn.yy.freewalker.data.DBDataGroupChatMsg;
+import cn.yy.freewalker.data.DBDataSingleChatMsg;
 import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.GroupChatMsgEntity;
+import cn.yy.freewalker.entity.db.SingleChatMsgEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.entity.GroupChatInfo;
+import cn.yy.sdk.ble.entity.LocationInfo;
 import cn.yy.sdk.ble.entity.SingleChatInfo;
 import cn.yy.sdk.ble.observer.QueryMsgListener;
 import cn.yy.sdk.ble.observer.ReceiveMsgListener;
@@ -30,7 +35,7 @@ import cn.yy.sdk.ble.observer.ReceiveMsgListener;
  * @email 35686324@qq.com
  * @date 2020/11/28 22:41
  */
-public class UserDeviceCallbackService extends Service implements QueryMsgListener, AMapLocationListener {
+public class UserDeviceCallbackService extends Service implements QueryMsgListener, AMapLocationListener,ReceiveMsgListener {
 
     private static final String TAG = "UserDeviceCallbackService";
 
@@ -71,6 +76,26 @@ public class UserDeviceCallbackService extends Service implements QueryMsgListen
 
     }
 
+    @Override
+    public void receiveGroupMsg(GroupChatInfo groupChatInfo) {
+        GroupChatMsgEntity groupChatMsgEntity = new GroupChatMsgEntity(System.currentTimeMillis(), mUser.userId,
+                BM.getManager().getDeviceSystemInfo().currChannel, groupChatInfo.userId, groupChatInfo.content);
+        DBDataGroupChatMsg.save(groupChatMsgEntity);
+    }
+
+    @Override
+    public void receiveSingleMsg(SingleChatInfo singleChatInfo) {
+        YLog.e(TAG,"receiveSingleMsg destUserId:" + singleChatInfo.userId + ",mUser.userId:" + mUser.userId);
+        SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(), mUser.userId,
+                singleChatInfo.userId, singleChatInfo.content, false);
+        DBDataSingleChatMsg.save(singleChatMsgEntity);
+    }
+
+    @Override
+    public void receiveLocationMsg(LocationInfo locationInfo) {
+
+    }
+
     /**
      * 内部Handler
      */
@@ -106,6 +131,7 @@ public class UserDeviceCallbackService extends Service implements QueryMsgListen
         mHandler = new MyHandler(this);
         mUser = DBDataUser.getLoginUser(UserDeviceCallbackService.this);
         BM.getManager().registerQueryMsgListener(this);
+        BM.getManager().registerReceiveMsgListener(this);
         initLocationClient();
         mLocationClient.startLocation();
     }
@@ -119,6 +145,7 @@ public class UserDeviceCallbackService extends Service implements QueryMsgListen
     public void onDestroy() {
         super.onDestroy();
         BM.getManager().unRegisterQueryMsgListener(this);
+        BM.getManager().unRegisterReceiveMsgListener(this);
         mLocationClient.stopLocation();
     }
 

@@ -1,5 +1,6 @@
 package cn.yy.freewalker.ui.activity.chat;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 
@@ -15,6 +16,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ImageSpan;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -137,6 +139,9 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
 
                 BM.getManager().sendSingleChatMsg(mUser.userId, mDestUserId, msg);
 
+                // 隐藏软键盘
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 break;
             default:
         }
@@ -198,6 +203,9 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
     protected void initData() {
         mUser = DBDataUser.getLoginUser(SingleChatActivity.this);
         mDestUserId = getIntent().getExtras().getInt("destUserId");
+        YLog.e(TAG,"mDestUserId:" + mDestUserId);
+        YLog.e(TAG,"mUser.userId:" + mUser.userId);
+
         UserDbEntity userDbEntity = DBDataUser.getUserInfoByUserId(mDestUserId);
         if (userDbEntity == null) {
             mDestUserPhotoUrl = "";
@@ -247,6 +255,7 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
                 .init();
         initChatUi();
 
+        mUserTitleTv.setText(mDestUserName);
         mChatRv.setLayoutManager(new LinearLayoutManager(this));
         mChatRv.setAdapter(mChatAdapter);
 
@@ -318,20 +327,25 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
         }
     }
 
+    /**
+     * 显示左边的聊天
+     *
+     * @param chatText
+     */
     private void showLeftChat(String chatText) {
-        SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(), mUser.userId,
-                mDestUserId, chatText, false);
-        DBDataSingleChatMsg.save(singleChatMsgEntity);
-
-        mChatItems.add(new ChatLeftTextBean(mDestUserId, mDestUserName, chatText, mDestUserPhotoUrl));
+        mChatItems.add(new ChatLeftTextBean(mDestUserId, "", chatText, mDestUserPhotoUrl));
         mChatAdapter.notifyDataSetChanged();
+
+        mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
     }
 
-    private void showRightChat(String chatText) {
-        SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(), mUser.userId,
-                mDestUserId, chatText, true);
-        DBDataSingleChatMsg.save(singleChatMsgEntity);
 
+    /**
+     * 显示右边的聊天
+     *
+     * @param chatText
+     */
+    private void showRightChat(String chatText) {
         if (System.currentTimeMillis() - lastTime >= 60 * 1000) {
             mChatItems.add(new ChatTimeBean(DateUtils.getCurrentTime()));
             lastTime = System.currentTimeMillis();
@@ -339,6 +353,8 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
 
         mChatItems.add(new ChatRightTextBean(chatText, UrlConfig.IMAGE_HOST + mUser.avatar));
         mChatAdapter.notifyDataSetChanged();
+
+        mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
     }
 
     private void updateViewByConnectState(int state) {

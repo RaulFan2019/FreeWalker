@@ -214,7 +214,7 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vp_face_input"
                 android:layout_width="match_parent"
-                android:layout_height="282dp"></androidx.viewpager.widget.ViewPager>
+                android:layout_height="282dp"/>
         </LinearLayout>
     </LinearLayout>
 

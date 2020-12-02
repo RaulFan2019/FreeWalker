@@ -45,7 +45,7 @@
                 android:text="频道1频道1频道1频道1频道1频道1频道1频道1频道1频道1"
                 android:textColor="@color/tv_thirdly"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,14 +61,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/tv_thirdly"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="7dp"
-                android:src="@drawable/icon_shield_small" />
+                android:src="@drawable/icon_shield_small"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <View
