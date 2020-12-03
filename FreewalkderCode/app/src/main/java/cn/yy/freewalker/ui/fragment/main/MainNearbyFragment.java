@@ -34,9 +34,11 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.AmapNearbyUserView;
+import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.radarview.RadarView;
 import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.entity.GroupChatInfo;
 import cn.yy.sdk.ble.entity.LocationInfo;
 import cn.yy.sdk.ble.entity.SingleChatInfo;
@@ -72,6 +74,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     LinearLayout btnScan;
     @BindView(R.id.radar)
     RadarView scanView;
+    @BindView(R.id.ll_control)
+    LinearLayout llControl;
 //    @BindView(R.id.ll_radar)
 //    LinearLayout llRadar;
 
@@ -83,6 +87,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     List<LocationInfo> listScan = new ArrayList<>();
 
     private int mScanTimes = 0;
+    private boolean mIsScanning = false;
 
     /* 定位相关 */
     AMapLocation mLocation;                                         //当前位置
@@ -135,7 +140,13 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                             new LatLng(mLocation.getLatitude(), mLocation.getLongitude())));
                 }
                 break;
+            //开始扫描
             case R.id.btn_scan:
+                if (BM.getManager().getConnectState() < ConnectStates.WORKED) {
+                    new ToastView(mContext, getString(R.string.nearby_toast_scan_device_not_connected_error), -1);
+                    return;
+                }
+
                 listScan.clear();
                 listLat.clear();
                 for (Marker maker : listMarker) {
@@ -143,7 +154,9 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                 }
                 listMarker.clear();
 
-                mAMap.getUiSettings().setAllGesturesEnabled(true);
+//                llControl.setVisibility(View.GONE);
+                mAMap.getUiSettings().setAllGesturesEnabled(false);
+                mIsScanning = true;
 
                 mScanTimes = 0;
                 mHandler.sendEmptyMessageDelayed(MSG_NEXT_SCAN, INTERVAL_SCAN);
@@ -160,6 +173,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         switch (msg.what) {
             case MSG_STOP_SCAN:
                 mAMap.getUiSettings().setAllGesturesEnabled(true);
+//                llControl.setVisibility(View.GONE);
                 scanView.setVisibility(View.INVISIBLE);
                 btnScan.setVisibility(View.VISIBLE);
                 showMarker();
@@ -167,8 +181,11 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             case MSG_NEXT_SCAN:
                 mScanTimes++;
                 if (mScanTimes > 30) {
+                    mAMap.getUiSettings().setAllGesturesEnabled(true);
+//                    llControl.setVisibility(View.GONE);
                     scanView.setVisibility(View.INVISIBLE);
                     btnScan.setVisibility(View.VISIBLE);
+                    mIsScanning = false;
                 } else {
                     int currChannel = BM.getManager().getDeviceSystemInfo().currChannel;
                     currChannel++;
@@ -289,6 +306,10 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             );
             mAMap.setOnMarkerClickListener(marker -> {
 
+                YLog.e(TAG, "mIsScanning:" + mIsScanning);
+                if (mIsScanning){
+                    return true;
+                }
                 for (int i = 0; i < listLat.size(); i++) {
                     if (listLat.get(i).latitude == marker.getPosition().latitude
                             && listLat.get(i).longitude == marker.getPosition().longitude) {
@@ -319,7 +340,6 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         mAMap.setMyLocationEnabled(true);
         mAMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
     }
-
 
     /**
      * 增加一个 marker

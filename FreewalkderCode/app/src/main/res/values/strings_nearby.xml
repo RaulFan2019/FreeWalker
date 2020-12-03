@@ -6,4 +6,6 @@
 
     <string name="nearby_action_shield">屏蔽ta</string>
     <string name="nearby_action_chat">和ta聊天</string>
+
+    <string name="nearby_toast_scan_device_not_connected_error">设备未连接</string>
 </resources>
