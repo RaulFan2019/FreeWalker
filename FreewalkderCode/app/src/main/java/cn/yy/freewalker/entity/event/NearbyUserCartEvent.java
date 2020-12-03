@@ -17,7 +17,6 @@ public class NearbyUserCartEvent {
 
     public int type;
     public LocationInfo locationInfo;
-
 //    public UserInfoResult user;
 
     public NearbyUserCartEvent() {

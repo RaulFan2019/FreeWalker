@@ -16,6 +16,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -79,6 +80,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     List<Marker> listMarker = new ArrayList<>();
     List<LatLng> listLat = new ArrayList<>();
+    List<Integer> listChannel = new ArrayList<>();
     List<LocationInfo> listScan = new ArrayList<>();
 
     private int mScanTimes = 0;
@@ -105,12 +107,14 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     @Override
     public void receiveLocationMsg(LocationInfo locationInfo) {
-        YLog.e(TAG,"receiveLocationMsg locationInfo.latitude:" + locationInfo.latitude + ",locationInfo.longtitude:" + locationInfo.longtitude);
+        YLog.e(TAG, "receiveLocationMsg locationInfo.latitude:" + locationInfo.latitude
+                + ",locationInfo.longtitude:" + locationInfo.longtitude);
         double latitude = (locationInfo.latitude / 1000000.0) - 90;
         double longitude = (locationInfo.longtitude / 1000000.0) - 180;
 
         listLat.add(new LatLng(latitude, longitude));
         listScan.add(locationInfo);
+        listChannel.add(BM.getManager().getDeviceSystemInfo().currChannel);
 
         showAddMarker(listScan.size() - 1);
     }
@@ -141,6 +145,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                 }
                 listMarker.clear();
 
+                mAMap.getUiSettings().setAllGesturesEnabled(true);
+
                 mScanTimes = 0;
                 mHandler.sendEmptyMessageDelayed(MSG_NEXT_SCAN, INTERVAL_SCAN);
                 scanView.setVisibility(View.VISIBLE);
@@ -155,6 +161,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     protected void myHandleMsg(Message msg) {
         switch (msg.what) {
             case MSG_STOP_SCAN:
+                mAMap.getUiSettings().setAllGesturesEnabled(true);
                 scanView.setVisibility(View.INVISIBLE);
                 btnScan.setVisibility(View.VISIBLE);
                 showMarker();
@@ -283,7 +290,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
             );
             mAMap.setOnMarkerClickListener(marker -> {
-                YLog.e(TAG, "listLat.size():" + listLat.size());
+
                 for (int i = 0; i < listLat.size(); i++) {
                     if (listLat.get(i).latitude == marker.getPosition().latitude
                             && listLat.get(i).longitude == marker.getPosition().longitude) {
@@ -325,7 +332,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         Marker marker = mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
                 .position(listLat.get(index))
                 .icon(BitmapDescriptorFactory.fromView(nearbyUserView)));
-        YLog.e(TAG,"addMarker marker.getPosition().latitude:" + marker.getPosition().latitude + ",marker.getPosition().longitude:" + marker.getPosition().longitude);
+        YLog.e(TAG, "addMarker marker.getPosition().latitude:" + marker.getPosition().latitude + ",marker.getPosition().longitude:" + marker.getPosition().longitude);
 
         listMarker.add(marker);
     }

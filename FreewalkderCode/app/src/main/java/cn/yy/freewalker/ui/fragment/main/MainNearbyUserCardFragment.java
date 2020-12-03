@@ -16,6 +16,7 @@ import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.utils.ImageU;
 import cn.yy.freewalker.utils.UserInfoU;
+import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.entity.LocationInfo;
 
 /**
@@ -45,6 +46,7 @@ public class MainNearbyUserCardFragment extends BaseFragment {
 
     /* data */
     private int mDestUserId;
+    private int mChannel;
 
     /* 构造函数 */
     public static MainNearbyUserCardFragment newInstance() {
@@ -65,6 +67,8 @@ public class MainNearbyUserCardFragment extends BaseFragment {
                 //TODO
                 break;
             case R.id.btn_chat:
+                BM.getManager().setChannel(mChannel, 5, "");
+
                 Bundle bundle = new Bundle();
                 bundle.putInt("destUserId", mDestUserId);
                 startActivity(SingleChatActivity.class, bundle);
@@ -114,6 +118,7 @@ public class MainNearbyUserCardFragment extends BaseFragment {
     }
 
     public void updateViews(LocationInfo user) {
+        mChannel = user.channel;
         mDestUserId = user.userId;
         ImageU.loadUserImage("", ivAvatar);
 
