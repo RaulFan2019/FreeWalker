@@ -80,7 +80,6 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     List<Marker> listMarker = new ArrayList<>();
     List<LatLng> listLat = new ArrayList<>();
-    List<Integer> listChannel = new ArrayList<>();
     List<LocationInfo> listScan = new ArrayList<>();
 
     private int mScanTimes = 0;
@@ -114,7 +113,6 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
         listLat.add(new LatLng(latitude, longitude));
         listScan.add(locationInfo);
-        listChannel.add(BM.getManager().getDeviceSystemInfo().currChannel);
 
         showAddMarker(listScan.size() - 1);
     }
