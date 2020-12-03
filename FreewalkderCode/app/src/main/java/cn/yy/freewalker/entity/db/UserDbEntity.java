@@ -5,6 +5,7 @@ import org.xutils.db.annotation.Table;
 
 import cn.yy.freewalker.entity.net.LoginResult;
 import cn.yy.freewalker.entity.net.UserInfoResult;
+import cn.yy.sdk.ble.entity.LocationInfo;
 
 
 /**
@@ -47,6 +48,22 @@ public class UserDbEntity {
         this.userId = userId;
         this.avatar = "";
         this.name = "";
+    }
+
+
+    public UserDbEntity(int userId, LocationInfo user){
+        this.userId = userId;
+        this.token = "";
+
+        this.avatar = "";
+        this.name = user.userName;
+        this.genderIndex = user.gender;
+        this.genderOriIndex = user.sex;
+        this.ageIndex = user.age;
+        this.professionIndex = user.job;
+        this.heightIndex = user.height;
+        this.weightIndex = user.weight;
+        this.phone = "";
     }
 
 

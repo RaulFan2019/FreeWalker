@@ -12,6 +12,7 @@ import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.net.LoginResult;
 import cn.yy.freewalker.entity.net.UserInfoResult;
 import cn.yy.freewalker.utils.YLog;
+import cn.yy.sdk.ble.entity.LocationInfo;
 
 
 /**
@@ -104,6 +105,19 @@ public class DBDataUser {
         }else {
             userDbEntity.update(userInfoResult);
             update(userDbEntity);
+        }
+    }
+
+    /**
+     * 保存用户信息
+     * @param userId
+     * @param locationInfo
+     */
+    public static void saveOrUpdateUserInfo(final int userId, final LocationInfo locationInfo){
+        UserDbEntity userDbEntity = getUserInfoByUserId(userId);
+        if (userDbEntity == null){
+            userDbEntity = new UserDbEntity(userId, locationInfo);
+            save(userDbEntity);
         }
     }
 

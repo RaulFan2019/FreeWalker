@@ -9,6 +9,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.entity.net.UserInfoResult;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
@@ -129,6 +131,8 @@ public class MainNearbyUserCardFragment extends BaseFragment {
         tvGender.setText(UserInfoU.getGenderStr(getActivity(), user.gender));
         tvLike.setText(UserInfoU.getGenderOriStr(getActivity(), user.sex));
         tvProfession.setText(UserInfoU.getJobStr(getActivity(), user.job));
+
+        DBDataUser.saveOrUpdateUserInfo(user.userId, user);
     }
 
 }
