@@ -97,7 +97,7 @@ public class ImproveUserInfoActivity extends BaseActivity {
 
 
     private Uri mAvatarPhotoUri;                                //头像uri
-    private String mAvatarPhotoPath;                            //头像文件地址
+    private String mAvatarPhotoPath = "";                       //头像文件地址
     private File mAvatarFile;                                   //头像文件
     private String mAvatarUrl;                                  //头像网络地址
 
