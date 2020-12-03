@@ -105,7 +105,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     @Override
     public void receiveLocationMsg(LocationInfo locationInfo) {
-
+        YLog.e(TAG,"receiveLocationMsg locationInfo.latitude:" + locationInfo.latitude + ",locationInfo.longtitude:" + locationInfo.longtitude);
         double latitude = (locationInfo.latitude / 1000000.0) - 90;
         double longitude = (locationInfo.longtitude / 1000000.0) - 180;
 
@@ -325,6 +325,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         Marker marker = mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
                 .position(listLat.get(index))
                 .icon(BitmapDescriptorFactory.fromView(nearbyUserView)));
+        YLog.e(TAG,"addMarker marker.getPosition().latitude:" + marker.getPosition().latitude + ",marker.getPosition().longitude:" + marker.getPosition().longitude);
+
         listMarker.add(marker);
     }
 
