@@ -241,7 +241,7 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         for (GroupChatMsgEntity chatMsgEntity : listMsg) {
             //自己的
             if (chatMsgEntity.destUserId == mUser.userId) {
-                mChatItems.add(new ChatRightTextBean(chatMsgEntity.content, mUser.avatar));
+                mChatItems.add(new ChatRightTextBean(chatMsgEntity.content, UrlConfig.IMAGE_HOST + mUser.avatar));
                 //别人的
             } else {
                 String userName = "??";
