@@ -35,6 +35,9 @@ public class InputPwdBox extends RelativeLayout {
     private static int MAXlength = 6;
 
     public String getInputContent() {
+        if (inputContent == null){
+            return null;
+        }
         if (inputContent.length() > MAXlength){
             return inputContent.substring(0,MAXlength);
         }else {

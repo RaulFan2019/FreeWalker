@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import cn.yy.freewalker.R;
 import cn.yy.freewalker.ui.widget.common.InputPwdBox;
+import cn.yy.freewalker.ui.widget.common.ToastView;
 
 /**
  * @author Raul.Fan
@@ -48,9 +49,16 @@ public class DialogDeviceInputChannelPwd {
 
         tvConfirm.setOnClickListener(v -> {
             if (mListener != null){
-                mListener.onConfirm(inputPwdBox.getInputContent());
+                String input = inputPwdBox.getInputContent();
+                if (input == null || input.length() < 6){
+                    new ToastView(context, context.getString(R.string.app_toast_channel_pwd_length_error),  -1);
+                }else {
+                    mListener.onConfirm(inputPwdBox.getInputContent());
+                    mDialog.dismiss();
+                }
+
             }
-            mDialog.dismiss();
+
         });
     }
 

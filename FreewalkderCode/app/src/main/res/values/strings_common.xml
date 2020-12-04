@@ -22,4 +22,6 @@
     <string name="app_toast_download_app_error">网络错误，稍后下载</string>
 
     <string name="app_tip_upload_ok">上传成功</string>
+    
+
 </resources>

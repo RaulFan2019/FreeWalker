@@ -143,7 +143,7 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
                         mDestUserId,msg,true);
                 DBDataSingleChatMsg.save(singleChatMsgEntity);
 
-                
+
                 // 隐藏软键盘
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);

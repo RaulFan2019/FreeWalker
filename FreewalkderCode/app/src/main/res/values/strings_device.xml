@@ -62,6 +62,8 @@
 
     <string name="device_tip_channel_can_not_set_pwd_and_priority">该频道不能设置密码和权限</string>
 
+    <string name="app_toast_channel_pwd_length_error">请输入6位数字密码</string>
+
     <string name="device_tip_ota_has_new_version">检测到最新版本\n%1$s</string>
     <string name="device_tip_ota_update_tip">当前版本%1$s\n请确保耳机电量充足</string>
     <string name="device_action_ota_now">立即升级</string>
