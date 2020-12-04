@@ -139,6 +139,11 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
 
                 BM.getManager().sendSingleChatMsg(mUser.userId, mDestUserId, msg);
 
+                SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(),mUser.userId,
+                        mDestUserId,msg,true);
+                DBDataSingleChatMsg.save(singleChatMsgEntity);
+
+                
                 // 隐藏软键盘
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);

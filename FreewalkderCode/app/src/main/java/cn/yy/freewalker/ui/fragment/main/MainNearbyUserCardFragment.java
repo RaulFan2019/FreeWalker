@@ -132,7 +132,7 @@ public class MainNearbyUserCardFragment extends BaseFragment {
         tvLike.setText(UserInfoU.getGenderOriStr(getActivity(), user.sex));
         tvProfession.setText(UserInfoU.getJobStr(getActivity(), user.job));
 
-//        DBDataUser.saveOrUpdateUserInfo(user.userId, user);
+        DBDataUser.saveOrUpdateUserInfo(user.userId, user);
     }
 
 }
