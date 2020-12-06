@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -72,6 +73,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
     MapView mapView;
     @BindView(R.id.btn_scan)
     LinearLayout btnScan;
+    @BindView(R.id.tv_scan)
+    TextView tvScan;
     @BindView(R.id.radar)
     RadarView scanView;
     @BindView(R.id.ll_control)
@@ -88,6 +91,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
 
     private int mScanTimes = 0;
     private boolean mIsScanning = false;
+    private int mOriChannel;                                       //原始频道
 
     /* 定位相关 */
     AMapLocation mLocation;                                         //当前位置
@@ -142,28 +146,11 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                 break;
             //开始扫描
             case R.id.btn_scan:
-                if (BM.getManager().getConnectState() < ConnectStates.WORKED) {
-                    new ToastView(mContext, getString(R.string.nearby_toast_scan_device_not_connected_error), -1);
-                    return;
+                if (mIsScanning) {
+                    stopScan();
+                } else {
+                    startScan();
                 }
-
-                listScan.clear();
-                listLat.clear();
-                for (Marker maker : listMarker) {
-                    maker.destroy();
-                }
-                listMarker.clear();
-
-//                llControl.setVisibility(View.GONE);
-                mAMap.getUiSettings().setAllGesturesEnabled(false);
-                mIsScanning = true;
-
-                mScanTimes = 0;
-                mHandler.sendEmptyMessageDelayed(MSG_NEXT_SCAN, INTERVAL_SCAN);
-                scanView.setVisibility(View.VISIBLE);
-                btnScan.setVisibility(View.GONE);
-
-                BM.getManager().queryNearbyUsers();
                 break;
         }
     }
@@ -181,11 +168,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             case MSG_NEXT_SCAN:
                 mScanTimes++;
                 if (mScanTimes > 30) {
-                    mAMap.getUiSettings().setAllGesturesEnabled(true);
-//                    llControl.setVisibility(View.GONE);
-                    scanView.setVisibility(View.INVISIBLE);
-                    btnScan.setVisibility(View.VISIBLE);
-                    mIsScanning = false;
+                    stopScan();
                 } else {
                     int currChannel = BM.getManager().getDeviceSystemInfo().currChannel;
                     currChannel++;
@@ -307,7 +290,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
             mAMap.setOnMarkerClickListener(marker -> {
 
                 YLog.e(TAG, "mIsScanning:" + mIsScanning);
-                if (mIsScanning){
+                if (mIsScanning) {
                     return true;
                 }
                 for (int i = 0; i < listLat.size(); i++) {
@@ -339,6 +322,50 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         myLocationStyle.showMyLocation(true);
         mAMap.setMyLocationEnabled(true);
         mAMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+    }
+
+
+    /**
+     * 開始掃描
+     */
+    private void startScan() {
+        if (BM.getManager().getConnectState() < ConnectStates.WORKED) {
+            new ToastView(mContext, getString(R.string.nearby_toast_scan_device_not_connected_error), -1);
+            return;
+        }
+
+        listScan.clear();
+        listLat.clear();
+        for (Marker maker : listMarker) {
+            maker.destroy();
+        }
+        listMarker.clear();
+
+//                llControl.setVisibility(View.GONE);
+        mIsScanning = true;
+        mOriChannel = BM.getManager().getDeviceSystemInfo().currChannel;
+        mScanTimes = 0;
+
+        mAMap.getUiSettings().setAllGesturesEnabled(false);
+        scanView.setVisibility(View.VISIBLE);
+        tvScan.setText(getString(R.string.nearby_action_scan_stop));
+
+        mHandler.sendEmptyMessageDelayed(MSG_NEXT_SCAN, INTERVAL_SCAN);
+        BM.getManager().queryNearbyUsers();
+    }
+
+
+    /**
+     * 停止扫描
+     */
+    private void stopScan() {
+        mAMap.getUiSettings().setAllGesturesEnabled(true);
+//                    llControl.setVisibility(View.GONE);
+        scanView.setVisibility(View.INVISIBLE);
+        tvScan.setText(getString(R.string.nearby_action_scan));
+        mIsScanning = false;
+
+        BM.getManager().setChannel(mOriChannel, 5, "");
     }
 
     /**
