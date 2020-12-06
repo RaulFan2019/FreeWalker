@@ -359,6 +359,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
      * 停止扫描
      */
     private void stopScan() {
+        mHandler.removeMessages(MSG_NEXT_SCAN);
         mAMap.getUiSettings().setAllGesturesEnabled(true);
 //                    llControl.setVisibility(View.GONE);
         scanView.setVisibility(View.INVISIBLE);
