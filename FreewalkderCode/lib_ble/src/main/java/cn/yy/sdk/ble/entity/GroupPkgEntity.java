@@ -3,6 +3,8 @@ package cn.yy.sdk.ble.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.yy.sdk.ble.utils.BLog;
+
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
@@ -10,6 +12,7 @@ import java.util.List;
  */
 public class GroupPkgEntity {
 
+    private static final String TAG = "GroupPkgEntity";
 
     public static final int INSERT_OK = 0x01;
     public static final int INSERT_FINISH = 0x02;
@@ -46,6 +49,8 @@ public class GroupPkgEntity {
             this.listData.add(data[i]);
         }
 
+        BLog.e(TAG,"insertPkgHead targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
+
         if (targetSize == this.listData.size()){
             return INSERT_FINISH;
         }else if (targetSize < this.listData.size()){
@@ -67,6 +72,7 @@ public class GroupPkgEntity {
             this.listData.add(data[i]);
         }
 
+        BLog.e(TAG,"insertPkgLeft targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
         if (targetSize == this.listData.size()){
             return INSERT_FINISH;
         }else if (targetSize < this.listData.size()){

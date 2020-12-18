@@ -378,7 +378,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         Marker marker = mAMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
                 .position(listLat.get(index))
                 .icon(BitmapDescriptorFactory.fromView(nearbyUserView)));
-        YLog.e(TAG, "addMarker marker.getPosition().latitude:" + marker.getPosition().latitude + ",marker.getPosition().longitude:" + marker.getPosition().longitude);
+        YLog.e(TAG, "addMarker marker.getPosition().latitude:" + marker.getPosition().latitude +
+                ",marker.getPosition().longitude:" + marker.getPosition().longitude);
 
         listMarker.add(marker);
     }
