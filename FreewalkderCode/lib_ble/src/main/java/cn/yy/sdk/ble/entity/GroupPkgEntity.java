@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.yy.sdk.ble.utils.BLog;
+import cn.yy.sdk.ble.utils.ByteU;
 
 /**
  * @author Raul.Fan
@@ -38,25 +39,26 @@ public class GroupPkgEntity {
 
     /**
      * 插入头数据
+     *
      * @return
      */
-    public int insertPkgHead(final byte[] data){
+    public int insertPkgHead(final byte[] data) {
         this.port = data[3];
-        this.targetSize = data[2] - 1;
+        this.targetSize = (data[2] >= 0 ? data[2] : data[2] + 256) - 1;
         this.listData = new ArrayList<>();
         //数据塞入content里
-        for (int i = 4 ; i < data.length; i++){
+        for (int i = 4; i < data.length; i++) {
             this.listData.add(data[i]);
         }
 
-        BLog.e(TAG,"insertPkgHead targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
+        BLog.e(TAG, "insertPkgHead targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
 
-        if (targetSize == this.listData.size()){
+        if (targetSize == this.listData.size()) {
             return INSERT_FINISH;
-        }else if (targetSize < this.listData.size()){
+        } else if (targetSize < this.listData.size()) {
             init();
             return INSERT_GIVE_UP;
-        }else {
+        } else {
             return INSERT_OK;
         }
     }
@@ -64,21 +66,22 @@ public class GroupPkgEntity {
 
     /**
      * 插入剩余数据
+     *
      * @return
      */
-    public int insertPkgLeft(final byte[] data){
+    public int insertPkgLeft(final byte[] data) {
         //数据塞入content里
-        for (int i = 0 ; i < data.length; i++){
+        for (int i = 0; i < data.length; i++) {
             this.listData.add(data[i]);
         }
 
-        BLog.e(TAG,"insertPkgLeft targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
-        if (targetSize == this.listData.size()){
+        BLog.e(TAG, "insertPkgLeft targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
+        if (targetSize == this.listData.size()) {
             return INSERT_FINISH;
-        }else if (targetSize < this.listData.size()){
+        } else if (targetSize < this.listData.size()) {
             init();
             return INSERT_GIVE_UP;
-        }else {
+        } else {
             return INSERT_OK;
         }
     }
