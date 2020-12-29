@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.yy.sdk.ble.utils.BLog;
-import cn.yy.sdk.ble.utils.ByteU;
 
 /**
  * @author Raul.Fan

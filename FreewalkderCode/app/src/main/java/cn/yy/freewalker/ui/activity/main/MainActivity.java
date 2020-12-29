@@ -162,11 +162,18 @@ public class MainActivity extends BaseActivity {
         if (event.type == NearbyUserCartEvent.SHOW) {
             fragmentNearbyUserCard.updateViews(event.locationInfo);
             llFragmentUserCard.setVisibility(View.VISIBLE);
+
+            if (fragmentNearby != null){
+                fragmentNearby.setScanBtnClickable(false);
+            }
+
         } else if (event.type == NearbyUserCartEvent.CLOSE) {
             if (fragmentNearbyUserCard != null) {
                 llFragmentUserCard.setVisibility(View.INVISIBLE);
             }
-
+            if (fragmentNearby != null){
+                fragmentNearby.setScanBtnClickable(true);
+            }
         }
     }
 

@@ -98,6 +98,7 @@
                     android:minLines="3"
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_chat_input"
+                    android:maxLength="180"
                     android:layout_height="wrap_content"/>
 
                 <TextView

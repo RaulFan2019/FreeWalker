@@ -67,6 +67,7 @@ public class DialogDeviceInputChannelPwd {
      */
     public void show(){
         mDialog.show();
+        inputPwdBox.setInputContent("");
         mDialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 

@@ -252,6 +252,12 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         mLocationClient.stopLocation();
     }
 
+
+    public void setScanBtnClickable(boolean isClickable) {
+        btnScan.setClickable(isClickable);
+    }
+
+
     private void initLocationClient() {
         if (mLocationClient == null) {
             mLocationClient = new AMapLocationClient(getActivity());
