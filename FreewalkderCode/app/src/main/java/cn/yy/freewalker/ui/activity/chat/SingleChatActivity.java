@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.Editable;
+import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -134,13 +135,15 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
                 break;
             case R.id.btn_send:
                 String msg = mInputEt.getText().toString();
+                YLog.e(TAG, "msg.length:" + msg.getBytes().length);
+
                 showRightChat(msg);
                 mInputEt.setText("");
 
                 BM.getManager().sendSingleChatMsg(mUser.userId, mDestUserId, msg);
 
-                SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(),mUser.userId,
-                        mDestUserId,msg,true);
+                SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(), mUser.userId,
+                        mDestUserId, msg, true);
                 DBDataSingleChatMsg.save(singleChatMsgEntity);
 
 
@@ -208,8 +211,8 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
     protected void initData() {
         mUser = DBDataUser.getLoginUser(SingleChatActivity.this);
         mDestUserId = getIntent().getExtras().getInt("destUserId");
-        YLog.e(TAG,"mDestUserId:" + mDestUserId);
-        YLog.e(TAG,"mUser.userId:" + mUser.userId);
+        YLog.e(TAG, "mDestUserId:" + mDestUserId);
+        YLog.e(TAG, "mUser.userId:" + mUser.userId);
 
         UserDbEntity userDbEntity = DBDataUser.getUserInfoByUserId(mDestUserId);
         if (userDbEntity == null) {
@@ -275,6 +278,26 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Editable editable = mInputEt.getText();
+                int bytesLen = mInputEt.getText().toString().getBytes().length;
+                int strLen = editable.length();
+                if (bytesLen > 180) {
+                    int selEndIndex = Selection.getSelectionEnd(editable);
+                    String str = editable.toString();
+                    //截取新字符串
+                    String newStr = str.substring(0, strLen - 1);
+                    mInputEt.setText(newStr);
+                    editable = mInputEt.getText();
+
+                    //新字符串的长度
+                    int newLen = editable.length();
+                    //旧光标位置超过字符串长度
+                    if (selEndIndex > newLen) {
+                        selEndIndex = editable.length();
+                    }
+                    //设置新光标所在的位置
+                    Selection.setSelection(editable, selEndIndex);
+                }
 
             }
 

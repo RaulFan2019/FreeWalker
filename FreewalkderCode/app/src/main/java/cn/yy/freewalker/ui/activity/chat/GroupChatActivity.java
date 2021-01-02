@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -316,7 +317,26 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Editable editable = mInputEt.getText();
+                int bytesLen = mInputEt.getText().toString().getBytes().length;
+                int strLen = editable.length();
+                if (bytesLen > 180) {
+                    int selEndIndex = Selection.getSelectionEnd(editable);
+                    String str = editable.toString();
+                    //截取新字符串
+                    String newStr = str.substring(0, strLen - 1);
+                    mInputEt.setText(newStr);
+                    editable = mInputEt.getText();
 
+                    //新字符串的长度
+                    int newLen = editable.length();
+                    //旧光标位置超过字符串长度
+                    if (selEndIndex > newLen) {
+                        selEndIndex = editable.length();
+                    }
+                    //设置新光标所在的位置
+                    Selection.setSelection(editable, selEndIndex);
+                }
             }
 
             @Override
@@ -405,7 +425,7 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         mChatItems.add(new ChatLeftTextBean(userId, userName, chatText, photoUrl));
         mChatAdapter.notifyDataSetChanged();
 
-        mChatRv.scrollToPosition(mChatAdapter.getItemCount()-1);
+        mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
     }
 
 
@@ -427,7 +447,7 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
         mChatItems.add(new ChatRightTextBean(chatText, UrlConfig.IMAGE_HOST + mUser.avatar));
         mChatAdapter.notifyDataSetChanged();
 
-        mChatRv.scrollToPosition(mChatAdapter.getItemCount()-1);
+        mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
     }
 
 

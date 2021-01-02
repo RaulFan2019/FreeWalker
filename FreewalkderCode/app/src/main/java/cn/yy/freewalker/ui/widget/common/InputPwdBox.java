@@ -46,8 +46,15 @@ public class InputPwdBox extends RelativeLayout {
 
     }
 
-    public void setInputContent(String inputContent) {
-        this.inputContent = inputContent;
+    public void init(){
+        this.inputContent = "";
+        this.etCode.setText("");
+        this.textViews[0].setText("");
+        this.textViews[1].setText("");
+        this.textViews[2].setText("");
+        this.textViews[3].setText("");
+        this.textViews[4].setText("");
+        this.textViews[5].setText("");
     }
 
     private String inputContent;

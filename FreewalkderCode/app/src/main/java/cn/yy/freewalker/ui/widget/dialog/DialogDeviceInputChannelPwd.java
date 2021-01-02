@@ -62,12 +62,15 @@ public class DialogDeviceInputChannelPwd {
         });
     }
 
+    public void init(){
+        inputPwdBox.init();
+    }
+
     /**
      * 显示
      */
     public void show(){
         mDialog.show();
-        inputPwdBox.setInputContent("");
         mDialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
