@@ -289,6 +289,15 @@ public class BM {
     }
 
 
+    public int setDeviceName(final String deviceName){
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().setDeviceName(deviceName);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
     /**
      * 设置信号是否增强
      * @param isEnhance

@@ -269,8 +269,7 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
      * 开始连接
      */
     private void startConnect(final DeviceBleScan deviceBleScan) {
-        YLog.e(TAG,"");
-        BM.getManager().addNewConnect(deviceBleScan.device.getAddress(), deviceBleScan.device.getName(), false);
+        BM.getManager().addNewConnect(deviceBleScan.device.getAddress(), "", false);
         new ToastView(DeviceFindActivity.this, getString(R.string.device_toast_connecting), -1);
         mHandler.sendEmptyMessageDelayed(MSG_STOP_CONNECT, INTERVAL_STOP_CONNECT);
     }

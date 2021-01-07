@@ -8,12 +8,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.time.YearMonth;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataDevice;
+import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
+import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.widget.common.ToastView;
+import cn.yy.sdk.ble.BM;
 
 /**
  * @author Raul.Fan
@@ -29,6 +36,8 @@ public class DeviceSettingsNameActivity extends BaseActivity implements TextWatc
     @BindView(R.id.tv_tx_size)
     TextView tvTxSize;
 
+    UserDbEntity mUser;
+    BindDeviceDbEntity mDevice;
 
     @Override
     protected int getLayoutId() {
@@ -49,7 +58,11 @@ public class DeviceSettingsNameActivity extends BaseActivity implements TextWatc
                 break;
             //保存
             case R.id.btn_save:
-                //TODO
+                String name = etName.getText().toString();
+                mDevice.deviceName = name;
+                DBDataDevice.update(mDevice);
+
+                BM.getManager().setDeviceName(name);
                 new ToastView(DeviceSettingsNameActivity.this, getString(R.string.app_toast_modify_ok), -1);
                 finish();
                 break;
@@ -68,8 +81,16 @@ public class DeviceSettingsNameActivity extends BaseActivity implements TextWatc
 
     @Override
     protected void initData() {
-        etName.setText("Raul的耳机");
+        mUser = DBDataUser.getLoginUser(DeviceSettingsNameActivity.this);
+        mDevice = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
+
+        if (mDevice.deviceName != null){
+            etName.setText(mDevice.deviceName);
+        }else {
+            etName.setText("");
+        }
         tvTxSize.setText(etName.getText().toString().length() + "/8");
+
     }
 
     @Override

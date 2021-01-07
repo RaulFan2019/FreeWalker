@@ -10,6 +10,7 @@ public class PrivatePorts {
     public static final byte GET_SYSTEM_INFO = 0x64;                        //获取系统信息
 
     public static final byte SET_CHANNEL = 0x65;                            //设置频道
+    public static final byte SET_NAME = 0x68;                               //设置名称
 
     public static final byte SET_SYSTEM = 0x66;                             //设置系统信息
 

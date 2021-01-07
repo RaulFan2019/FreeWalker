@@ -67,6 +67,8 @@ public class ConnectEntity {
 
     private static final int MSG_SET_SIGNAL = 0x11;                        //设置系统信息
 
+    private static final int MSG_SET_DEVICE_NAME = 0x12;                  //设置名称
+
 
     /* local data of system */
     private Application mContext;                                          //上下文
@@ -152,6 +154,10 @@ public class ConnectEntity {
                 //设置信号
                 case MSG_SET_SIGNAL:
                     writeSetSignal((Boolean) msg.obj);
+                    break;
+                //设置设备名称
+                case MSG_SET_DEVICE_NAME:
+                    writeSetDeviceName((String) msg.obj);
                     break;
             }
         }
@@ -517,6 +523,7 @@ public class ConnectEntity {
         sendMsg(MSG_SET_CHANNEL, channelInfo, 0);
     }
 
+
     /**
      * 写入设置频道
      *
@@ -569,6 +576,45 @@ public class ConnectEntity {
         boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
         if (!writeSuccess) {
             sendMsg(MSG_SET_CHANNEL, channelInfo, DELAY_REPEAT_WRITE);
+        }
+    }
+
+
+    /**
+     * 设置名称
+     *
+     * @param deviceName
+     */
+    public void setDeviceName(final String deviceName) {
+        sendMsg(MSG_SET_DEVICE_NAME, deviceName, 0);
+    }
+
+    /**
+     * 写入设置频道
+     *
+     * @param deviceName
+     */
+    public void writeSetDeviceName(final String deviceName) {
+        mHandler.removeMessages(MSG_SET_DEVICE_NAME);
+        byte[] data = new byte[20];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        data[2] = 0x11;
+        //port
+        data[3] = PrivatePorts.SET_NAME;
+        //name
+        byte[] nameB = deviceName.getBytes();
+
+        for (int i = 0 ; i < nameB.length && i < 16 ; i ++){
+            data[4 + i] = nameB[i];
+        }
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SET_DEVICE_NAME, deviceName, DELAY_REPEAT_WRITE);
         }
     }
 

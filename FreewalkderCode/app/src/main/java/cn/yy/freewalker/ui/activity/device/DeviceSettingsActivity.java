@@ -18,6 +18,7 @@ import cn.yy.freewalker.entity.db.BindDeviceDbEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
+import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
 import cn.yy.sdk.ble.observer.ChannelListener;
 
@@ -30,6 +31,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
 
     /* contains */
+    private static final String TAG = "DeviceSettingsActivity";
 
     /* views */
     @BindView(R.id.tv_device)
@@ -100,7 +102,6 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
     @Override
     protected void initViews() {
         tvDevice.setText(BM.getManager().getConnectName());
-        tvName.setText("Raul的耳机");
 
         tvVolume.setText("6");
         sbVolume.setProgress(6);
@@ -111,7 +112,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
             @Override
             public void onClick(View v) {
                 BM.getManager().setSignal(cbPower.isChecked());
-                if (cbPower.isChecked()){
+                if (cbPower.isChecked()) {
                     showPowerEnhanceDialog();
                 }
             }
@@ -132,13 +133,19 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
     @Override
     protected void onResume() {
         super.onResume();
+        BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
+        if (dbEntity.deviceName != null) {
+            tvName.setText(dbEntity.deviceName);
+        } else {
+            tvName.setText("");
+        }
+        
         if (BM.getManager().getDeviceSystemInfo() != null) {
             tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
             if (BM.getManager().getDeviceSystemInfo().power == 0x16) {
                 cbPower.setChecked(true);
             }
         } else {
-            BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
             tvChannel.setText(String.valueOf(dbEntity.lastChannel + 1));
         }
 

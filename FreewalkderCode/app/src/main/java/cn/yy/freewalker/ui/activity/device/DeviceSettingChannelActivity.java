@@ -64,12 +64,12 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_set_pwd:
-                if (mChanelIndex > 9){
+                if (mChanelIndex > 9) {
                     onPwdInputClick();
                 }
                 break;
             case R.id.btn_set_auth:
-                if (mChanelIndex > 9){
+                if (mChanelIndex > 9) {
                     onAuthSelectClick();
                 }
                 break;
@@ -166,8 +166,9 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
      * 密码输入
      */
     private void onPwdInputClick() {
+        ChannelDbEntity channelDbEntity = listChannel.get(mChanelIndex);
         if (mChanelIndex >= 10) {
-            mDialogBuilder.showDeviceChannelPwdDialog(DeviceSettingChannelActivity.this);
+            mDialogBuilder.showDeviceChannelPwdDialog(DeviceSettingChannelActivity.this, channelDbEntity.pwd);
             mDialogBuilder.setDeviceChannelPwdDialogListener(new DialogDeviceInputChannelPwd.onConfirmListener() {
                 @Override
                 public void onConfirm(String pwd) {

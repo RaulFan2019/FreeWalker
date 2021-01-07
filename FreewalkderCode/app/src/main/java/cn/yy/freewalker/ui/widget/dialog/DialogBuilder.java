@@ -198,14 +198,12 @@ public class DialogBuilder {
      *
      * @param context
      */
-    public void showDeviceChannelPwdDialog(final Context context) {
+    public void showDeviceChannelPwdDialog(final Context context,final String pwd) {
         if (dialogDeviceInputChannelPwd == null) {
             dialogDeviceInputChannelPwd = new DialogDeviceInputChannelPwd(context);
-        }else {
-            dialogDeviceInputChannelPwd.init();
         }
 
-        dialogDeviceInputChannelPwd.show();
+        dialogDeviceInputChannelPwd.show(pwd);
     }
 
 

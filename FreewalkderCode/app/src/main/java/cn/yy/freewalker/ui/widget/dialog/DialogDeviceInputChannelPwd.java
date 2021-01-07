@@ -48,11 +48,11 @@ public class DialogDeviceInputChannelPwd {
         inputPwdBox = mDialog.findViewById(R.id.inputBox);
 
         tvConfirm.setOnClickListener(v -> {
-            if (mListener != null){
+            if (mListener != null) {
                 String input = inputPwdBox.getInputContent();
-                if (input == null || input.length() < 6){
-                    new ToastView(context, context.getString(R.string.app_toast_channel_pwd_length_error),  -1);
-                }else {
+                if (input == null || input.length() < 6) {
+                    new ToastView(context, context.getString(R.string.app_toast_channel_pwd_length_error), -1);
+                } else {
                     mListener.onConfirm(inputPwdBox.getInputContent());
                     mDialog.dismiss();
                 }
@@ -62,20 +62,25 @@ public class DialogDeviceInputChannelPwd {
         });
     }
 
-    public void init(){
+    public void init() {
         inputPwdBox.init();
     }
 
     /**
      * 显示
      */
-    public void show(){
+    public void show(final String pwd) {
+        if (pwd == null || pwd.isEmpty()) {
+            inputPwdBox.init();
+        } else {
+            inputPwdBox.setContent(pwd);
+        }
         mDialog.show();
         mDialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
 
-    public void setListener(onConfirmListener listener){
+    public void setListener(onConfirmListener listener) {
         this.mListener = listener;
     }
 }

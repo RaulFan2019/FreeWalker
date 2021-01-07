@@ -20,6 +20,7 @@ import java.util.List;
 
 import androidx.annotation.RequiresApi;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.utils.YLog;
 
 /**
  * @author Raul.Fan
@@ -29,24 +30,27 @@ import cn.yy.freewalker.R;
 
 public class InputPwdBox extends RelativeLayout {
 
+    private static final String TAG = "InputPwdBox";
 
     private Context context;
     private TextView[] textViews;
     private static int MAXlength = 6;
 
+    private String inputContent;
+
     public String getInputContent() {
-        if (inputContent == null){
+        if (inputContent == null) {
             return null;
         }
-        if (inputContent.length() > MAXlength){
-            return inputContent.substring(0,MAXlength);
-        }else {
+        if (inputContent.length() > MAXlength) {
+            return inputContent.substring(0, MAXlength);
+        } else {
             return inputContent;
         }
 
     }
 
-    public void init(){
+    public void init() {
         this.inputContent = "";
         this.etCode.setText("");
         this.textViews[0].setText("");
@@ -57,7 +61,22 @@ public class InputPwdBox extends RelativeLayout {
         this.textViews[5].setText("");
     }
 
-    private String inputContent;
+
+    /**
+     * 设置内容
+     *
+     * @param content
+     */
+    public void setContent(final String content) {
+        init();
+        this.inputContent = content.replace(",", "");
+        for (int i = 0; i < 6 && i < this.inputContent.length(); i++) {
+            this.textViews[i].setText(String.valueOf(this.inputContent.charAt(i)));
+        }
+        etCode.setText(this.inputContent);
+        etCode.requestFocus();
+    }
+
 
     private EditText etCode;
     private List<String> codes = new ArrayList<>();
@@ -118,24 +137,25 @@ public class InputPwdBox extends RelativeLayout {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
                 inputContent = etCode.getText().toString();
                 if (inputCompleteListener != null) {
                     if (inputContent.length() >= MAXlength) {
                         inputCompleteListener.inputComplete(inputContent);
                     }
                 }
-                for (int i = 0; i < MAXlength; i++) {
-                    if (i < inputContent.length()) {
-                        textViews[i].setText(String.valueOf(inputContent.charAt(i)));
+                for (int j = 0; j < MAXlength; j++) {
+                    if (j < inputContent.length()) {
+                        textViews[j].setText(String.valueOf(inputContent.charAt(j)));
                     } else {
-                        textViews[i].setText("");
+                        textViews[j].setText("");
                     }
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+
 
 
             }
