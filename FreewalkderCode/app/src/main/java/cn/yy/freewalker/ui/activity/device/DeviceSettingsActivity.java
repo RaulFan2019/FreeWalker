@@ -139,7 +139,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         } else {
             tvName.setText("");
         }
-        
+
         if (BM.getManager().getDeviceSystemInfo() != null) {
             tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
             if (BM.getManager().getDeviceSystemInfo().power == 0x16) {
