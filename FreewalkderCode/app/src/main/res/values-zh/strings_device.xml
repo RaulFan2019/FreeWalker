@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="device_title_list">设备列表</string>
+
+    <string name="device_tip_no_bind">未连接任何设备\n请点击下方按钮添加新设备</string>
+
+    <string name="device_tip_ask_unbind">确定解除与该设备的绑定？</string>
+
+    <string name="device_action_add_new">添加新设备</string>
+    <string name="device_action_unbind_device">解除绑定</string>
+    <string name="device_action_unbind_in_dialog">解绑</string>
+    <string name="device_action_add_now">开始添加</string>
+
+    <string name="device_status_disconnect">未连接，点击切换</string>
+    <string name="device_status_connecting">正在连接</string>
+    <string name="device_status_worked">已连接</string>
+
+    <string name="device_title_add">添加一个新设备</string>
+    <string name="device_title_add_ing">添加设备中</string>
+    <string name="device_tip_open">长按设备开机键3秒，开始添加新设备</string>
+    <string name="device_tip_add">添加过程中请保证耳机处于开机状态</string>
+    <string name="device_tip_select_nearby">选择附近的FW</string>
+    <string name="device_tip_scan_none">没有扫描到我要连接的设备</string>
+
+    <string name="device_error_not_support">本设备不支持蓝牙</string>
+
+    <string name="device_title_open_bluetooth">蓝牙服务</string>
+    <string name="device_tip_bluetooth_not_opened_short">蓝牙未开启</string>
+    <string name="device_tip_bluetooth_not_opened">蓝牙未开启，无法连接设备\n请检查您的蓝牙设置</string>
+    <string name="device_action_open">立即开启</string>
+
+    <string name="device_title_open_location">位置服务</string>
+    <string name="device_tip_location_service">需要开启位置服务以扫描耳机，是否去开启？</string>
+    <string name="device_tip_location_opened_short">位置服务未开启</string>
+    <string name="device_tip_location_opened">Android6.0后，蓝牙扫描需要位置服务</string>
+    <string name="device_tip_location_permission">需要开启位置权限以扫描设备</string>
+    <string name="device_tip_location_permission_2">需要去设置页面开启位置权限以扫描设备</string>
+
+    <string name="device_title_dialog_scan_none">没有扫描到我的设备</string>
+    <string name="device_action_dialog_try_again">重试</string>
+    <string name="device_action_dialog_exit">暂不连接</string>
+
+    <string name="device_tip_connect_ok">连接成功</string>
+
+    <string name="device_toast_connecting">正在配对中..</string>
+    <string name="device_title_dialog_connect_fail">连接失败</string>
+    <string name="device_toast_connected">配对成功</string>
+
+    <string name="device_title_settings">我的设备</string>
+
+    <string name="device_tx_settings_device">当前设备</string>
+    <string name="device_tx_settings_earphone">耳机名称</string>
+    <string name="device_tx_settings_ota_update">固件升级</string>
+    <string name="device_tx_settings_volume">音量</string>
+    <string name="device_tx_settings_channel">当前频道</string>
+    <string name="device_tx_settings_power">信号增强模式</string>
+    <string name="device_tx_settings_battery">电量</string>
+
+    <string name="device_tip_setting_power_title">该模式使功率增大，请遵循当地无线电管理规范，一般在求助救援等必要情况下使用。</string>
+    <string name="device_tip_setting_power_content">注：功率增大，会降低使用时长。</string>
+
+    <string name="device_tip_channel_can_not_set_pwd_and_priority">该频道不能设置密码和权限</string>
+
+    <string name="app_toast_channel_pwd_length_error">请输入6位数字密码</string>
+
+    <string name="device_tip_ota_has_new_version">检测到最新版本\n%1$s</string>
+    <string name="device_tip_ota_update_tip">当前版本%1$s\n请确保耳机电量充足</string>
+    <string name="device_action_ota_now">立即升级</string>
+
+    <string name="device_tip_ota_ing">正在升级..</string>
+    <string name="device_tip_ota_warning">请确保耳机电量充足</string>
+
+    <string name="device_tip_ota_newest">%1$s\n当前已是最新版本</string>
+
+    <string name="device_toast_ota_finish">升级成功</string>
+
+    <string name="device_tx_setting_channel_curr">- 当前频道 -</string>
+    <string name="device_tx_setting_channel_all">频道（1-30）</string>
+    <string name="device_action_setting_channel_pwd">密码设置</string>
+    <string name="device_action_setting_channel_auth">权限设置</string>
+    <string name="device_tip_setting_channel_pwd">用户须知：\n· 在同一频道下，您需与好友同时输入相同的密码，方可进入保密通信状态；\n· 密码为6个数字。</string>
+
+
+    <string name="device_channel_1">公共</string>
+    <string name="device_channel_2">公共</string>
+    <string name="device_channel_3">公共</string>
+    <string name="device_channel_4">社区</string>
+    <string name="device_channel_5">校园</string>
+    <string name="device_channel_6">商圈</string>
+    <string name="device_channel_7">约会</string>
+    <string name="device_channel_8">求职</string>
+    <string name="device_channel_9">旅游</string>
+    <string name="device_channel_10">交通</string>
+
+</resources>
