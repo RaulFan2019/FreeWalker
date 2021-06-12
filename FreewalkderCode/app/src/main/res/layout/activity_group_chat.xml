@@ -85,6 +85,7 @@
             <ImageView
                 android:id="@+id/iv_input_type"
                 style="@style/ChatInputLeftBtn"
+                android:visibility="gone"
                 android:src="@drawable/btn_voice"/>
 
             <RelativeLayout
@@ -97,6 +98,7 @@
                     android:id="@+id/et_input_text"
                     android:minLines="3"
                     android:layout_width="match_parent"
+                    android:layout_marginStart="15dp"
                     android:background="@drawable/bg_chat_input"
                     android:maxLength="180"
                     android:layout_height="wrap_content"/>
@@ -123,6 +125,7 @@
             <ImageView
                 android:id="@+id/iv_input_loc"
                 style="@style/ChatInputRightBtn"
+                android:visibility="gone"
                 android:src="@drawable/btn_location"/>
 
             <Button

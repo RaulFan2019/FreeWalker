@@ -3,6 +3,7 @@ package cn.yy.freewalker.ui.activity.auth;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,6 +87,9 @@ public class UserInfoActivity extends BaseActivity {
     @BindView(R.id.img_photo_4)
     ImageView imgPhoto4;
 
+    @BindView(R.id.cb_shield)
+    CheckBox cbShield;
+
     private List<ImageView> listImageView = new ArrayList<>();
 
     /* data */
@@ -94,6 +98,7 @@ public class UserInfoActivity extends BaseActivity {
     private List<PhotoResult> listPhoto = new ArrayList<>();
 
     private UserDbEntity mUser;
+    private UserDbEntity mDestUser;
 
     @Override
     protected int getLayoutId() {
@@ -144,6 +149,7 @@ public class UserInfoActivity extends BaseActivity {
     protected void initData() {
         mDestUserId = getIntent().getExtras().getInt("destUserId");
         mUser = DBDataUser.getLoginUser(UserInfoActivity.this);
+        mDestUser = DBDataUser.getUserInfoByUserId(mDestUserId);
 
         listImageView.add(imgPhoto1);
         listImageView.add(imgPhoto2);
@@ -160,6 +166,16 @@ public class UserInfoActivity extends BaseActivity {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) cardAvatar.getLayoutParams();
         params.leftMargin = (DensityU.getScreenWidth(UserInfoActivity.this) - DensityU.dip2px(UserInfoActivity.this, 80)) / 2;
         cardAvatar.setLayoutParams(params);
+
+        cbShield.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDestUser != null){
+                    mDestUser.isShield = cbShield.isChecked();
+                    DBDataUser.update(mDestUser);
+                }
+            }
+        });
     }
 
     @Override
@@ -190,6 +206,7 @@ public class UserInfoActivity extends BaseActivity {
                             mDestUserInfo = JSON.parseObject(result.data, UserInfoResult.class);
                             //保存用户信息
                             DBDataUser.saveOrUpdateUserInfo(mDestUserId, mDestUserInfo);
+                            mDestUser = DBDataUser.getUserInfoByUserId(mDestUserId);
 
                             mHandler.sendEmptyMessage(MSG_GET_USER_INFO_OK);
                         } else {
@@ -276,5 +293,8 @@ public class UserInfoActivity extends BaseActivity {
         tvLike.setText(UserInfoU.getGenderOriStr(UserInfoActivity.this, mDestUserInfo.genderOri));
         tvProfession.setText(UserInfoU.getJobStr(UserInfoActivity.this, mDestUserInfo.job));
 
+        if (mDestUser != null){
+            cbShield.setChecked(mDestUser.isShield);
+        }
     }
 }

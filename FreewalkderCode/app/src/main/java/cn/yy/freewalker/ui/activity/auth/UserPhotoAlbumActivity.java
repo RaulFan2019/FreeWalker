@@ -42,6 +42,7 @@ import cn.yy.freewalker.entity.net.PhotoResult;
 import cn.yy.freewalker.network.NetworkExceptionHelper;
 import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.BaseActivity;
+import cn.yy.freewalker.ui.activity.common.ImageShowActivity;
 import cn.yy.freewalker.ui.adapter.PhotoSelectAdapter;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
@@ -116,6 +117,15 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
                 adapter = new PhotoSelectAdapter(UserPhotoAlbumActivity.this, listPhoto, mIsSelectedMode);
                 adapter.setListener(this);
                 gvPhoto.setAdapter(adapter);
+
+                YLog.e(TAG,"url:" + listPhoto.get(0).photo.imgUrl);
+                YLog.e(TAG,"url:" + listPhoto.get(1).photo.imgUrl);
+                Bundle bundle = new Bundle();
+                bundle.putString("url", listPhoto.get(0).photo.imgUrl);
+                bundle.putBoolean("isLocalPath", false);
+                bundle.putBoolean("canDelte", false);
+                startActivity(ImageShowActivity.class, bundle);
+
                 break;
             //删除图片
             case R.id.btn_delete:

@@ -69,8 +69,7 @@
                 android:id="@+id/tv_chat_user_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="男" />
+                android:layout_marginStart="6dp"/>
 
             <ImageView
                 android:layout_width="12dp"
@@ -82,8 +81,7 @@
                 android:id="@+id/tv_chat_user_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="25" />
+                android:layout_marginStart="6dp" />
 
             <ImageView
                 android:layout_width="12dp"
@@ -95,8 +93,7 @@
                 android:id="@+id/tv_chat_user_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="女" />
+                android:layout_marginStart="6dp"/>
 
             <ImageView
                 android:layout_width="12dp"
@@ -109,8 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:layout_marginEnd="13dp"
-                android:text="房地产/建筑" />
+                android:layout_marginEnd="13dp"/>
         </LinearLayout>
 
         <TextView
@@ -151,7 +147,8 @@
             <ImageView
                 android:id="@+id/iv_input_type"
                 style="@style/ChatInputLeftBtn"
-                android:src="@drawable/btn_voice" />
+                android:src="@drawable/btn_voice"
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -163,6 +160,7 @@
                 <EditText
                     android:id="@+id/et_input_text"
                     android:minLines="3"
+                    android:layout_marginStart="15dp"
                     android:layout_width="match_parent"
                     android:background="@drawable/bg_chat_input"
                     android:maxLength="180"
@@ -189,7 +187,8 @@
             <ImageView
                 android:id="@+id/iv_input_loc"
                 style="@style/ChatInputRightBtn"
-                android:src="@drawable/btn_location" />
+                android:src="@drawable/btn_location"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btn_send"

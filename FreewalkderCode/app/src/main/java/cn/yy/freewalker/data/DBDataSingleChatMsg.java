@@ -1,5 +1,6 @@
 package cn.yy.freewalker.data;
 
+import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.ex.DbException;
 
 import java.util.ArrayList;
@@ -69,4 +70,18 @@ public class DBDataSingleChatMsg {
         return listResult;
     }
 
+
+    /**
+     * 根据对话用户删除聊天记录
+     * @param userId
+     * @param destUserId
+     */
+    public static void deleteByUser(final int userId, final int destUserId){
+        try {
+            LocalApp.getInstance().getDb().delete(SingleChatMsgEntity.class,
+                    WhereBuilder.b("userId","=",userId).and("destUserId","=",destUserId));
+        }catch (DbException e){
+            e.printStackTrace();
+        }
+    }
 }

@@ -40,6 +40,8 @@ public class ChatPersonHolder extends RecyclerView.ViewHolder {
     public Button mDelConfirmBtn;
     @BindView(R.id.ll_shield_friend)
     public LinearLayout mShieldBtn;
+    @BindView(R.id.tv_shield)
+    public TextView mShieldTx;
     @BindView(R.id.ll_fun)
     LinearLayout mFunLl;
     @BindView(R.id.rl_person_content)
@@ -65,6 +67,10 @@ public class ChatPersonHolder extends RecyclerView.ViewHolder {
 
     public void showLastTime(String lastTime){
         tvLastTime.setText(lastTime);
+    }
+
+    public void showShieldTx(String txShield) {
+        mShieldTx.setText(txShield);
     }
 
     private void initEvent(){

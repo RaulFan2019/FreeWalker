@@ -37,6 +37,21 @@ public class RequestBuilder {
 
     }
 
+
+    /**
+     * 检查设备版本
+     * @param context
+     * @param version
+     * @return
+     */
+    public static RequestParams checkDeviceVersion(final Context context, final int version){
+        RequestParams params = new RequestParams(UrlConfig.GET_DEVICE_VERSION);
+
+        params.addBodyParameter("versionCode", version);
+        params.addBodyParameter("devType","1");
+        return params;
+    }
+
     /**
      * 获取验证码
      *

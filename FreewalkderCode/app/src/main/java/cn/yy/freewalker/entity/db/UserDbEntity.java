@@ -39,6 +39,8 @@ public class UserDbEntity {
 
     @Column(name = "phone")
     public String phone;
+    @Column(name = "isShield")
+    public boolean isShield;
 
     public UserDbEntity() {
     }
@@ -48,6 +50,7 @@ public class UserDbEntity {
         this.userId = userId;
         this.avatar = "";
         this.name = "";
+        this.isShield = false;
     }
 
 
@@ -64,6 +67,7 @@ public class UserDbEntity {
         this.heightIndex = user.height;
         this.weightIndex = user.weight;
         this.phone = "";
+        this.isShield = false;
     }
 
 
@@ -80,6 +84,7 @@ public class UserDbEntity {
         this.heightIndex = userInfoResult.bodyLong;
         this.weightIndex = userInfoResult.bodyWeight;
         this.phone = phone;
+        this.isShield = false;
     }
 
     public UserDbEntity(final int userId, final UserInfoResult userInfoResult){
@@ -93,6 +98,7 @@ public class UserDbEntity {
         this.professionIndex = userInfoResult.job;
         this.heightIndex = userInfoResult.bodyLong;
         this.weightIndex = userInfoResult.bodyWeight;
+        this.isShield = false;
     }
 
     /**

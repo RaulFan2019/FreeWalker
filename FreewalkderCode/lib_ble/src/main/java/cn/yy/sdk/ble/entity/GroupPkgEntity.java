@@ -74,7 +74,7 @@ public class GroupPkgEntity {
             this.listData.add(data[i]);
         }
 
-        BLog.e(TAG, "insertPkgLeft targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
+//        BLog.e(TAG, "insertPkgLeft targetSize:" + targetSize + "this.listData.size():" + this.listData.size());
         if (targetSize == this.listData.size()) {
             return INSERT_FINISH;
         } else if (targetSize < this.listData.size()) {

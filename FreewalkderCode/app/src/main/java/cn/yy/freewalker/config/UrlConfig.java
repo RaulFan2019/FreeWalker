@@ -13,6 +13,8 @@ public class UrlConfig {
 
     //检查版本
     public static final String CHECK_APP_VERSION = HOST + "/appVersion/checkLastVer";
+    //获取设备版本
+    public static final String GET_DEVICE_VERSION = "http://47.110.149.158/blechat/bleVersion/checkLastVer";
     //获取验证码
     public static final String GET_CAPTCHA = HOST + "/smsCode/sendLoginSms";
     //注册

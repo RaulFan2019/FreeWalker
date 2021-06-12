@@ -14,7 +14,10 @@ import android.preference.PreferenceManager;
 public class SPDataUser {
 
     private static final String ACCOUNT = "account";
+    private static final String IS_SHARE_LOC = "isShareLoc";
+
     public static final int DEFAULT_ACCOUNT = -1;
+
 
 
     /**
@@ -43,6 +46,26 @@ public class SPDataUser {
      */
     public static int getAccount(final Context context){
         return getSharedPreferences(context).getInt(ACCOUNT, DEFAULT_ACCOUNT);
+    }
+
+    /**
+     * 设置是否公开位置
+     * @param context
+     * @param isShareLoc
+     */
+    public static void setIsShareLoc(final Context context, final boolean isShareLoc){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putBoolean(ACCOUNT, isShareLoc);
+        editor.commit();
+    }
+
+    /**
+     * 获取是否公开位置
+     * @param context
+     * @return
+     */
+    public static boolean getIsShare(final Context context){
+        return getSharedPreferences(context).getBoolean(IS_SHARE_LOC, true);
     }
 
 }

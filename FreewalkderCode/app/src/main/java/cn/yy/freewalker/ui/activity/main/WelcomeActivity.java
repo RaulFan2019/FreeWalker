@@ -104,7 +104,8 @@ public class WelcomeActivity extends BaseActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.REQUEST_INSTALL_PACKAGES
+                Manifest.permission.REQUEST_INSTALL_PACKAGES,
+                Manifest.permission.FOREGROUND_SERVICE
 
         };
         //申请权限

@@ -13,12 +13,17 @@ public class ChatPersonBean {
     public int id;
     public String lastContent;
     public String lastTime;
+    public boolean isShield;
+    public String txShield;
 
-    public ChatPersonBean(String name, String photoUrl, int id, String lastContent, String lastTime) {
+    public ChatPersonBean(String name, String photoUrl, int id, String lastContent,
+                          String lastTime, boolean isShield, String txShield) {
         this.name = name;
         this.photoUrl = photoUrl;
         this.id = id;
         this.lastContent = lastContent;
         this.lastTime = lastTime;
+        this.isShield = isShield;
+        this.txShield = txShield;
     }
 }

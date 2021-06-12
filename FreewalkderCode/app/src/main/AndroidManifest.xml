@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -84,6 +85,19 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.device.DeviceSettingChannelActivity"
             android:screenOrientation="portrait"/>
+        <!-- dfu -->
+        <activity android:name=".ui.activity.device.NotificationActivity"
+            android:label="dfu notification"/>
+        <service
+            android:name=".service.DfuService"
+            android:exported="true"
+            android:label="dfu service" >
+            <intent-filter>
+                <action android:name="no.nordicsemi.android.action.DFU_UPLOAD" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
 
         <!-- auth -->
         <activity android:name=".ui.activity.auth.LoginActivity"
@@ -116,8 +130,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.chat.RecordFileListActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".ui.activity.chat.RecordListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.common.ImageShowActivity"
             android:screenOrientation="portrait"/>
 
         <service android:name=".service.UserDeviceCallbackService"/>

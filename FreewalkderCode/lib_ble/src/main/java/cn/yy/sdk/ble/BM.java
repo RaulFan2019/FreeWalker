@@ -126,6 +126,10 @@ public class BM {
         return ConnectEntity.getInstance().getSystemInfo();
     }
 
+    public int getFwVersion(){
+        return ConnectEntity.getInstance().getFwVersion();
+    }
+
     /* =============================== Callback =============================================== */
 
     /**
@@ -256,7 +260,6 @@ public class BM {
         };
     }
 
-
     /**
      * 查询附近的用户
      *
@@ -299,19 +302,32 @@ public class BM {
     }
 
     /**
-     * 设置信号是否增强
-     * @param isEnhance
+     * 设置信号增强频率
+     * @param power
      * @return
      */
-    public int setSignal(boolean isEnhance){
+    public int setSignal(byte power){
         if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
-            ConnectEntity.getInstance().setSignal(isEnhance);
+            ConnectEntity.getInstance().setSignal(power);
             return 0;
         } else {
             return -1;
         }
     }
 
+    /**
+     * 设置ppt模式是否打开
+     * @param isOpen
+     * @return
+     */
+    public int setPPTModeIsOpen(final boolean isOpen){
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().setPPTIsOpen(isOpen);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 
     /**
      * 发送群聊消息

@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import cn.yy.freewalker.data.DBDataGroupChatMsg;
 import cn.yy.freewalker.data.DBDataSingleChatMsg;
 import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.data.SPDataUser;
 import cn.yy.freewalker.entity.db.GroupChatMsgEntity;
 import cn.yy.freewalker.entity.db.SingleChatMsgEntity;
 import cn.yy.freewalker.entity.db.UserDbEntity;
@@ -65,19 +66,24 @@ public class UserDeviceCallbackService extends Service implements QueryMsgListen
     @Override
     public void queryLocationMsg() {
         if (mLocation != null){
-            YLog.e(TAG,"send Latitude:" + mLocation.getLatitude());
-            YLog.e(TAG,"send Longitude:" + mLocation.getLongitude());
-
-            BM.getManager().sendLocationInfo(mUser.userId,mLocation.getLatitude(),
-                    mLocation.getLongitude(),mUser.genderIndex,mUser.ageIndex,mUser.genderOriIndex,mUser.professionIndex,
-                    mUser.heightIndex,mUser.weightIndex,mUser.name);
-
+            //是否分享自己的位置
+            if (SPDataUser.getIsShare(UserDeviceCallbackService.this)){
+                YLog.e(TAG,"send Latitude:" + mLocation.getLatitude());
+                YLog.e(TAG,"send Longitude:" + mLocation.getLongitude());
+                BM.getManager().sendLocationInfo(mUser.userId,mLocation.getLatitude(),
+                        mLocation.getLongitude(),mUser.genderIndex,mUser.ageIndex,mUser.genderOriIndex,mUser.professionIndex,
+                        mUser.heightIndex,mUser.weightIndex,mUser.name);
+            }
         }
-
     }
 
     @Override
     public void receiveGroupMsg(GroupChatInfo groupChatInfo) {
+        //检查用户的消息是否被屏蔽了
+        UserDbEntity userDbEntity = DBDataUser.getUserInfoByUserId(groupChatInfo.userId);
+        if (userDbEntity != null && userDbEntity.isShield){
+            return;
+        }
         GroupChatMsgEntity groupChatMsgEntity = new GroupChatMsgEntity(System.currentTimeMillis(), mUser.userId,
                 BM.getManager().getDeviceSystemInfo().currChannel, groupChatInfo.userId, groupChatInfo.content);
         DBDataGroupChatMsg.save(groupChatMsgEntity);
@@ -86,6 +92,11 @@ public class UserDeviceCallbackService extends Service implements QueryMsgListen
     @Override
     public void receiveSingleMsg(SingleChatInfo singleChatInfo) {
         YLog.e(TAG,"receiveSingleMsg destUserId:" + singleChatInfo.userId + ",mUser.userId:" + mUser.userId);
+        //检查用户的消息是否被屏蔽了
+        UserDbEntity userDbEntity = DBDataUser.getUserInfoByUserId(singleChatInfo.userId);
+        if (userDbEntity != null && userDbEntity.isShield){
+            return;
+        }
         SingleChatMsgEntity singleChatMsgEntity = new SingleChatMsgEntity(System.currentTimeMillis(), mUser.userId,
                 singleChatInfo.userId, singleChatInfo.content, false);
         DBDataSingleChatMsg.save(singleChatMsgEntity);

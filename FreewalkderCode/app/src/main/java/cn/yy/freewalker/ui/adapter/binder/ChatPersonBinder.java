@@ -33,6 +33,7 @@ public class ChatPersonBinder extends ItemViewBinder<ChatPersonBean, ChatPersonH
         holder.showPhoto(chatRoomBean.photoUrl);
         holder.showContent(chatRoomBean.lastContent);
         holder.showLastTime(chatRoomBean.lastTime);
+        holder.showShieldTx(chatRoomBean.txShield);
 
         holder.mDelConfirmBtn.setOnClickListener(v -> {
             if (listener != null) {

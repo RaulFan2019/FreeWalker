@@ -54,9 +54,13 @@
     <string name="device_tx_settings_ota_update">固件升级</string>
     <string name="device_tx_settings_volume">音量</string>
     <string name="device_tx_settings_channel">当前频道</string>
-    <string name="device_tx_settings_power">信号增强模式</string>
-    <string name="device_tx_settings_battery">电量</string>
-
+    <string name="device_tx_settings_long_mode">远距离模式</string>
+    <string name="device_tx_settings_battery">电池电量</string>
+    <string name="device_tx_settings_ppt">解说模式</string>
+    <string name="device_tx_settings_ppt_high">信号增强</string>
+    <string name="device_tx_settings_ppt_normal">常规</string>
+    <string name="device_tx_settings_ppt_low">近距省电</string>
+    
     <string name="device_tip_setting_power_title">该模式使功率增大，请遵循当地无线电管理规范，一般在求助救援等必要情况下使用。</string>
     <string name="device_tip_setting_power_content">注：功率增大，会降低使用时长。</string>
 
@@ -64,11 +68,14 @@
 
     <string name="app_toast_channel_pwd_length_error">请输入6位数字密码</string>
 
+    <string name="device_toast_need_not_update">设备已是最新版本</string>
     <string name="device_tip_ota_has_new_version">检测到最新版本\n%1$s</string>
     <string name="device_tip_ota_update_tip">当前版本%1$s\n请确保耳机电量充足</string>
     <string name="device_action_ota_now">立即升级</string>
+    <string name="device_toast_update_error_by_download_file">下载文件失败，请稍后再试</string>
 
     <string name="device_tip_ota_ing">正在升级..</string>
+    <string name="device_tip_ota_downlad_file_ing">正在下载文件</string>
     <string name="device_tip_ota_warning">请确保耳机电量充足</string>
 
     <string name="device_tip_ota_newest">%1$s\n当前已是最新版本</string>

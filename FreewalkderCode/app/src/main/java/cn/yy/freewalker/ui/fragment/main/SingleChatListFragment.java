@@ -70,6 +70,7 @@ public class SingleChatListFragment extends BaseFragment {
         binder.setOnItemListener(new ChatPersonBinder.OnPersonClickListener() {
             @Override
             public void onDelConfirm(View v, int pos) {
+                DBDataSingleChatMsg.deleteByUser(mUser.userId, ((ChatPersonBean)mFriendItems.get(pos)).id);
                 mFriendItems.remove(pos);
                 mAdapter.notifyDataSetChanged();
             }
@@ -77,7 +78,14 @@ public class SingleChatListFragment extends BaseFragment {
             @Override
             public void onShield(View view, int pos) {
                 ChatPersonBean bean = (ChatPersonBean) mFriendItems.get(pos);
-                Toast.makeText(getContext(), "屏蔽好友：" + bean.name, Toast.LENGTH_LONG).show();
+                UserDbEntity friend = DBDataUser.getUserInfoByUserId(bean.id);
+                friend.isShield = !bean.isShield;
+                DBDataUser.update(friend);
+                //更新列表
+                bean.isShield = !bean.isShield;
+                mFriendItems.set(pos, bean);
+                mAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -114,8 +122,13 @@ public class SingleChatListFragment extends BaseFragment {
                 content = listMsg.get(listMsg.size() - 1).content;
                 time = TimeU.timeToTimeStr(listMsg.get(listMsg.size() - 1).singleChatId, TimeU.FORMAT_TYPE_2);
             }
-            mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar,
-                    dbEntity.userId, content, time));
+            if (dbEntity.isShield){
+                mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar,
+                        dbEntity.userId, content, time, dbEntity.isShield, getActivity().getString(R.string.app_action_shield_cancel)));
+            }else {
+                mFriendItems.add(new ChatPersonBean(dbEntity.name, UrlConfig.IMAGE_HOST + dbEntity.avatar,
+                        dbEntity.userId, content, time, dbEntity.isShield,getActivity().getString(R.string.app_action_shield)));
+            }
         }
         mAdapter.notifyDataSetChanged();
     }

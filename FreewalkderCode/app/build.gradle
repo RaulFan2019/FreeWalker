@@ -19,6 +19,7 @@ android {
         targetSdkVersion 28
         versionCode 12
         versionName "freewalker 2.6.1"
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -92,6 +93,9 @@ dependencies {
     implementation 'com.qmuiteam:qmui:2.0.0-alpha08'
     //状态栏
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    //nordicsemi
+    implementation 'no.nordicsemi.android:dfu:1.11.0'
 
     implementation project(':lib_ble')
+
 }

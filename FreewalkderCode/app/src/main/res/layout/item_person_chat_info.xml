@@ -109,12 +109,13 @@
                 android:src="@drawable/btn_shield" />
 
             <TextView
+                android:id="@+id/tv_shield"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/tv_white"
-                android:text="屏蔽" />
+                android:text="@string/app_action_cancel" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,7 +137,7 @@
                 android:textSize="15sp"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/tv_white"
-                android:text="删除" />
+                android:text="@string/app_action_delete" />
         </LinearLayout>
     </LinearLayout>
 

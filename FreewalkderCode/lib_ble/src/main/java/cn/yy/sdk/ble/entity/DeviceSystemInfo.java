@@ -11,14 +11,18 @@ public class DeviceSystemInfo {
     public int currChannel;
     public int priority;
     public int power;
+    public int voltage;                 //电压
+    public int pptAutoHold;             //ppt模式是否打开
 
     public DeviceSystemInfo() {
     }
 
-    public DeviceSystemInfo(int dataVersion, int currChannel, int priority, int power) {
+    public DeviceSystemInfo(int dataVersion, int currChannel, int priority, int power, int voltage,int pptAutoHold) {
         this.dataVersion = dataVersion;
         this.currChannel = currChannel;
         this.priority = priority;
         this.power = power;
+        this.voltage = voltage;
+        this.pptAutoHold = pptAutoHold;
     }
 }

@@ -55,6 +55,7 @@ public class ConnectEntity {
     private static final int MSG_DISCOVER_SERVICE = 0x02;                 //重新发现服务
     private static final int MSG_NOTIFY_PRIVATE_C = 0x03;                 //notify 特征值
     private static final int MSG_NOTIFY_PRIVATE_DEBUG = 0x04;                 //notify 特征值
+    private static final int MSG_GET_VERSION_INFO = 0x14;                  //获取版本号
     private static final int MSG_GET_SYSTEM_INFO = 0x05;                  //获取系统配置
 
     private static final int MSG_SET_CHANNEL = 0x06;                      //设置channel
@@ -65,9 +66,10 @@ public class ConnectEntity {
 
     private static final int MSG_SEND_LOCATION_INFO = 0x10;               //发送位置信息
 
-    private static final int MSG_SET_SIGNAL = 0x11;                        //设置系统信息
+    private static final int MSG_SET_SIGNAL = 0x11;                        //设置信号强度
+    private static final int MSG_SET_PPT_IS_OPEN = 0x12;                   //设置是否打开
 
-    private static final int MSG_SET_DEVICE_NAME = 0x12;                  //设置名称
+    private static final int MSG_SET_DEVICE_NAME = 0x13;                  //设置名称
 
 
     /* local data of system */
@@ -85,6 +87,7 @@ public class ConnectEntity {
     private BluetoothGattCallback mGattCallback;                             //GATT回调
 
     private DeviceSystemInfo mDeviceSystemInfo;                             //系统信息
+    private int mFwVersion;                                                 //版本信息
 
     private int notifyErrorTimes = 0;                                       //无法notify的次数
     private int mRepeatConnectTimes = 0;
@@ -129,6 +132,10 @@ public class ConnectEntity {
                 case MSG_NOTIFY_PRIVATE_DEBUG:
                     notifyPrivateDebug();
                     break;
+                //获取版本号
+                case MSG_GET_VERSION_INFO:
+                    writeGetVerionInfo();
+                    break;
                 case MSG_GET_SYSTEM_INFO:
                     writeGetSystemInfo();
                     break;
@@ -153,7 +160,11 @@ public class ConnectEntity {
                     break;
                 //设置信号
                 case MSG_SET_SIGNAL:
-                    writeSetSignal((Boolean) msg.obj);
+                    writeSetSignal((Byte) msg.obj);
+                    break;
+                //设置PPT模式是否打开
+                case MSG_SET_PPT_IS_OPEN:
+                    writeSetPPTIsOpen((boolean) msg.obj);
                     break;
                 //设置设备名称
                 case MSG_SET_DEVICE_NAME:
@@ -289,6 +300,10 @@ public class ConnectEntity {
 
     public DeviceSystemInfo getSystemInfo() {
         return mDeviceSystemInfo;
+    }
+
+    public int getFwVersion() {
+        return mFwVersion;
     }
 
     /**
@@ -434,14 +449,12 @@ public class ConnectEntity {
         }
     }
 
-
     /**
      * 查询附近的用户
      */
     public void queryNearbyUsers() {
         sendMsg(MSG_QUERY_NEARBY_USERS, null, 0);
     }
-
 
     public void writeQueryNearbyUsers() {
         mHandler.removeMessages(MSG_QUERY_NEARBY_USERS);
@@ -462,17 +475,51 @@ public class ConnectEntity {
         }
     }
 
+    /**
+     * 设置ppt模式是否打开
+     * @param isOpen
+     */
+    public void setPPTIsOpen(final boolean isOpen){
+        sendMsg(MSG_SET_PPT_IS_OPEN, isOpen, 0);
+    }
 
+    public void writeSetPPTIsOpen(final boolean isOpen) {
+        BLog.e(TAG,"writeSetPPTIsOpen:" + isOpen);
+        mHandler.removeMessages(MSG_SET_PPT_IS_OPEN);
+
+        byte[] data = new byte[5];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        data[2] = 0x02;
+        //port
+        data[3] = PrivatePorts.PPT;
+        //isOpen
+        if (isOpen){
+            mDeviceSystemInfo.pptAutoHold = 1;
+            data[4] = 0x01;
+        }else {
+            mDeviceSystemInfo.pptAutoHold = 0;
+            data[4] = 0x00;
+        }
+        BLog.e(TAG,"mDeviceSystemInfo.pptAutoHold:" + mDeviceSystemInfo.pptAutoHold);
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SET_PPT_IS_OPEN, isOpen, DELAY_REPEAT_WRITE);
+        }
+    }
     /**
      * 设置信号是否是增强模式
      *
-     * @param isEnhance
+     * @param power
      */
-    public void setSignal(final boolean isEnhance) {
-        sendMsg(MSG_SET_SIGNAL, isEnhance, 0);
+    public void setSignal(final byte power) {
+        sendMsg(MSG_SET_SIGNAL, power, 0);
     }
 
-    public void writeSetSignal(final boolean isEnhance) {
+    public void writeSetSignal(final byte power) {
         mHandler.removeMessages(MSG_SET_SIGNAL);
 
         byte[] data = new byte[6];
@@ -484,20 +531,15 @@ public class ConnectEntity {
         //port
         data[3] = PrivatePorts.SET_SYSTEM;
         //power
-        if (isEnhance) {
-            data[4] = 0x16;
-            mDeviceSystemInfo.power = 0x16;
-        } else {
-            data[4] = 0x11;
-            mDeviceSystemInfo.power = 0x11;
-        }
+        data[4] = power;
+        mDeviceSystemInfo.power = power;
         //max channel
         data[5] = 30;
 
         mWriteC.setValue(data);
         boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
         if (!writeSuccess) {
-            sendMsg(MSG_SET_SIGNAL, isEnhance, DELAY_REPEAT_WRITE);
+            sendMsg(MSG_SET_SIGNAL, power, DELAY_REPEAT_WRITE);
         }
     }
 
@@ -888,13 +930,24 @@ public class ConnectEntity {
      */
     private void analysisGroupData() {
         switch (mGroupPkg.port) {
+            case PrivatePorts.GET_VERSION_INFO:
+                mHandler.removeMessages(MSG_GET_VERSION_INFO);
+                mFwVersion = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(17),mGroupPkg.listData.get(16)});
+                BLog.e(TAG,"mFwVersion:" + mFwVersion);
+                writeGetSystemInfo();
+                break;
             //设备系统信息
+            //03 06 05 11 dd0f 00001e00000000000000000000004700000000000000
             case PrivatePorts.GET_SYSTEM_INFO:
                 mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
                 mState = ConnectStates.WORKED;
+                int voltage = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(5),mGroupPkg.listData.get(4)});
                 mDeviceSystemInfo = new DeviceSystemInfo(mGroupPkg.listData.get(0),
-                        mGroupPkg.listData.get(1), mGroupPkg.listData.get(2), mGroupPkg.listData.get(3));
+                        mGroupPkg.listData.get(1), mGroupPkg.listData.get(2), mGroupPkg.listData.get(3),
+                        voltage,mGroupPkg.listData.get(6));
                 NotifyManager.getManager().notifyStateChange(mState);
+                //每10分钟读一次
+                sendMsg(MSG_GET_SYSTEM_INFO, null, 1000 * 10 * 60);
                 break;
             //设置频道成功
             case PrivatePorts.SET_CHANNEL:
@@ -1111,10 +1164,33 @@ public class ConnectEntity {
                 sendMsg(MSG_NOTIFY_PRIVATE_DEBUG, null, DELAY_REPEAT_NOTIFY);
             }
         } else {
-            sendMsg(MSG_GET_SYSTEM_INFO, null, 0);
+            sendMsg(MSG_GET_VERSION_INFO, null, 0);
         }
     }
 
+    /**
+     * 获取版本信息
+     */
+    private void writeGetVerionInfo(){
+        BLog.e(TAG, "writeGetVerionInfo");
+        mHandler.removeMessages(MSG_GET_VERSION_INFO);
+        byte[] data = new byte[4];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        data[2] = 0x01;
+        //port
+        data[3] = PrivatePorts.GET_VERSION_INFO;
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_GET_VERSION_INFO, null, DELAY_REPEAT_WRITE);
+        } else {
+            sendMsg(MSG_GET_VERSION_INFO, null, DELAY_WAIT_CMD);
+        }
+    }
 
     /**
      * 获取系统配置

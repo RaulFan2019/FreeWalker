@@ -7,6 +7,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 
+import cn.yy.freewalker.R;
+
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
@@ -115,4 +117,18 @@ public class DensityU {
         return "%." + precision + "f";
     }
 
+    /**
+     * 取状态栏高度
+     *
+     * @param mApplicationContent mApplicationContent 上下文
+     * @return int
+     */
+    public static int getStatusBarHeight(Context mApplicationContent) {
+        int result = mApplicationContent.getResources().getDimensionPixelSize(R.dimen.app_status_bar);
+        int resourceId = mApplicationContent.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = mApplicationContent.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 }

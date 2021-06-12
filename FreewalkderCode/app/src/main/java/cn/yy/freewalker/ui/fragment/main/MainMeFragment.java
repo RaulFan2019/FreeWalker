@@ -38,6 +38,7 @@ import cn.yy.freewalker.R;
 import cn.yy.freewalker.config.FileConfig;
 import cn.yy.freewalker.config.UrlConfig;
 import cn.yy.freewalker.data.DBDataUser;
+import cn.yy.freewalker.data.SPDataUser;
 import cn.yy.freewalker.entity.db.UserDbEntity;
 import cn.yy.freewalker.entity.net.BaseResult;
 import cn.yy.freewalker.entity.net.PhotoResult;
@@ -219,6 +220,14 @@ public class MainMeFragment extends BaseFragment {
         listImageView.add(imgPhoto2);
         listImageView.add(imgPhoto3);
         listImageView.add(imgPhoto4);
+
+        cbLoc.setChecked(SPDataUser.getIsShare(getActivity()));
+        cbLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SPDataUser.setIsShareLoc(getActivity(), cbLoc.isChecked());
+            }
+        });
 
         mDialogBuilder = new DialogBuilder();
         //photoMode
