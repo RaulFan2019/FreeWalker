@@ -2,15 +2,15 @@
 <resources>
 
     <!-- privacy -->
-    <string name="privacy_dialog_title">声明与条款</string>
-    <string name="privacy_dialog_msg">为了您能够使用所有功能，FW需要连接网络、蓝牙，获取定位信息，使用麦克风、调用录音，并会收集、处理和使用您的个人信息，请仔细阅读如下协议内容：\n\n%1$s 和 %2$s \n\n 选择下方“同意并继续”表示您同意以上内容</string>
-    <string name="privacy_keyword_user_agreement">用户协议</string>
-    <string name="privacy_keyword_privacy">隐私协议</string>
-    <string name="privacy_and_agreement">用户协议及隐私政策</string>
-    <string name="privacy_dialog_confirm">同意并继续</string>
-    <string name="privacy_dialog_cancel">不同意</string>
+    <string name="privacy_dialog_title">Agreement and Privacy Policy</string>
+    <string name="privacy_dialog_msg">In order to facilitate your exercising of the personal data rights granted to you by the applicable law, we offer you the following options: \n\n%1$s and %2$s \n\n Select "Agree to Continue"</string>
+    <string name="privacy_keyword_user_agreement">Agreement</string>
+    <string name="privacy_keyword_privacy">Privacy Policy</string>
+    <string name="privacy_and_agreement">User Agreement and Privacy Policy</string>
+    <string name="privacy_dialog_confirm">Agree to continue</string>
+    <string name="privacy_dialog_cancel">Disagree</string>
 
-    <string name="privacy_activity_title">声明与条款</string>
+    <string name="privacy_activity_title">Terms and Statements</string>
     <string name="privacy_activity_privacy_msg_1">&#8195;&#8195;【上海翌音智能科技有限公司】（如下简称“YY”）在此特别提醒用户认真阅读、充分理解本《软件许可及服务协议》（下称“本协议”）。用户应认真阅读、充分理解本协议中各条款，特别涉及免除或者限制YY责任、争议解决和法律适用的条款。免除或者限制责任的条款将以粗体标识，您需要重点阅读。请您审慎阅读并选择接受或不接受本协议（未成年人应在法定监护人陪同下阅读）。您的下载、安装、使用本软件以及账号获取和登录等行为将视为对本协议的接受，并同意接受本协议各项条款的约束。\n\n&#8195;&#8195;YY有权修订本协议，更新后的协议条款将公布于官网或软件，自公布之日起生效。用户可重新下载安装本软件或网站查阅最新版协议条款。在YY修改本协议条款后，如果用户不接受修改后的条款，请立即停止使用YY提供的“YY”软件和服务，用户继续使用YY提供的“YY”软件和服务将被视为已接受了修改后的协议。</string>
     <string name="privacy_activity_privacy_msg_2_title">一、总则</string>
     <string name="privacy_activity_privacy_msg_2">&#8195;&#8195;1.1. 本协议是您（如下也称“用户”）与YY及其运营合作单位（如下简称“合作单位”）之间关于用户下载、安装、使用YY“YY”软件（下称“本软件”）以及使用YY相关服务所订立的协议。\n&#8195;&#8195;1.2. 本软件及服务是YY提供的安装在包括但不限于移动智能终端设备上的软件和服务，用于同步辅助YY产品收集的数据并辅助YY产品完成功能设置、为您提供服务。\n&#8195;&#8195;1.3. 本软件及服务的所有权和运营权均归YY所有。</string>
@@ -41,30 +41,30 @@
 
     <string name="privacy_activity_user_agreement_msg">hello</string>
 
-    <string name="user_power_center">用户权力中心</string>
-    <string name="user_power_center_tip">为了便于您行使法律赋予您的个人数据权利，您在本页面可对本账号信息进行如下操作：</string>
+    <string name="user_power_center">Personal data rights</string>
+    <string name="user_power_center_tip">In order to facilitate your exercising of the personal data rights granted to you by the applicable law, we offer you the following options: </string>
 
-    <string name="privacy_delete_user">删除个人账号</string>
-    <string name="privacy_delete_user_tip">您在YY拥有数据，您的数据将被彻底删除并且无法恢复！请阅读《重要提醒》，我们会在一个月内删除数据并通过邮箱通知您。请输入您想要接收通知的邮箱。</string>
-    <string name="privacy_delete_user_mail_hint">请输入接收的邮箱</string>
-    <string name="privacy_action_delete_user">申请删除账号</string>
+    <string name="privacy_delete_user">Delete personal data</string>
+    <string name="privacy_delete_user_tip">You have data in the YY app. Your data will be deleted permanently and you won\'t be able to restore it! Please read \"Important Reminder\".We\'ll delete your data within 1 month and send an email to you after this.Please enter the email address you want to receive notifications.</string>
+    <string name="privacy_delete_user_mail_hint">Please enter email</string>
+    <string name="privacy_action_delete_user">Request to delete account</string>
 
-    <string name="privacy_delete_user_important">点击按钮则表示您已阅读并同意 %1$s</string>
-    <string name="privacy_keyword_delete_user_important">《重要提醒》</string>
-    <string name="privacy_title_delete_user_important">重要提醒</string>
+    <string name="privacy_delete_user_important">Please read %1$s carefully before deleting.</string>
+    <string name="privacy_keyword_delete_user_important">《Important Reminder》</string>
+    <string name="privacy_title_delete_user_important">Important Reminder</string>
     <string name="privacy_tip_delete_user_important">删除账号是不可恢复的操作，您应自行备份账号相关数据。删除前，请确认账号相关服务已妥善处理。如果您删除了自己的帐户，则无法再次使用该帐户，或恢复与其相关的任何项目或信息。以下是删除帐户后会发生的一些变化:\n1、您将无法再次登录或使用您的帐户；\n2、您的帐户信息和历史记录（例如昵称，个人资料照片，消息，照片，录音，意见反馈）将被永久删除。\n3、在您的帐户准备被删除期间，如果您的帐户由其他人报告，由政府机构调查或出现在诉讼过程中，我们有权在未经其他同意的情况下终止删除您的帐户；\n&#8195;&#8195;4、请注意，删除您的帐户并不意味着您在此帐户中的行为以及与您在删除帐户之前的操作相关的相关责任将被免除或减轻。</string>
-    <string name="privacy_delete_user_ok">删除用户成功</string>
+    <string name="privacy_delete_user_ok">Delete Account Successful</string>
 
     <!-- main -->
-    <string name="main_tab_device">设备</string>
-    <string name="main_tab_chat">聊天</string>
-    <string name="main_tab_nearby">附近的人</string>
-    <string name="main_tab_me">我的</string>
+    <string name="main_tab_device">Device</string>
+    <string name="main_tab_chat">Chats</string>
+    <string name="main_tab_nearby">Nearby</string>
+    <string name="main_tab_me">My</string>
 
-    
+
     <!-- 单人聊天 -->
     <string name="single_talk_title"></string>
 
-    <string name="about_title">关于我们</string>
+    <string name="about_title">About</string>
 
 </resources>

@@ -2,11 +2,11 @@
 <resources>
     
     
-    <string name="nearby_action_scan">开始搜索附近的人</string>
-    <string name="nearby_action_scan_stop">停止搜索</string>
+    <string name="nearby_action_scan">Find nearby</string>
+    <string name="nearby_action_scan_stop">Stop Search</string>
 
-    <string name="nearby_action_shield">屏蔽ta</string>
-    <string name="nearby_action_chat">和ta聊天</string>
+    <string name="nearby_action_shield">Block</string>
+    <string name="nearby_action_chat">Talk to</string>
 
-    <string name="nearby_toast_scan_device_not_connected_error">设备未连接</string>
+    <string name="nearby_toast_scan_device_not_connected_error">Device disconnected</string>
 </resources>

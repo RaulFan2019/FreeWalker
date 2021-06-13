@@ -483,7 +483,7 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
 
                     @Override
                     public void onCancelled(CancelledException cex) {
-                        
+
                     }
 
                     @Override

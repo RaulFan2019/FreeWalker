@@ -1,155 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="auth_title_forget_pwd">忘记密码</string>
+    <string name="auth_title_forget_pwd">Forgot Password</string>
 
-    <string name="auth_hint_input_mobile">请输入手机号</string>
-    <string name="auth_hint_input_pwd">请输入密码</string>
-    <string name="auth_hint_input_verification">请输入验证码</string>
-    <string name="auth_hint_input_register_mobile">请输入注册时的手机号</string>
-    <string name="auth_hint_input_set_new_pwd">请设置新密码</string>
+    <string name="auth_hint_input_mobile">Please input phone number</string>
+    <string name="auth_hint_input_pwd">Please input password</string>
+    <string name="auth_hint_input_verification">Please input code</string>
+    <string name="auth_hint_input_register_mobile">Input registered phone</string>
+    <string name="auth_hint_input_set_new_pwd">Input new password</string>
 
-    <string name="auth_action_forget_pwd">忘记密码？</string>
-    <string name="auth_action_register">注册</string>
-    <string name="auth_action_login">登录</string>
-    <string name="auth_action_send_verification">发送验证码</string>
-    <string name="auth_action_send_verification_again">再次获取剩余%1$s秒</string>
-    <string name="auth_action_back_to_login">返回登录</string>
+    <string name="auth_action_forget_pwd">Forgot Password？</string>
+    <string name="auth_action_register">Sign Up</string>
+    <string name="auth_action_login">Login</string>
+    <string name="auth_action_send_verification">Send Code</string>
+    <string name="auth_action_send_verification_again">Send code in%1$ss</string>
+    <string name="auth_action_back_to_login">Back to login</string>
 
-    <string name="auth_tip_privacy">登录则表示您遵守同意FW的\n%1$s&#8195;和&#8195;%2$s</string>
-    <string name="auth_tip_input_pwd">密码需要8-20个字符，且包含字母和数字</string>
+    <string name="auth_tip_privacy">Log in means you agree to abide by the FW\'s\n%1$s&#8195;and&#8195;%2$s</string>
+    <string name="auth_tip_input_pwd">8–20 digits including characters and numbers</string>
 
-    <string name="auth_tip_login">激活账号可享用30个频道及加密功能</string>
-    <string name="auth_tip_mofify_pwd_ok">修改密码成功</string>
-    <string name="auth_tip_mofify_phone_ok">修改手机号成功</string>
+    <string name="auth_tip_login">30 channels should be used after your account activted</string>
+    <string name="auth_tip_mofify_pwd_ok">Modify Password Successful</string>
+    <string name="auth_tip_mofify_phone_ok">Modify Phone Successful</string>
 
-    <string name="auth_toast_login_ok">登录成功</string>
-    <string name="auth_toast_register_ok">注册成功</string>
+    <string name="auth_toast_login_ok">Longin Successful</string>
+    <string name="auth_toast_register_ok">Signup Successful</string>
 
-    <string name="auth_error_account_empty">手机号不能为空</string>
-    <string name="auth_error_account_invalid">手机号格式不正确</string>
-    <string name="auth_error_pwd_empty">密码不能为空</string>
-    <string name="auth_error_sms_code_empty">验证码不能为空</string>
+    <string name="auth_error_account_empty">Empty Phone Number</string>
+    <string name="auth_error_account_invalid">Phone Error</string>
+    <string name="auth_error_pwd_empty">Empty Password</string>
+    <string name="auth_error_sms_code_empty">Empty Code</string>
 
-    <string name="auth_title_improve_user_info">Hi，请完善你的信息</string>
-    <string name="auth_tip_improve_user_info">填写正确的信息，有助于为你匹配到更多好友。</string>
+    <string name="auth_title_improve_user_info">Hi, complete your information</string>
+    <string name="auth_tip_improve_user_info">Correct information helps better match.</string>
 
-    <string name="auth_hint_improve_input_nickname">请输入你的昵称</string>
-    <string name="auth_hint_improve_select_sex">请选择你的性别</string>
-    <string name="auth_hint_improve_select_age">请选择你的年龄</string>
-    <string name="auth_hint_improve_select_like">请选择你的喜欢</string>
-    <string name="auth_hint_improve_select_profession">请选择你的职业</string>
-    <string name="auth_hint_improve_select_height">请选择你的身高</string>
-    <string name="auth_hint_improve_select_weight">请选择你的体重</string>
+    <string name="auth_hint_improve_input_nickname">Input Nickname</string>
+    <string name="auth_hint_improve_select_sex">Select Gender</string>
+    <string name="auth_hint_improve_select_age">Select Age</string>
+    <string name="auth_hint_improve_select_like">Select Like</string>
+    <string name="auth_hint_improve_select_profession">Select Job</string>
+    <string name="auth_hint_improve_select_height">Select Height</string>
+    <string name="auth_hint_improve_select_weight">Select Weight</string>
 
-    <string name="auth_dialog_title_improve_select_photo_mode">请选择获取照片的方式</string>
-    <string name="auth_dialog_tx_improve_photo_mode_camera">相机</string>
-    <string name="auth_dialog_tx_improve_photo_mode_storage">相册</string>
+    <string name="auth_dialog_title_improve_select_photo_mode">Select Photo</string>
+    <string name="auth_dialog_tx_improve_photo_mode_camera">Camera</string>
+    <string name="auth_dialog_tx_improve_photo_mode_storage">Albums</string>
 
-    <string name="auth_dialog_title_improve_select_sex">性别选择</string>
-    <string name="auth_tx_sex_male">男</string>
-    <string name="auth_tx_sex_female">女</string>
-    <string name="auth_tx_sex_all">女</string>
-    <string name="auth_tx_sex_other">不展示</string>
+    <string name="auth_dialog_title_improve_select_sex">Select Gender</string>
+    <string name="auth_tx_sex_male">Male</string>
+    <string name="auth_tx_sex_female">Female</string>
+    <string name="auth_tx_sex_all">Female</string>
+    <string name="auth_tx_sex_other">-</string>
 
-    <string name="auth_dialog_title_improve_select_age">年龄选择</string>
+    <string name="auth_dialog_title_improve_select_age">Select Age</string>
 
-    <string name="auth_dialog_title_improve_select_like">喜欢选择</string>
-    <string name="auth_tx_like_male">男</string>
-    <string name="auth_tx_like_female">女</string>
-    <string name="auth_tx_like_all">男/女</string>
-    <string name="auth_tx_like_other">不展示</string>
+    <string name="auth_dialog_title_improve_select_like">Select Like</string>
+    <string name="auth_tx_like_male">Male</string>
+    <string name="auth_tx_like_female">Female</string>
+    <string name="auth_tx_like_all">Male/Female</string>
+    <string name="auth_tx_like_other">-</string>
 
-    <string name="auth_dialog_title_improve_select_profession">职业选择</string>
-    <string name="auth_tx_profession_1">互联网/游戏/软件</string>
-    <string name="auth_tx_profession_2">律师</string>
-    <string name="auth_tx_profession_3">美业</string>
-    <string name="auth_tx_profession_4">电子/通信/硬件</string>
-    <string name="auth_tx_profession_5">企业管理</string>
-    <string name="auth_tx_profession_6">房地产/建筑/物业</string>
-    <string name="auth_tx_profession_7">金融</string>
-    <string name="auth_tx_profession_8">消费品</string>
-    <string name="auth_tx_profession_9">服务/外包/中介</string>
-    <string name="auth_tx_profession_10">交通/贸易/物流</string>
-    <string name="auth_tx_profession_11">制药/医疗</string>
-    <string name="auth_tx_profession_12">政府/农林牧渔</string>
-    <string name="auth_tx_profession_13">人工智能</string>
-    <string name="auth_tx_profession_14">云计算</string>
-    <string name="auth_tx_profession_15">大数据</string>
-    <string name="auth_tx_profession_16">物联网</string>
-    <string name="auth_tx_profession_17">医生</string>
-    <string name="auth_tx_profession_18">工人</string>
-    <string name="auth_tx_profession_19">广告/传媒/教育/文化</string>
-    <string name="auth_tx_profession_20">商人</string>
-    <string name="auth_tx_profession_21">音乐</string>
-    <string name="auth_tx_profession_22">艺术</string>
-    <string name="auth_tx_profession_23">体育</string>
-    <string name="auth_tx_profession_24">能源/化工/环保</string>
-    <string name="auth_tx_profession_25">教师</string>
-    <string name="auth_tx_profession_26">学生</string>
-    <string name="auth_tx_profession_27">模特</string>
-    <string name="auth_tx_profession_28">保险</string>
-    <string name="auth_tx_profession_29">汽车/机械/制造</string>
-    <string name="auth_tx_profession_30">银行</string>
-    <string name="auth_tx_profession_31">餐饮酒旅</string>
-    <string name="auth_tx_profession_32">其他</string>
-
-
+    <string name="auth_dialog_title_improve_select_profession">Select Job</string>
+    <string name="auth_tx_profession_1">Internet/Game/Software</string>
+    <string name="auth_tx_profession_2">Layer</string>
+    <string name="auth_tx_profession_3">Beauty</string>
+    <string name="auth_tx_profession_4">EE/Heardware</string>
+    <string name="auth_tx_profession_5">Enterprise Management</string>
+    <string name="auth_tx_profession_6">Real Estate/Construct/Property</string>
+    <string name="auth_tx_profession_7">Finance</string>
+    <string name="auth_tx_profession_8">Consumer</string>
+    <string name="auth_tx_profession_9">Service/Contract/Agency</string>
+    <string name="auth_tx_profession_10">Traffice/Trade/Logistics</string>
+    <string name="auth_tx_profession_11">Medicine/Medical</string>
+    <string name="auth_tx_profession_12">Govemment/Agriculture/Forestry</string>
+    <string name="auth_tx_profession_13">AI</string>
+    <string name="auth_tx_profession_14">Cloud Computing</string>
+    <string name="auth_tx_profession_15">Big Data</string>
+    <string name="auth_tx_profession_16">IoT</string>
+    <string name="auth_tx_profession_17">Doctor</string>
+    <string name="auth_tx_profession_18">Worker</string>
+    <string name="auth_tx_profession_19">Advertise/Medium/Culture</string>
+    <string name="auth_tx_profession_20">Business</string>
+    <string name="auth_tx_profession_21">Music</string>
+    <string name="auth_tx_profession_22">Arts</string>
+    <string name="auth_tx_profession_23">Sports</string>
+    <string name="auth_tx_profession_24">Energy/Chemical/Environment</string>
+    <string name="auth_tx_profession_25">Teacher</string>
+    <string name="auth_tx_profession_26">Student</string>
+    <string name="auth_tx_profession_27">Model</string>
+    <string name="auth_tx_profession_28">Insure</string>
+    <string name="auth_tx_profession_29">Automatic/Mechanical/Industry</string>
+    <string name="auth_tx_profession_30">Bank</string>
+    <string name="auth_tx_profession_31">Food/Travel</string>
+    <string name="auth_tx_profession_32">Other</string>
 
 
-    <string name="auth_dialog_title_improve_select_height">身高选择（cm）</string>
-    <string name="auth_dialog_title_improve_select_weight">体重选择（kg）</string>
 
-    <string name="auth_error_permission_photo_mode_storage">进入相册需要权限</string>
-    <string name="auth_error_permission_photo_mode_camera">拍照需要权限</string>
 
-    <string name="auth_action_improve_submit">提交</string>
+    <string name="auth_dialog_title_improve_select_height">Select Height(cm)</string>
+    <string name="auth_dialog_title_improve_select_weight">Select Weight(kg)</string>
 
-    <string name="auth_tag_me_photo">相册</string>
-    <string name="auth_tip_me_photo">联网下可查看</string>
-    <string name="auth_tag_me_record">录音</string>
-    <string name="auth_tag_me_loc">位置共享并被附近的人搜索到</string>
-    <string name="auth_tag_me_feedback">意见反馈</string>
-    <string name="auth_tag_me_clear">清除缓存</string>
-    <string name="auth_tag_me_about">关于我们</string>
+    <string name="auth_error_permission_photo_mode_storage">Permission to Albums</string>
+    <string name="auth_error_permission_photo_mode_camera">Permission to Camera</string>
 
-    <string name="auth_title_user_settings">个人主页</string>
-    <string name="auth_tag_user_avatar">头像</string>
-    <string name="auth_tag_user_nickname">昵称</string>
-    <string name="auth_tag_user_gender">性别</string>
-    <string name="auth_tag_user_age">年龄</string>
-    <string name="auth_tag_user_like">喜欢</string>
-    <string name="auth_tag_user_profession">职业</string>
-    <string name="auth_tag_user_height">身高</string>
-    <string name="auth_tag_user_weight">体重</string>
-    <string name="auth_tag_user_phone">已绑定手机号</string>
+    <string name="auth_action_improve_submit">Submit</string>
 
-    <string name="auth_title_modify_nickname">昵称</string>
-    <string name="auth_title_modify_phone">更换手机号</string>
+    <string name="auth_tag_me_photo">Albums</string>
+    <string name="auth_tip_me_photo">Available Online</string>
+    <string name="auth_tag_me_record">Record</string>
+    <string name="auth_tag_me_loc">Share location</string>
+    <string name="auth_tag_me_feedback">Feedback</string>
+    <string name="auth_tag_me_clear">Clear Cache</string>
+    <string name="auth_tag_me_about">About</string>
 
-    <string name="auth_tx_new_phone">新手机号</string>
-    <string name="auth_tx_verification">验证码</string>
-    <string name="auth_tx_pwd">密码</string>
+    <string name="auth_title_user_settings">Homepage</string>
+    <string name="auth_tag_user_avatar">Avatar</string>
+    <string name="auth_tag_user_nickname">Nickname</string>
+    <string name="auth_tag_user_gender">Gender</string>
+    <string name="auth_tag_user_age">Age</string>
+    <string name="auth_tag_user_like">Like</string>
+    <string name="auth_tag_user_profession">Job</string>
+    <string name="auth_tag_user_height">Height</string>
+    <string name="auth_tag_user_weight">Weight</string>
+    <string name="auth_tag_user_phone">Binded phone</string>
 
-    <string name="auth_toast_verification_request_ok">请求获取验证码成功</string>
+    <string name="auth_title_modify_nickname">Nickname</string>
+    <string name="auth_title_modify_phone">Change Phone</string>
 
-    <string name="auth_title_feedback">意见反馈</string>
-    <string name="auth_tx_feedback_device">反馈的设备</string>
-    <string name="auth_tx_question_detail">问题详情</string>
-    <string name="auth_tx_contact">联系方式</string>
-    <string name="auth_action_submit_feedback">提交反馈</string>
-    <string name="auth_hint_select_device">请选择您使用的设备</string>
+    <string name="auth_tx_new_phone">New Phone</string>
+    <string name="auth_tx_verification">Code</string>
+    <string name="auth_tx_pwd">Password</string>
 
-    <string name="auth_toast_feedback_ok">提交成功，感谢您的反馈</string>
+    <string name="auth_toast_verification_request_ok">Get code successful</string>
 
-    <string name="auth_action_logout">登出</string>
+    <string name="auth_title_feedback">Feedback</string>
+    <string name="auth_tx_feedback_device">Using phone type</string>
+    <string name="auth_tx_question_detail">Details</string>
+    <string name="auth_tx_contact">Your Contact</string>
+    <string name="auth_action_submit_feedback">Submit</string>
+    <string name="auth_hint_select_device">Input your phone type</string>
 
-    <string name="auth_tag_user_shield">屏蔽ta</string>
-    <string name="auth_action_chat">和 ta 聊天</string>
+    <string name="auth_toast_feedback_ok">Thank you for your feedback!</string>
 
-    <string name="auth_title_user_photo_album">相册</string>
-    <string name="auth_title_dialog_delete_photo">是否要删掉照片，且删掉之后无法找回</string>
+    <string name="auth_action_logout">Logout</string>
 
-    <string name="auth_error_get_user_info">获取用户信息失败</string>
+    <string name="auth_tag_user_shield">Block</string>
+    <string name="auth_action_chat">Talk to</string>
+
+    <string name="auth_title_user_photo_album">Albums</string>
+    <string name="auth_title_dialog_delete_photo">Delete photos permernantly?</string>
+
+    <string name="auth_error_get_user_info">Get user info failed</string>
 
 </resources>

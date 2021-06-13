@@ -80,7 +80,7 @@ public class DeviceListAdapter extends BaseAdapter {
         final int pos = position;
         slideView.shrink();
 
-        holder.tvDeviceName.setText( item.deviceDbEntity.deviceName + "_" + item.deviceDbEntity.deviceMac.substring(5).replace(":",""));
+        holder.tvDeviceName.setText("FreeWLK_" + item.deviceDbEntity.deviceMac.substring(5).replace(":",""));
 
         if (item.deviceDbEntity.deviceType == DeviceConfig.Type.BLACK) {
             holder.vDevice.setBackgroundResource(R.drawable.icon_device_black);

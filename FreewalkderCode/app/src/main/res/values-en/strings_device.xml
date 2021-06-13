@@ -1,103 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="device_title_list">设备列表</string>
+    <string name="device_title_list">Devices</string>
 
-    <string name="device_tip_no_bind">未连接任何设备\n请点击下方按钮添加新设备</string>
+    <string name="device_tip_no_bind">No device connected\nPlease click the button to connect</string>
 
-    <string name="device_tip_ask_unbind">确定解除与该设备的绑定？</string>
+    <string name="device_tip_ask_unbind">Relieve confirm?</string>
 
-    <string name="device_action_add_new">添加新设备</string>
-    <string name="device_action_unbind_device">解除绑定</string>
-    <string name="device_action_unbind_in_dialog">解绑</string>
-    <string name="device_action_add_now">开始添加</string>
+    <string name="device_action_add_new">Add New</string>
+    <string name="device_action_unbind_device">Unbind Device</string>
+    <string name="device_action_unbind_in_dialog">Unbind</string>
+    <string name="device_action_add_now">Add Device</string>
 
-    <string name="device_status_disconnect">未连接，点击切换</string>
-    <string name="device_status_connecting">正在连接</string>
-    <string name="device_status_worked">已连接</string>
+    <string name="device_status_disconnect">Click to switch</string>
+    <string name="device_status_connecting">Connecting…</string>
+    <string name="device_status_worked">Connected</string>
 
-    <string name="device_title_add">添加一个新设备</string>
-    <string name="device_title_add_ing">添加设备中</string>
-    <string name="device_tip_open">长按设备开机键3秒，开始添加新设备</string>
-    <string name="device_tip_add">添加过程中请保证耳机处于开机状态</string>
-    <string name="device_tip_select_nearby">选择附近的FW</string>
-    <string name="device_tip_scan_none">没有扫描到我要连接的设备</string>
+    <string name="device_title_add">Add New</string>
+    <string name="device_title_add_ing">Add …</string>
+    <string name="device_tip_open">Hold on the poweron key for 3s</string>
+    <string name="device_tip_add">Make sure the earphone is turned on</string>
+    <string name="device_tip_select_nearby">FW Nearby</string>
+    <string name="device_tip_scan_none">No earphone found</string>
 
-    <string name="device_error_not_support">本设备不支持蓝牙</string>
+    <string name="device_error_not_support">Bluetooth Unavaliable</string>
 
-    <string name="device_title_open_bluetooth">蓝牙服务</string>
-    <string name="device_tip_bluetooth_not_opened_short">蓝牙未开启</string>
-    <string name="device_tip_bluetooth_not_opened">蓝牙未开启，无法连接设备\n请检查您的蓝牙设置</string>
-    <string name="device_action_open">立即开启</string>
+    <string name="device_title_open_bluetooth">Bluetooth Service</string>
+    <string name="device_tip_bluetooth_not_opened_short">Bluetooth Unavaliable</string>
+    <string name="device_tip_bluetooth_not_opened">Bluetooth Unavaliable\nPlease Check Settings</string>
+    <string name="device_action_open">Open</string>
 
-    <string name="device_title_open_location">位置服务</string>
-    <string name="device_tip_location_service">需要开启位置服务以扫描耳机，是否去开启？</string>
-    <string name="device_tip_location_opened_short">位置服务未开启</string>
-    <string name="device_tip_location_opened">Android6.0后，蓝牙扫描需要位置服务</string>
-    <string name="device_tip_location_permission">需要开启位置权限以扫描设备</string>
-    <string name="device_tip_location_permission_2">需要去设置页面开启位置权限以扫描设备</string>
+    <string name="device_title_open_location">Location</string>
+    <string name="device_tip_location_service">Need to location service, open?</string>
+    <string name="device_tip_location_opened_short">Location Unavaliable</string>
+    <string name="device_tip_location_opened">After Android6.0, scan of bluetooth need location service</string>
+    <string name="device_tip_location_permission">Need location service to scan</string>
+    <string name="device_tip_location_permission_2">Go to setting to start location service</string>
 
-    <string name="device_title_dialog_scan_none">没有扫描到我的设备</string>
-    <string name="device_action_dialog_try_again">重试</string>
-    <string name="device_action_dialog_exit">暂不连接</string>
+    <string name="device_title_dialog_scan_none">No earphone found</string>
+    <string name="device_action_dialog_try_again">Retry</string>
+    <string name="device_action_dialog_exit">Not to bind yet</string>
 
-    <string name="device_tip_connect_ok">连接成功</string>
+    <string name="device_tip_connect_ok">Connect Successful</string>
 
-    <string name="device_toast_connecting">正在配对中..</string>
-    <string name="device_title_dialog_connect_fail">连接失败</string>
-    <string name="device_toast_connected">配对成功</string>
+    <string name="device_toast_connecting">Pairing …</string>
+    <string name="device_title_dialog_connect_fail">Connect Failed</string>
+    <string name="device_toast_connected">Paired Successful</string>
 
-    <string name="device_title_settings">我的设备</string>
+    <string name="device_title_settings">My Device</string>
 
-    <string name="device_tx_settings_device">当前设备</string>
-    <string name="device_tx_settings_earphone">耳机名称</string>
-    <string name="device_tx_settings_ota_update">固件升级</string>
-    <string name="device_tx_settings_volume">音量</string>
-    <string name="device_tx_settings_channel">当前频道</string>
-    <string name="device_tx_settings_long_mode">远距离模式</string>
-    <string name="device_tx_settings_battery">电池电量</string>
-    <string name="device_tx_settings_ppt">解说模式</string>
-    <string name="device_tx_settings_ppt_high">信号增强</string>
-    <string name="device_tx_settings_ppt_normal">常规</string>
-    <string name="device_tx_settings_ppt_low">近距省电</string>
+    <string name="device_tx_settings_device">Device Name</string>
+    <string name="device_tx_settings_earphone">Earphone Name</string>
+    <string name="device_tx_settings_ota_update">Firmeare Upgarde</string>
+    <string name="device_tx_settings_volume">Volume</string>
+    <string name="device_tx_settings_channel">Channel</string>
+    <string name="device_tx_settings_long_mode">Long Range Mode</string>
+    <string name="device_tx_settings_battery">Battery</string>
+    <string name="device_tx_settings_ppt">Explain Mode</string>
+    <string name="device_tx_settings_ppt_high">Long</string>
+    <string name="device_tx_settings_ppt_normal">Normal</string>
+    <string name="device_tx_settings_ppt_low">Short</string>
 
-    <string name="device_tip_setting_power_title">该模式使功率增大，请遵循当地无线电管理规范，一般在求助救援等必要情况下使用。</string>
-    <string name="device_tip_setting_power_content">注：功率增大，会降低使用时长。</string>
+    <string name="device_tip_setting_power_title">This is a power enhancement model, please check the rules and usually used in emergency.</string>
+    <string name="device_tip_setting_power_content">P.S.: Battery endurance will be reduced.</string>
 
-    <string name="device_tip_channel_can_not_set_pwd_and_priority">该频道不能设置密码和权限</string>
+    <string name="device_tip_channel_can_not_set_pwd_and_priority">Settings not allowed for public channel</string>
 
-    <string name="app_toast_channel_pwd_length_error">请输入6位数字密码</string>
+    <string name="app_toast_channel_pwd_length_error">Input 6 digital</string>
 
-    <string name="device_toast_need_not_update">设备已是最新版本</string>
-    <string name="device_tip_ota_has_new_version">检测到最新版本\n%1$s</string>
-    <string name="device_tip_ota_update_tip">当前版本%1$s\n请确保耳机电量充足</string>
-    <string name="device_action_ota_now">立即升级</string>
-    <string name="device_toast_update_error_by_download_file">下载文件失败，请稍后再试</string>
+    <string name="device_toast_need_not_update">Latested Version</string>
+    <string name="device_tip_ota_has_new_version">New version found\n%1$s</string>
+    <string name="device_tip_ota_update_tip">Current version %1$s\nMake sure the power is enough</string>
+    <string name="device_action_ota_now">Upgarde Now</string>
+    <string name="device_toast_update_error_by_download_file">Download file failed</string>
 
-    <string name="device_tip_ota_ing">正在升级..</string>
-    <string name="device_tip_ota_downlad_file_ing">正在下载文件</string>
-    <string name="device_tip_ota_warning">请确保耳机电量充足</string>
+    <string name="device_tip_ota_ing">Upgrade…</string>
+    <string name="device_tip_ota_downlad_file_ing">Downloading…</string>
+    <string name="device_tip_ota_warning">Make sure the power is enough</string>
 
-    <string name="device_tip_ota_newest">%1$s\n当前已是最新版本</string>
+    <string name="device_tip_ota_newest">%1$s\nis newest version</string>
 
-    <string name="device_toast_ota_finish">升级成功</string>
+    <string name="device_toast_ota_finish">Update Finished</string>
 
-    <string name="device_tx_setting_channel_curr">- 当前频道 -</string>
-    <string name="device_tx_setting_channel_all">频道（1-30）</string>
-    <string name="device_action_setting_channel_pwd">密码设置</string>
-    <string name="device_action_setting_channel_auth">权限设置</string>
-    <string name="device_tip_setting_channel_pwd">用户须知：\n· 在同一频道下，您需与好友同时输入相同的密码，方可进入保密通信状态；\n· 密码为6个数字。</string>
+    <string name="device_tx_setting_channel_curr">- Current Channel -</string>
+    <string name="device_tx_setting_channel_all">Channel(1–30)</string>
+    <string name="device_action_setting_channel_pwd">Set Pass</string>
+    <string name="device_action_setting_channel_auth">Set Auth</string>
+    <string name="device_tip_setting_channel_pwd">Tips:\n · Same password is needed by both you and your friend at the same channel;\n · 6 digitals is required.</string>
 
 
-    <string name="device_channel_1">公共</string>
-    <string name="device_channel_2">公共</string>
-    <string name="device_channel_3">公共</string>
-    <string name="device_channel_4">社区</string>
-    <string name="device_channel_5">校园</string>
-    <string name="device_channel_6">商圈</string>
-    <string name="device_channel_7">约会</string>
-    <string name="device_channel_8">求职</string>
-    <string name="device_channel_9">旅游</string>
-    <string name="device_channel_10">交通</string>
+    <string name="device_channel_1">Public</string>
+    <string name="device_channel_2">Public</string>
+    <string name="device_channel_3">Public</string>
+    <string name="device_channel_4">Community</string>
+    <string name="device_channel_5">Campus</string>
+    <string name="device_channel_6">Business</string>
+    <string name="device_channel_7">Dating</string>
+    <string name="device_channel_8">Jobs</string>
+    <string name="device_channel_9">Travel</string>
+    <string name="device_channel_10">Traffic</string>
 
 </resources>

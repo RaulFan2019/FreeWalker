@@ -81,9 +81,9 @@ public class UserDeviceCallbackService extends Service implements QueryMsgListen
     public void receiveGroupMsg(GroupChatInfo groupChatInfo) {
         //检查用户的消息是否被屏蔽了
         UserDbEntity userDbEntity = DBDataUser.getUserInfoByUserId(groupChatInfo.userId);
-        if (userDbEntity != null && userDbEntity.isShield){
-            return;
-        }
+//        if (userDbEntity != null && userDbEntity.isShield){
+//            return;
+//        }
         GroupChatMsgEntity groupChatMsgEntity = new GroupChatMsgEntity(System.currentTimeMillis(), mUser.userId,
                 BM.getManager().getDeviceSystemInfo().currChannel, groupChatInfo.userId, groupChatInfo.content);
         DBDataGroupChatMsg.save(groupChatMsgEntity);

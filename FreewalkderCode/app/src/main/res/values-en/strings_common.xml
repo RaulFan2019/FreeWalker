@@ -2,26 +2,26 @@
 <resources>
 
     <!-- app -->
-    <string name="app_error_net_not_found">请求不存在</string>
-    <string name="app_error_net_server">服务器内部错误</string>
-    <string name="app_error_net_check">请检查网络</string>
+    <string name="app_error_net_not_found">404 Not Found</string>
+    <string name="app_error_net_server">Server Error</string>
+    <string name="app_error_net_check">Please check the network</string>
 
     <string name="app_name">FreeWalker</string>
     <string name="app_copyright">Copyright © 2020 FreeWalker</string>
 
 
-    <string name="app_action_confirm">确定</string>
-    <string name="app_action_cancel">取消</string>
-    <string name="app_action_save">保存</string>
-    <string name="app_action_submit">提交</string>
-    <string name="app_action_delete">删除</string>
+    <string name="app_action_confirm">Confirm</string>
+    <string name="app_action_cancel">Cancel</string>
+    <string name="app_action_save">Save</string>
+    <string name="app_action_submit">Submit</string>
+    <string name="app_action_delete">Delete</string>
 
-    <string name="app_toast_modify_ok">修改成功</string>
+    <string name="app_toast_modify_ok">Modify Successfule</string>
 
-    <string name="app_tip_download_app">正在下载软件</string>
-    <string name="app_toast_download_app_error">网络错误，稍后下载</string>
+    <string name="app_tip_download_app">Downloading …</string>
+    <string name="app_toast_download_app_error">Network error</string>
 
-    <string name="app_tip_upload_ok">上传成功</string>
+    <string name="app_tip_upload_ok">Upload Successful</string>
     
 
 </resources>

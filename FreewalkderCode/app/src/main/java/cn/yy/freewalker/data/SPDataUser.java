@@ -55,7 +55,7 @@ public class SPDataUser {
      */
     public static void setIsShareLoc(final Context context, final boolean isShareLoc){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putBoolean(ACCOUNT, isShareLoc);
+        editor.putBoolean(IS_SHARE_LOC, isShareLoc);
         editor.commit();
     }
 

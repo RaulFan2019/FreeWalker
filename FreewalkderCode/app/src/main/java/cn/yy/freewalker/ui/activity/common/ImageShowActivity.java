@@ -56,7 +56,7 @@ public class ImageShowActivity extends BaseActivity {
             Uri uri = Uri.fromFile(new File(url));
             ivPhoto.setImageURI(uri);
         } else {
-            ImageU.loadPhoto(UrlConfig.IMAGE_HOST + url, ivPhoto);
+            ImageU.loadPhoto(url, ivPhoto);
         }
 
     }
