@@ -36,6 +36,7 @@ import cn.yy.freewalker.network.NetworkExceptionHelper;
 import cn.yy.freewalker.network.RequestBuilder;
 import cn.yy.freewalker.ui.activity.BaseActivity;
 import cn.yy.freewalker.ui.activity.chat.SingleChatActivity;
+import cn.yy.freewalker.ui.activity.common.ImageShowActivity;
 import cn.yy.freewalker.ui.widget.common.CircularImage;
 import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.utils.DensityU;
@@ -144,6 +145,17 @@ public class UserInfoActivity extends BaseActivity {
                     if (listPhoto.size() > i) {
                         listImageView.get(i).setVisibility(View.VISIBLE);
                         ImageU.loadPhoto(UrlConfig.IMAGE_HOST + listPhoto.get(i).imgUrl, listImageView.get(i));
+                        int finalI = i;
+                        listImageView.get(i).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("url", UrlConfig.IMAGE_HOST + listPhoto.get(finalI).imgUrl);
+                                bundle.putBoolean("isLocalPath", false);
+                                bundle.putBoolean("canDelte", false);
+                                startActivity(ImageShowActivity.class, bundle);
+                            }
+                        });
                     } else {
                         listImageView.get(i).setVisibility(View.GONE);
                     }

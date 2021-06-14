@@ -186,6 +186,12 @@
                 style="@style/AuthMeSettingsTag"
                 android:text="@string/auth_tag_me_photo" />
 
+            <TextView
+                style="@style/AuthMeSettingsValue"
+                android:text="@string/auth_tip_me_photo" />
+
+            <View style="@style/AuthMeSettingsMore" />
+
         </LinearLayout>
 
         <View style="@style/AuthMeSettingsDivider" />
