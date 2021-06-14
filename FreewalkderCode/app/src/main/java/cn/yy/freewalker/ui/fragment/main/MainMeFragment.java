@@ -137,6 +137,7 @@ public class MainMeFragment extends BaseFragment {
             case R.id.ll_photo:
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("photo", (Serializable) listPhoto);
+                bundle.putInt("self", 1);
                 startActivity(UserPhotoAlbumActivity.class, bundle);
                 break;
             //录音

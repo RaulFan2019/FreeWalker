@@ -33,6 +33,7 @@ public class PhotoSelectAdapter extends BaseAdapter {
     onItemClickChangedListener mListener;
 
     boolean isSelectMode;
+    boolean isSelf;
 
     private List<PhotoSelectBean> listPhoto;
 
@@ -47,20 +48,26 @@ public class PhotoSelectAdapter extends BaseAdapter {
         this.mListener = listener;
     }
 
-    public PhotoSelectAdapter(Activity context, List<PhotoSelectBean> listPhoto, boolean isSelectMode) {
+    public PhotoSelectAdapter(Activity context, List<PhotoSelectBean> listPhoto, boolean isSelectMode, boolean isSelf) {
         this.context = context;
         this.inflator = LayoutInflater.from(context);
         this.listPhoto = listPhoto;
         this.isSelectMode = isSelectMode;
+        this.isSelf = isSelf;
     }
 
     @Override
     public int getCount() {
-        if (isSelectMode) {
+        if (isSelf){
+            if (isSelectMode) {
+                return listPhoto.size();
+            } else {
+                return listPhoto.size() + 1;
+            }
+        }else {
             return listPhoto.size();
-        } else {
-            return listPhoto.size() + 1;
         }
+
     }
 
     @Override
@@ -136,15 +143,19 @@ public class PhotoSelectAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     YLog.e("PhotoSelectAdapter", "onClick  position:" + position + ",isSelectMode:" + isSelectMode);
-                    if (isSelectMode) {
-                        if (mListener != null) {
-                            mListener.onItemClick(position);
-                        }
-                    } else {
-                        if (position == listPhoto.size() && mListener != null) {
-                            mListener.onItemClick(position);
-                        }
+                    if (mListener != null) {
+                        mListener.onItemClick(position);
                     }
+
+//                    if (isSelectMode) {
+//                        if (mListener != null) {
+//                            mListener.onItemClick(position);
+//                        }
+//                    } else {
+//                        if (position == listPhoto.size() && mListener != null) {
+//                            mListener.onItemClick(position);
+//                        }
+//                    }
                 }
             });
 

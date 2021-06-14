@@ -18,6 +18,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,7 +107,7 @@ public class UserInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.btn_back, R.id.btn_chat})
+    @OnClick({R.id.btn_back, R.id.btn_chat,R.id.ll_photo})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
@@ -116,6 +117,12 @@ public class UserInfoActivity extends BaseActivity {
                 Bundle bundle = new Bundle();
                 bundle.putInt("destUserId", mDestUserId);
                 startActivity(SingleChatActivity.class, bundle);
+                break;
+            case R.id.ll_photo:
+                Bundle bundleP = new Bundle();
+                bundleP.putSerializable("photo", (Serializable) listPhoto);
+                bundleP.putInt("self", 0);
+                startActivity(UserPhotoAlbumActivity.class, bundleP);
                 break;
         }
     }

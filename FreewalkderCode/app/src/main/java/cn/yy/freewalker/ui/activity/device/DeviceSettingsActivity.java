@@ -147,7 +147,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     @Override
     protected void initViews() {
-        tvDevice.setText("FreeWLK_" + BM.getManager().getConnectName() + "_" + BM.getManager().getConnectMac().substring(5).replace(":",""));
+        tvDevice.setText("FreeWLK_" + BM.getManager().getConnectMac().substring(5).replace(":",""));
 
         tvVolume.setText("6");
         sbVolume.setProgress(6);

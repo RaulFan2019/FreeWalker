@@ -90,6 +90,7 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
     List<PhotoSelectBean> listPhoto = new ArrayList<>();                             //相册列表
     private List<String> listPhotoMode = new ArrayList<>();                          //照片选择模式
     private boolean mIsSelectedMode = false;                                         //是否是选择模式
+    private boolean mIsSelf = true;                                                  //是否是自己的相冊
 
 
     @Override
@@ -114,17 +115,9 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
                     btnDelete.setVisibility(View.GONE);
                 }
 
-                adapter = new PhotoSelectAdapter(UserPhotoAlbumActivity.this, listPhoto, mIsSelectedMode);
+                adapter = new PhotoSelectAdapter(UserPhotoAlbumActivity.this, listPhoto, mIsSelectedMode, mIsSelf);
                 adapter.setListener(this);
                 gvPhoto.setAdapter(adapter);
-
-                YLog.e(TAG,"url:" + listPhoto.get(0).photo.imgUrl);
-                YLog.e(TAG,"url:" + listPhoto.get(1).photo.imgUrl);
-                Bundle bundle = new Bundle();
-                bundle.putString("url", listPhoto.get(0).photo.imgUrl);
-                bundle.putBoolean("isLocalPath", false);
-                bundle.putBoolean("canDelte", false);
-                startActivity(ImageShowActivity.class, bundle);
 
                 break;
             //删除图片
@@ -185,6 +178,7 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
 
     @Override
     public void onItemClick(int index) {
+        YLog.e(TAG, "onItemClick:" + mIsSelectedMode);
         if (mIsSelectedMode) {
             PhotoSelectBean photoSelectBean = listPhoto.get(index);
             photoSelectBean.isSelected = !photoSelectBean.isSelected;
@@ -195,7 +189,11 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
             if (index == listPhoto.size()) {
                 addPhoto();
             } else {
-                //TODO?
+                Bundle bundle = new Bundle();
+                bundle.putString("url", UrlConfig.IMAGE_HOST + listPhoto.get(index).photo.imgUrl);
+                bundle.putBoolean("isLocalPath", false);
+                bundle.putBoolean("canDelte", false);
+                startActivity(ImageShowActivity.class, bundle);
             }
         }
     }
@@ -212,7 +210,9 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
         listPhotoMode.add(getString(R.string.app_action_cancel));
 
         List<PhotoResult> listPhotoOri = (List<PhotoResult>) getIntent().getSerializableExtra("photo");
+        mIsSelf = (getIntent().getExtras().getInt("self") == 1);
 
+        YLog.e(TAG, "mIsSelf:" + mIsSelf);
         for (PhotoResult photo : listPhotoOri) {
             listPhoto.add(new PhotoSelectBean(photo, false));
         }
@@ -222,7 +222,12 @@ public class UserPhotoAlbumActivity extends BaseActivity implements PhotoSelectA
     protected void initViews() {
         mDialogBuilder = new DialogBuilder();
 
-        adapter = new PhotoSelectAdapter(UserPhotoAlbumActivity.this, listPhoto, mIsSelectedMode);
+        if (!mIsSelf){
+            tvAction.setVisibility(View.GONE);
+            btnDelete.setVisibility(View.GONE);
+        }
+
+        adapter = new PhotoSelectAdapter(UserPhotoAlbumActivity.this, listPhoto, mIsSelectedMode, mIsSelf);
         gvPhoto.setAdapter(adapter);
         adapter.setListener(this);
     }
