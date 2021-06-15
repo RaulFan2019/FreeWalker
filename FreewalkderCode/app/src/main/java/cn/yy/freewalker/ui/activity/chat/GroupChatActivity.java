@@ -3,6 +3,7 @@ package cn.yy.freewalker.ui.activity.chat;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.Selection;
@@ -280,6 +281,13 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
 
         mChatAdapter.setItems(mChatItems);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
+            }
+        },500);
+        
         FaceInputFragment inputFragment = FaceInputFragment.newInstance();
         inputFragment.setOnOutputListener(bean -> {
                     editTextShowEmoji(bean.unicode, bean.faceId);

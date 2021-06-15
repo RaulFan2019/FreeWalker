@@ -944,7 +944,7 @@ public class ConnectEntity {
                 int voltage = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(5),mGroupPkg.listData.get(4)});
                 mDeviceSystemInfo = new DeviceSystemInfo(mGroupPkg.listData.get(0),
                         mGroupPkg.listData.get(1), mGroupPkg.listData.get(2), mGroupPkg.listData.get(3),
-                        voltage,mGroupPkg.listData.get(6));
+                        voltage,mGroupPkg.listData.get(7));
                 NotifyManager.getManager().notifyStateChange(mState);
                 //每10分钟读一次
                 sendMsg(MSG_GET_SYSTEM_INFO, null, 1000 * 10 * 60);

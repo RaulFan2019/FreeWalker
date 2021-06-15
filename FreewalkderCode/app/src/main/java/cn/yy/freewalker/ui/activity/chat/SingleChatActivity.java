@@ -3,6 +3,7 @@ package cn.yy.freewalker.ui.activity.chat;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -277,7 +278,13 @@ public class SingleChatActivity extends BaseActivity implements ConnectListener,
         mChatAdapter.register(ChatRightTextBean.class, new ChatRightTextBinder());
         mChatAdapter.setItems(mChatItems);
 
-        mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
+            }
+        },500);
+
 
         leftTextBinder.setOnItemClick(new OnItemListener() {
             @Override

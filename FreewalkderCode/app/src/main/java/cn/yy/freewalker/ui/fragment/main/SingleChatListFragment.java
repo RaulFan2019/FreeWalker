@@ -83,6 +83,11 @@ public class SingleChatListFragment extends BaseFragment {
                 DBDataUser.update(friend);
                 //更新列表
                 bean.isShield = !bean.isShield;
+                if (bean.isShield){
+                    bean.txShield = getActivity().getString(R.string.app_action_shield_cancel);
+                }else {
+                    bean.txShield = getActivity().getString(R.string.app_action_shield);
+                }
                 mFriendItems.set(pos, bean);
                 mAdapter.notifyDataSetChanged();
 
