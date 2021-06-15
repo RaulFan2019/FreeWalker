@@ -221,6 +221,9 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
             tvChannel.setText(String.valueOf(BM.getManager().getDeviceSystemInfo().currChannel + 1));
             //电量
             double battery = (BM.getManager().getDeviceSystemInfo().voltage - 3253)/9.47;
+            if (battery > 100){
+                battery = 100;
+            }
             tvBattery.setText((int)battery + "%");
             //PPT模式
             boolean isOpen = (BM.getManager().getDeviceSystemInfo().pptAutoHold == 1);
@@ -292,12 +295,16 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         }
     }
 
+
+    /**
+     * 检查设备版本
+     */
     private void getDeviceVersion(){
         x.task().post(new Runnable() {
             @Override
             public void run() {
                 RequestParams params = RequestBuilder.checkDeviceVersion(DeviceSettingsActivity.this,
-                        BM.getManager().getFwVersion()-1);
+                        BM.getManager().getFwVersion());
                 x.http().post(params, new Callback.CommonCallback<BaseResult>() {
                     @Override
                     public void onSuccess(BaseResult result) {
