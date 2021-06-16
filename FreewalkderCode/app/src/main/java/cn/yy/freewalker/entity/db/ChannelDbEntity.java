@@ -13,8 +13,8 @@ public class ChannelDbEntity {
 
     @Column(name = "channelId", isId = true, autoGen = false)
     public long channelId;
-    @Column(name = "userId")
-    public int userId;                                                          //用户Id
+    @Column(name = "deviceMac")
+    public String deviceMac;                                                    //耳机mac
     @Column(name = "channel")
     public int channel;                                                         //频道号
     @Column(name = "pwd")
@@ -25,9 +25,9 @@ public class ChannelDbEntity {
     public ChannelDbEntity() {
     }
 
-    public ChannelDbEntity(long channelId, int userId, int channel, String pwd, int priority) {
+    public ChannelDbEntity(long channelId, String deviceMac, int channel, String pwd, int priority) {
         this.channelId = channelId;
-        this.userId = userId;
+        this.deviceMac = deviceMac;
         this.channel = channel;
         this.pwd = pwd;
         this.priority = priority;

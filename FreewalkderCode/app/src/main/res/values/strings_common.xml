@@ -17,6 +17,7 @@
     <string name="app_action_delete">删除</string>
     <string name="app_action_shield">屏蔽</string>
     <string name="app_action_shield_cancel">取消屏蔽</string>
+    <string name="app_action_remove_pass">清除密码</string>
 
     <string name="app_toast_modify_ok">修改成功</string>
 

@@ -24,6 +24,7 @@ public class DialogDeviceInputChannelPwd {
 
     public Dialog mDialog;
 
+    public TextView tvRemovePass;
     public TextView tvConfirm;
     public InputPwdBox inputPwdBox;
 
@@ -31,6 +32,7 @@ public class DialogDeviceInputChannelPwd {
 
     public interface onConfirmListener {
         void onConfirm(String pwd);
+        void onRemove();
     }
 
     /**
@@ -44,6 +46,7 @@ public class DialogDeviceInputChannelPwd {
         mDialog.setCancelable(true);
         mDialog.setCanceledOnTouchOutside(true);
 
+        tvRemovePass = mDialog.findViewById(R.id.tv_remove);
         tvConfirm = mDialog.findViewById(R.id.tv_confirm);
         inputPwdBox = mDialog.findViewById(R.id.inputBox);
 
@@ -56,9 +59,16 @@ public class DialogDeviceInputChannelPwd {
                     mListener.onConfirm(inputPwdBox.getInputContent());
                     mDialog.dismiss();
                 }
-
             }
+        });
 
+        tvRemovePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null){
+                    mListener.onRemove();
+                }
+            }
         });
     }
 

@@ -19,15 +19,15 @@ public class DBDataChannel {
 
     /**
      * 获取频道信息
-     * @param userId
+     * @param deviceMac
      * @param channel
      * @return
      */
-    public static ChannelDbEntity getChannel(final int userId, final int channel) {
+    public static ChannelDbEntity getChannel(final String deviceMac, final int channel) {
         try {
             return LocalApp.getInstance().getDb()
                     .selector(ChannelDbEntity.class)
-                    .where("userId", "=", userId).and("channel", "=", channel).findFirst();
+                    .where("deviceMac", "=", deviceMac).and("channel", "=", channel).findFirst();
         } catch (DbException e) {
             e.printStackTrace();
             return null;

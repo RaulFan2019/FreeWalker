@@ -33,7 +33,9 @@ import cn.yy.freewalker.ui.widget.common.ToastView;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.observer.ChannelListener;
+import cn.yy.sdk.ble.observer.ConnectListener;
 import cn.yy.sdk.ble.utils.BLog;
 
 /**
@@ -41,7 +43,7 @@ import cn.yy.sdk.ble.utils.BLog;
  * @email 35686324@qq.com
  * @date 2020/6/7 11:52
  */
-public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener, ChannelListener {
+public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener, ChannelListener, ConnectListener {
 
 
     /* contains */
@@ -210,6 +212,11 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
     @Override
     protected void onResume() {
         super.onResume();
+        if (BM.getManager().getConnectState() < ConnectStates.WORKED){
+            finish();
+        }
+        BM.getManager().registerConnectListener(this);
+
         BindDeviceDbEntity dbEntity = DBDataDevice.findDeviceByUser(mUser.userId, BM.getManager().getConnectMac());
         if (dbEntity.deviceName != null) {
             tvName.setText(dbEntity.deviceName);
@@ -234,6 +241,13 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         }
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BM.getManager().unRegisterConnectListener(this);
+    }
+
 
     @Override
     protected void causeGC() {
@@ -337,4 +351,10 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         });
     }
 
+    @Override
+    public void connectStateChange(int state) {
+        if (state <= ConnectStates.WORKED){
+            finish();
+        }
+    }
 }

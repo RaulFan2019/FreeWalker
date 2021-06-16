@@ -25,14 +25,16 @@ import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogDeviceInputChannelPwd;
 import cn.yy.freewalker.utils.YLog;
 import cn.yy.sdk.ble.BM;
+import cn.yy.sdk.ble.array.ConnectStates;
 import cn.yy.sdk.ble.observer.ChannelListener;
+import cn.yy.sdk.ble.observer.ConnectListener;
 
 /**
  * @author Raul.Fan
  * @email 35686324@qq.com
  * @date 2020/6/8 20:39
  */
-public class DeviceSettingChannelActivity extends BaseActivity implements ChannelListener {
+public class DeviceSettingChannelActivity extends BaseActivity implements ChannelListener, ConnectListener {
 
     /* contains */
     private static final String TAG = "DeviceSettingChannelActivity";
@@ -104,9 +106,9 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
 
         //初始化频道
         for (int i = 0; i < 30; i++) {
-            ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(mUser.userId, i);
+            ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(BM.getManager().getConnectMac(), i);
             if (channelDbEntity == null) {
-                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, i, "", 5);
+                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), BM.getManager().getConnectMac(), i, "", 5);
                 DBDataChannel.save(channelDbEntity);
             }
             listChannel.add(channelDbEntity);
@@ -129,8 +131,6 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
         rvChannel.setLayoutManager(layoutManager);
 
         initAdapter();
-
-
     }
 
 
@@ -154,6 +154,21 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
     @Override
     protected void doMyCreate() {
         BM.getManager().registerChannelListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (BM.getManager().getConnectState() < ConnectStates.WORKED){
+            finish();
+        }
+        BM.getManager().registerConnectListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BM.getManager().unRegisterConnectListener(this);
     }
 
     @Override
@@ -185,6 +200,18 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
                     channelDbEntity.pwd = pwdStr;
                     listChannel.set(mChanelIndex, channelDbEntity);
                     DBDataChannel.update(channelDbEntity);
+                    adapter.notifyDataSetChanged();
+                    BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
+                            listChannel.get(mChanelIndex).priority, listChannel.get(mChanelIndex).pwd);
+                }
+
+                @Override
+                public void onRemove() {
+                    ChannelDbEntity channelDbEntity = listChannel.get(mChanelIndex);
+                    channelDbEntity.pwd = "";
+                    listChannel.set(mChanelIndex, channelDbEntity);
+                    DBDataChannel.update(channelDbEntity);
+                    adapter.notifyDataSetChanged();
                     BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
                             listChannel.get(mChanelIndex).priority, listChannel.get(mChanelIndex).pwd);
                 }
@@ -217,4 +244,10 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
         }
     }
 
+    @Override
+    public void connectStateChange(int state) {
+        if (state <= ConnectStates.WORKED){
+            finish();
+        }
+    }
 }

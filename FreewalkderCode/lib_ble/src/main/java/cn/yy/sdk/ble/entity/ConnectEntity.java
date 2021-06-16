@@ -54,7 +54,7 @@ public class ConnectEntity {
     private static final int MSG_REPEAT_CONNECT = 0x01;                   //重新连接
     private static final int MSG_DISCOVER_SERVICE = 0x02;                 //重新发现服务
     private static final int MSG_NOTIFY_PRIVATE_C = 0x03;                 //notify 特征值
-    private static final int MSG_NOTIFY_PRIVATE_DEBUG = 0x04;                 //notify 特征值
+    private static final int MSG_NOTIFY_PRIVATE_DEBUG = 0x04;               //notify 特征值
     private static final int MSG_GET_VERSION_INFO = 0x14;                  //获取版本号
     private static final int MSG_GET_SYSTEM_INFO = 0x05;                  //获取系统配置
 
@@ -70,6 +70,8 @@ public class ConnectEntity {
     private static final int MSG_SET_PPT_IS_OPEN = 0x12;                   //设置是否打开
 
     private static final int MSG_SET_DEVICE_NAME = 0x13;                  //设置名称
+
+    private static final int MSG_RESET_DEVICE = 0x15;                     //重置设备
 
 
     /* local data of system */
@@ -169,6 +171,9 @@ public class ConnectEntity {
                 //设置设备名称
                 case MSG_SET_DEVICE_NAME:
                     writeSetDeviceName((String) msg.obj);
+                    break;
+                case MSG_RESET_DEVICE:
+                    writeResetDevice();
                     break;
             }
         }
@@ -446,6 +451,33 @@ public class ConnectEntity {
             sendMsg(MSG_REPEAT_CONNECT, null, DELAY_REPEAT_CONNECT);
         } else {
             sendMsg(MSG_NOTIFY_PRIVATE_C, null, DELAY_REPEAT_NOTIFY);
+        }
+    }
+
+    /**
+     * 重置设备
+     */
+    public void resetDevice(){
+        sendMsg(MSG_RESET_DEVICE, null, 0);
+    }
+
+    /**
+     * 写入重置设备
+     */
+    public void writeResetDevice(){
+        mHandler.removeMessages(MSG_RESET_DEVICE);
+        byte[] data = new byte[4];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        data[2] = (byte) 1;
+        //port
+        data[3] = PrivatePorts.RESET;
+
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_RESET_DEVICE, null, DELAY_REPEAT_WRITE);
         }
     }
 

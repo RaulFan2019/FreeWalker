@@ -13,6 +13,17 @@
         android:background="@drawable/bg_dialog_privacy_title">
 
         <TextView
+            android:id="@+id/tv_remove"
+            android:text="@string/app_action_remove_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/tv_accent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

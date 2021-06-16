@@ -216,6 +216,18 @@ public class BM {
     }
 
     /**
+     * 初始化设备
+     */
+    public int resetDevice(){
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().resetDevice();
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
      * 恢复
      */
     public void recovery() {

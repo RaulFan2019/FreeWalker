@@ -43,6 +43,8 @@ public class DBDataDevice {
             deviceDbEntity = new BindDeviceDbEntity(System.currentTimeMillis(),
                     userId, deviceName, DeviceConfig.Type.BLACK, deviceAddress, channel);
             save(deviceDbEntity);
+            //首次连接需要重启设备
+            BM.getManager().resetDevice();
         }else {
             deviceDbEntity.lastChannel = channel;
             update(deviceDbEntity);
@@ -51,7 +53,7 @@ public class DBDataDevice {
 
 
     /**
-     * 增加一个新的设备
+     * 找到设备
      *
      * @param userId
      */

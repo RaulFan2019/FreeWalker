@@ -38,7 +38,7 @@ public class LocalApp extends MultiDexApplication implements ChannelListener {
 
     /* local data about db */
     public static final String DB_NAME = "freewalker.db";
-    public static final int DB_VERSION = 6;
+    public static final int DB_VERSION = 7;
 
 
     private DbManager.DaoConfig daoConfig;

@@ -15,6 +15,9 @@
     <string name="app_action_save">Save</string>
     <string name="app_action_submit">Submit</string>
     <string name="app_action_delete">Delete</string>
+    <string name="app_action_shield">Shield</string>
+    <string name="app_action_shield_cancel">Shield Cancel</string>
+    <string name="app_action_remove_pass">Remove Pass</string>
 
     <string name="app_toast_modify_ok">Modify Successfule</string>
 

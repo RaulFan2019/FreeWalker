@@ -25,6 +25,7 @@ import cn.yy.freewalker.ui.adapter.DeviceSettingChannelRvAdapter;
 import cn.yy.freewalker.ui.widget.dialog.DialogBuilder;
 import cn.yy.freewalker.ui.widget.dialog.DialogChoice;
 import cn.yy.freewalker.ui.widget.dialog.DialogSingleSelect;
+import cn.yy.sdk.ble.BM;
 
 /**
  * @author Raul.Fan
@@ -86,9 +87,9 @@ public class RecordSelectChannelActivity extends BaseActivity {
         mUser = DBDataUser.getLoginUser(RecordSelectChannelActivity.this);
         //初始化频道
         for (int i = 0; i < 30; i++) {
-            ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(mUser.userId, i);
+            ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(BM.getManager().getConnectMac(), i);
             if (channelDbEntity == null) {
-                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), mUser.userId, i, "", 5);
+                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), BM.getManager().getConnectMac(), i, "", 5);
                 DBDataChannel.save(channelDbEntity);
             }
             listChannel.add(channelDbEntity);

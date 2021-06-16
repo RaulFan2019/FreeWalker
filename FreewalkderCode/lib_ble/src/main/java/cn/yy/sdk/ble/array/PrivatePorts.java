@@ -17,6 +17,8 @@ public class PrivatePorts {
 
     public static final byte PPT = 0x70;                                    //PPT
 
+    public static final byte RESET = 0x7f;
+
     public static final byte TEXT_MESSAGE = 0x01;                           //发送文本消息
     public static final byte QUERY_MESSAGE = 0x03;                          //查询消息
 

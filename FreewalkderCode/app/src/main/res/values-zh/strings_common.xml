@@ -9,12 +9,14 @@
     <string name="app_name">FreeWalker</string>
     <string name="app_copyright">Copyright © 2020 FreeWalker</string>
 
-
     <string name="app_action_confirm">确定</string>
     <string name="app_action_cancel">取消</string>
     <string name="app_action_save">保存</string>
     <string name="app_action_submit">提交</string>
     <string name="app_action_delete">删除</string>
+    <string name="app_action_shield">屏蔽</string>
+    <string name="app_action_shield_cancel">取消屏蔽</string>
+    <string name="app_action_remove_pass">清除密码</string>
 
     <string name="app_toast_modify_ok">修改成功</string>
 
