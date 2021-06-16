@@ -585,7 +585,7 @@ public class ConnectEntity {
      */
     public void setChannel(final int channel, final int priority, final String pwdStr) {
         ChannelInfo channelInfo = null;
-        if (pwdStr.isEmpty()) {
+        if (pwdStr ==  null) {
             channelInfo = new ChannelInfo(channel, priority, null);
         } else {
             String[] listPwdStr = pwdStr.split(",");
@@ -606,20 +606,12 @@ public class ConnectEntity {
      */
     public void writeSetChannel(final ChannelInfo channelInfo) {
         mHandler.removeMessages(MSG_SET_CHANNEL);
-        byte[] data;
-        if (channelInfo.pwd == null) {
-            data = new byte[6];
-        } else {
-            data = new byte[22];
-        }
+        byte[] data = new byte[22];
         data[0] = (byte) 0xFE;
         data[1] = (byte) 0x95;
         //length
-        if (channelInfo.pwd == null) {
-            data[2] = 0x03;
-        } else {
-            data[2] = 0x13;
-        }
+        data[2] = 0x13;
+
         //port
         data[3] = PrivatePorts.SET_CHANNEL;
         //channel
@@ -644,6 +636,23 @@ public class ConnectEntity {
             data[19] = (byte) channelInfo.pwd[3];
             data[20] = (byte) channelInfo.pwd[4];
             data[21] = (byte) channelInfo.pwd[5];
+        }else {
+            data[6] = 0x00;
+            data[7] = 0x00;
+            data[8] = 0x00;
+            data[9] = 0x00;
+            data[10] = 0x00;
+            data[11] = 0x00;
+            data[12] = 0x00;
+            data[13] = 0x00;
+            data[14] = 0x00;
+            data[15] = 0x00;
+            data[16] = 0x00;
+            data[17] = 0x00;
+            data[18] = 0x00;
+            data[19] = 0x00;
+            data[20] = 0x00;
+            data[21] = 0x00;
         }
 
 

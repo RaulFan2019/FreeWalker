@@ -214,7 +214,7 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
                     DBDataChannel.update(channelDbEntity);
                     adapter.notifyDataSetChanged();
                     BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
-                            listChannel.get(mChanelIndex).priority, listChannel.get(mChanelIndex).pwd);
+                            listChannel.get(mChanelIndex).priority, null);
                 }
             });
         } else {

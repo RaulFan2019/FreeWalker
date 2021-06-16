@@ -68,6 +68,7 @@
     <string name="device_tip_channel_can_not_set_pwd_and_priority">Settings not allowed for public channel</string>
 
     <string name="app_toast_channel_pwd_length_error">Input 6 digital</string>
+    <string name="app_toast_channel_pwd_data_error">Password cannot be all 0s</string>
 
     <string name="device_toast_need_not_update">Latested Version</string>
     <string name="device_tip_ota_has_new_version">New version found\n%1$s</string>

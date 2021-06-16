@@ -232,6 +232,9 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
             if (battery > 100){
                 battery = 100;
             }
+            if (battery < 5){
+                battery = 5;
+            }
             tvBattery.setText((int)battery + "%");
             //PPT模式
             boolean isOpen = (BM.getManager().getDeviceSystemInfo().pptAutoHold == 1);

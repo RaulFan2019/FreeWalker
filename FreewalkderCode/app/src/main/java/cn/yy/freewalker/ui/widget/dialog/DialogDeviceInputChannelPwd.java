@@ -55,7 +55,9 @@ public class DialogDeviceInputChannelPwd {
                 String input = inputPwdBox.getInputContent();
                 if (input == null || input.length() < 6) {
                     new ToastView(context, context.getString(R.string.app_toast_channel_pwd_length_error), -1);
-                } else {
+                } else if (input.equals("000000")){
+                    new ToastView(context, context.getString(R.string.app_toast_channel_pwd_data_error), -1);
+                }else {
                     mListener.onConfirm(inputPwdBox.getInputContent());
                     mDialog.dismiss();
                 }
