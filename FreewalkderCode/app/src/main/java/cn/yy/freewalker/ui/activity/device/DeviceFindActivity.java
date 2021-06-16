@@ -133,12 +133,13 @@ public class DeviceFindActivity extends BaseActivity implements AdapterView.OnIt
                     BM.getManager().getConnectMac(),BM.getManager().getConnectName());
             mHandler.removeMessages(MSG_STOP_CONNECT);
             new ToastView(DeviceFindActivity.this, getString(R.string.device_tip_connect_ok), -1);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    finish();
-                }
-            },500);
+            finish();
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    finish();
+//                }
+//            },500);
         }
     }
 

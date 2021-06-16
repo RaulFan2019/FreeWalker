@@ -67,6 +67,7 @@ public class DialogDeviceInputChannelPwd {
             public void onClick(View v) {
                 if (mListener != null){
                     mListener.onRemove();
+                    mDialog.dismiss();
                 }
             }
         });

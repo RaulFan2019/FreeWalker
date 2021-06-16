@@ -15,6 +15,7 @@
     <string name="device_status_disconnect">Click to switch</string>
     <string name="device_status_connecting">Connecting…</string>
     <string name="device_status_worked">Connected</string>
+    <string name="device_has_disconnect">Disconnect</string>
 
     <string name="device_title_add">Add New</string>
     <string name="device_title_add_ing">Add …</string>

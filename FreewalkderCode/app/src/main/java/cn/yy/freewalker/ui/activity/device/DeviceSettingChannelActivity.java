@@ -161,6 +161,7 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
         super.onResume();
         if (BM.getManager().getConnectState() < ConnectStates.WORKED){
             finish();
+            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_has_disconnect),-1);
         }
         BM.getManager().registerConnectListener(this);
     }
@@ -246,8 +247,9 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
 
     @Override
     public void connectStateChange(int state) {
-        if (state <= ConnectStates.WORKED){
+        if (state < ConnectStates.WORKED){
             finish();
+            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_has_disconnect),-1);
         }
     }
 }

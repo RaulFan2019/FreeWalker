@@ -15,6 +15,7 @@
     <string name="device_status_disconnect">未连接，点击切换</string>
     <string name="device_status_connecting">正在连接</string>
     <string name="device_status_worked">已连接</string>
+    <string name="device_has_disconnect">设备已断开</string>
 
     <string name="device_title_add">添加一个新设备</string>
     <string name="device_title_add_ing">添加设备中</string>

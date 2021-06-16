@@ -287,7 +287,7 @@ public class GroupChatActivity extends BaseActivity implements ConnectListener, 
                 mChatRv.scrollToPosition(mChatAdapter.getItemCount() - 1);
             }
         },500);
-        
+
         FaceInputFragment inputFragment = FaceInputFragment.newInstance();
         inputFragment.setOnOutputListener(bean -> {
                     editTextShowEmoji(bean.unicode, bean.faceId);

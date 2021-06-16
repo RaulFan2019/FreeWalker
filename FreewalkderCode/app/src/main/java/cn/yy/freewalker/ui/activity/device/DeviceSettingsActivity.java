@@ -214,6 +214,7 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
         super.onResume();
         if (BM.getManager().getConnectState() < ConnectStates.WORKED){
             finish();
+            new ToastView(DeviceSettingsActivity.this, getString(R.string.device_has_disconnect),-1);
         }
         BM.getManager().registerConnectListener(this);
 
@@ -353,8 +354,9 @@ public class DeviceSettingsActivity extends BaseActivity implements SeekBar.OnSe
 
     @Override
     public void connectStateChange(int state) {
-        if (state <= ConnectStates.WORKED){
+        if (state < ConnectStates.WORKED){
             finish();
+            new ToastView(DeviceSettingsActivity.this, getString(R.string.device_has_disconnect),-1);
         }
     }
 }

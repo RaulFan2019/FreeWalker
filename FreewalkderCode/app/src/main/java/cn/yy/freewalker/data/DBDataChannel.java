@@ -1,5 +1,6 @@
 package cn.yy.freewalker.data;
 
+import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.ex.DbException;
 
 import cn.yy.freewalker.LocalApp;
@@ -31,6 +32,19 @@ public class DBDataChannel {
         } catch (DbException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * 根据设备删除频道信息
+     * @param deviceMac
+     */
+    public static void deleteChannelByDevice(final String deviceMac){
+        try {
+            LocalApp.getInstance().getDb()
+                    .delete(ChannelDbEntity.class, WhereBuilder.b("deviceMac","=",deviceMac));
+        } catch (DbException e) {
+            e.printStackTrace();
         }
     }
 

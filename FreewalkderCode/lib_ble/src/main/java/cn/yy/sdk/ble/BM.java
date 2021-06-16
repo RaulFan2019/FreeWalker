@@ -206,6 +206,7 @@ public class BM {
         if (!ConnectEntity.getInstance().mAddress.equals(mConnectMac)) {
             ConnectEntity.getInstance().disConnect();
             if (needScan) {
+                BLog.e(TAG,"startLeScan");
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
             } else {
                 ConnectEntity.getInstance().init(mContext, deviceName, mConnectMac, mBluetoothAdapter);
@@ -262,7 +263,7 @@ public class BM {
         mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
             @Override
             public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-                BLog.v(TAG, "onLeScan:<" + device.getAddress() + ">");
+                BLog.e(TAG, "onLeScan:<" + device.getAddress() + ">");
                 if (device.getAddress().equals(mConnectMac)) {
                     mConnectName = device.getName();
                     ConnectEntity.getInstance().init(mContext, mConnectName, mConnectMac, mBluetoothAdapter);

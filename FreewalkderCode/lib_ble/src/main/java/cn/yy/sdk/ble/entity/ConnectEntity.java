@@ -374,6 +374,7 @@ public class ConnectEntity {
         if (newState == BluetoothProfile.STATE_CONNECTED) {
             BLog.i(TAG, "<" + mAddress + ">" + "Connected to GATT server.");
             BLog.i(TAG, "<" + mAddress + ">" + "Attempting to start service discovery");
+            notifyErrorTimes = 0;
             mRepeatConnectTimes = 0;
             mHandler.removeCallbacksAndMessages(null);
 
@@ -1218,6 +1219,7 @@ public class ConnectEntity {
         mWriteC.setValue(data);
         boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
         if (!writeSuccess) {
+            BLog.e(TAG, "writeGetVerionInfo false");
             sendMsg(MSG_GET_VERSION_INFO, null, DELAY_REPEAT_WRITE);
         } else {
             sendMsg(MSG_GET_VERSION_INFO, null, DELAY_WAIT_CMD);

@@ -1,5 +1,6 @@
 package cn.yy.freewalker.ui.fragment.main;
 
+import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +12,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataChannel;
 import cn.yy.freewalker.data.DBDataDevice;
 import cn.yy.freewalker.data.DBDataUser;
 import cn.yy.freewalker.entity.adapter.BindDeviceAdapterEntity;
@@ -117,6 +119,7 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
                     BM.getManager().disConnectDevice();
                 }
                 DBDataDevice.delete(listDevice.get(index).deviceDbEntity);
+                DBDataChannel.deleteChannelByDevice(listDevice.get(index).deviceDbEntity.deviceMac);
                 listDevice.remove(index);
                 mHandler.sendEmptyMessage(MSG_UPDATE_LIST);
             }
@@ -139,16 +142,23 @@ public class MainDeviceFragment extends BaseFragment implements DeviceListAdapte
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        if (listDevice.get(position).status < ConnectStates.CONNECTED) {
-            for (BindDeviceAdapterEntity entity : listDevice) {
-                if (entity.deviceDbEntity.deviceId == listDevice.get(position).deviceDbEntity.deviceId) {
-                    BM.getManager().addNewConnect(entity.deviceDbEntity.deviceMac,entity.deviceDbEntity.deviceName,true);
-                } else {
-                    BM.getManager().disConnectDevice();
-                }
+        YLog.e(TAG,"onItemClick");
+        //当前点击的设备是否已连接
+        if (listDevice.get(position).status < ConnectStates.WORKED){
+            YLog.e(TAG,"not work");
+            //若当前设备不是目标连接设备
+            if (!listDevice.get(position).deviceDbEntity.deviceMac.equals(BM.getManager().getConnectMac())){
+                YLog.e(TAG,"change connect");
+                BM.getManager().disConnectDevice();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        BindDeviceDbEntity entity = listDevice.get(position).deviceDbEntity;
+                        BM.getManager().addNewConnect(entity.deviceMac,entity.deviceName,true);
+                    }
+                },200);
             }
-            adapter.notifyDataSetChanged();
+
         }else {
             startActivity(DeviceSettingsActivity.class);
         }
