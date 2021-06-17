@@ -32,6 +32,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.yy.freewalker.LocalApp;
 import cn.yy.freewalker.R;
+import cn.yy.freewalker.data.DBDataChannel;
+import cn.yy.freewalker.entity.db.ChannelDbEntity;
 import cn.yy.freewalker.entity.event.NearbyUserCartEvent;
 import cn.yy.freewalker.ui.fragment.BaseFragment;
 import cn.yy.freewalker.ui.widget.common.AmapNearbyUserView;
@@ -175,7 +177,8 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
                     if (currChannel > 29) {
                         currChannel = 0;
                     }
-                    BM.getManager().setChannel(currChannel, 5, "");
+                    BM.getManager().setChannelOnly(currChannel);
+
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -372,7 +375,7 @@ public class MainNearbyFragment extends BaseFragment implements AMapLocationList
         tvScan.setText(getString(R.string.nearby_action_scan));
         mIsScanning = false;
 
-        BM.getManager().setChannel(mOriChannel, 5, "");
+        BM.getManager().setChannelOnly(mOriChannel);
     }
 
     /**

@@ -59,6 +59,7 @@ public class ConnectEntity {
     private static final int MSG_GET_SYSTEM_INFO = 0x05;                  //获取系统配置
 
     private static final int MSG_SET_CHANNEL = 0x06;                      //设置channel
+    private static final int MSG_SET_CHANNEL_ONLY = 0x16;                 //仅仅切换channel
     private static final int MSG_SEND_GROUP_CHAT_MSG = 0x07;              //发送groupChat 数据
     private static final int MSG_SEND_SINGLE_CHAT_MSG = 0x08;             //发送单聊消息
 
@@ -144,6 +145,10 @@ public class ConnectEntity {
                 //设置频道
                 case MSG_SET_CHANNEL:
                     writeSetChannel((ChannelInfo) msg.obj);
+                    break;
+                //仅切换频道
+                case MSG_SET_CHANNEL_ONLY:
+                    writeSetChannelOnly((int) msg.obj);
                     break;
                 //发送群消息
                 case MSG_SEND_GROUP_CHAT_MSG:
@@ -458,14 +463,14 @@ public class ConnectEntity {
     /**
      * 重置设备
      */
-    public void resetDevice(){
+    public void resetDevice() {
         sendMsg(MSG_RESET_DEVICE, null, 0);
     }
 
     /**
      * 写入重置设备
      */
-    public void writeResetDevice(){
+    public void writeResetDevice() {
         mHandler.removeMessages(MSG_RESET_DEVICE);
         byte[] data = new byte[4];
 
@@ -510,14 +515,15 @@ public class ConnectEntity {
 
     /**
      * 设置ppt模式是否打开
+     *
      * @param isOpen
      */
-    public void setPPTIsOpen(final boolean isOpen){
+    public void setPPTIsOpen(final boolean isOpen) {
         sendMsg(MSG_SET_PPT_IS_OPEN, isOpen, 0);
     }
 
     public void writeSetPPTIsOpen(final boolean isOpen) {
-        BLog.e(TAG,"writeSetPPTIsOpen:" + isOpen);
+        BLog.e(TAG, "writeSetPPTIsOpen:" + isOpen);
         mHandler.removeMessages(MSG_SET_PPT_IS_OPEN);
 
         byte[] data = new byte[5];
@@ -529,20 +535,21 @@ public class ConnectEntity {
         //port
         data[3] = PrivatePorts.PPT;
         //isOpen
-        if (isOpen){
+        if (isOpen) {
             mDeviceSystemInfo.pptAutoHold = 1;
             data[4] = 0x01;
-        }else {
+        } else {
             mDeviceSystemInfo.pptAutoHold = 0;
             data[4] = 0x00;
         }
-        BLog.e(TAG,"mDeviceSystemInfo.pptAutoHold:" + mDeviceSystemInfo.pptAutoHold);
+        BLog.e(TAG, "mDeviceSystemInfo.pptAutoHold:" + mDeviceSystemInfo.pptAutoHold);
         mWriteC.setValue(data);
         boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
         if (!writeSuccess) {
             sendMsg(MSG_SET_PPT_IS_OPEN, isOpen, DELAY_REPEAT_WRITE);
         }
     }
+
     /**
      * 设置信号是否是增强模式
      *
@@ -585,7 +592,7 @@ public class ConnectEntity {
      */
     public void setChannel(final int channel, final int priority, final String pwdStr) {
         ChannelInfo channelInfo = null;
-        if (pwdStr ==  null) {
+        if (pwdStr == null) {
             channelInfo = new ChannelInfo(channel, priority, null);
         } else {
             String[] listPwdStr = pwdStr.split(",");
@@ -598,6 +605,28 @@ public class ConnectEntity {
         sendMsg(MSG_SET_CHANNEL, channelInfo, 0);
     }
 
+
+    public void setChannelOnly(final int channel) {
+        sendMsg(MSG_SET_CHANNEL_ONLY, channel, 0);
+    }
+
+    public void writeSetChannelOnly(final int channel) {
+        mHandler.removeMessages(MSG_SET_CHANNEL_ONLY);
+        byte[] data = new byte[5];
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        data[2] = 0x02;
+        //port
+        data[3] = PrivatePorts.SET_CHANNEL;
+        //channel
+        data[4] = (byte) channel;
+        mWriteC.setValue(data);
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SET_CHANNEL_ONLY, channel, DELAY_REPEAT_WRITE);
+        }
+    }
 
     /**
      * 写入设置频道
@@ -636,7 +665,7 @@ public class ConnectEntity {
             data[19] = (byte) channelInfo.pwd[3];
             data[20] = (byte) channelInfo.pwd[4];
             data[21] = (byte) channelInfo.pwd[5];
-        }else {
+        } else {
             data[6] = 0x00;
             data[7] = 0x00;
             data[8] = 0x00;
@@ -691,7 +720,7 @@ public class ConnectEntity {
         //name
         byte[] nameB = deviceName.getBytes();
 
-        for (int i = 0 ; i < nameB.length && i < 16 ; i ++){
+        for (int i = 0; i < nameB.length && i < 16; i++) {
             data[4 + i] = nameB[i];
         }
 
@@ -974,8 +1003,8 @@ public class ConnectEntity {
         switch (mGroupPkg.port) {
             case PrivatePorts.GET_VERSION_INFO:
                 mHandler.removeMessages(MSG_GET_VERSION_INFO);
-                mFwVersion = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(17),mGroupPkg.listData.get(16)});
-                BLog.e(TAG,"mFwVersion:" + mFwVersion);
+                mFwVersion = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(17), mGroupPkg.listData.get(16)});
+                BLog.e(TAG, "mFwVersion:" + mFwVersion);
                 writeGetSystemInfo();
                 break;
             //设备系统信息
@@ -983,10 +1012,10 @@ public class ConnectEntity {
             case PrivatePorts.GET_SYSTEM_INFO:
                 mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
                 mState = ConnectStates.WORKED;
-                int voltage = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(5),mGroupPkg.listData.get(4)});
+                int voltage = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(5), mGroupPkg.listData.get(4)});
                 mDeviceSystemInfo = new DeviceSystemInfo(mGroupPkg.listData.get(0),
                         mGroupPkg.listData.get(1), mGroupPkg.listData.get(2), mGroupPkg.listData.get(3),
-                        voltage,mGroupPkg.listData.get(7));
+                        voltage, mGroupPkg.listData.get(7));
                 NotifyManager.getManager().notifyStateChange(mState);
                 //每10分钟读一次
                 sendMsg(MSG_GET_SYSTEM_INFO, null, 1000 * 10 * 60);
@@ -1213,7 +1242,7 @@ public class ConnectEntity {
     /**
      * 获取版本信息
      */
-    private void writeGetVerionInfo(){
+    private void writeGetVerionInfo() {
         BLog.e(TAG, "writeGetVerionInfo");
         mHandler.removeMessages(MSG_GET_VERSION_INFO);
         byte[] data = new byte[4];

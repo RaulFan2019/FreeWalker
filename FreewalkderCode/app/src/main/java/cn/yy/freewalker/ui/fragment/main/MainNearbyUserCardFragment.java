@@ -3,6 +3,7 @@ package cn.yy.freewalker.ui.fragment.main;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -46,6 +47,9 @@ public class MainNearbyUserCardFragment extends BaseFragment {
     @BindView(R.id.tv_weight)
     TextView tvWeight;
 
+    @BindView(R.id.btn_shield)
+    TextView btnShield;
+
     /* data */
     private int mDestUserId;
     private int mChannel;
@@ -66,10 +70,19 @@ public class MainNearbyUserCardFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_shield:
-                //TODO
+                UserDbEntity friend = DBDataUser.getUserInfoByUserId(mDestUserId);
+                if (friend != null){
+                    friend.isShield = !friend.isShield;
+                    DBDataUser.update(friend);
+                    if (friend.isShield){
+                        btnShield.setText(getActivity().getString(R.string.app_action_shield_cancel));
+                    }else {
+                        btnShield.setText(getActivity().getString(R.string.nearby_action_shield));
+                    }
+                }
                 break;
             case R.id.btn_chat:
-                BM.getManager().setChannel(mChannel, 5, "");
+                BM.getManager().setChannelOnly(mChannel);
 
                 Bundle bundle = new Bundle();
                 bundle.putInt("destUserId", mDestUserId);
@@ -133,6 +146,13 @@ public class MainNearbyUserCardFragment extends BaseFragment {
         tvProfession.setText(UserInfoU.getJobStr(getActivity(), user.job));
 
         DBDataUser.saveOrUpdateUserInfo(user.userId, user);
+
+        UserDbEntity friend = DBDataUser.getUserInfoByUserId(mDestUserId);
+        if (friend.isShield){
+            btnShield.setText(getActivity().getString(R.string.app_action_shield_cancel));
+        }else {
+            btnShield.setText(getActivity().getString(R.string.nearby_action_shield));
+        }
     }
 
 }

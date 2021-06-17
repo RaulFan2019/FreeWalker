@@ -304,6 +304,14 @@ public class BM {
         }
     }
 
+    public int setChannelOnly(final int channel) {
+        if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
+            ConnectEntity.getInstance().setChannelOnly(channel);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
 
     public int setDeviceName(final String deviceName){
         if (ConnectEntity.getInstance().getState() >= ConnectStates.WORKED) {
