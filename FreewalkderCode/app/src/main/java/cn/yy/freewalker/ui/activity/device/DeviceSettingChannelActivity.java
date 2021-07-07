@@ -143,9 +143,7 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
                 channel -> {
                     mChanelIndex = channel;
 
-                    BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
-                            listChannel.get(mChanelIndex).priority,
-                            listChannel.get(mChanelIndex).pwd);
+                    BM.getManager().setChannelOnly(listChannel.get(mChanelIndex).channel);
                 });
         rvChannel.setAdapter(adapter);
     }

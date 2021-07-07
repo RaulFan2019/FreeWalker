@@ -73,6 +73,7 @@ public class ConnectEntity {
     private static final int MSG_SET_DEVICE_NAME = 0x13;                  //设置名称
 
     private static final int MSG_RESET_DEVICE = 0x15;                     //重置设备
+    private static final int MSG_SET_DEFAULT_CHANNEL_MAX = 0x17;          //设置默认频道最大数
 
 
     /* local data of system */
@@ -179,6 +180,9 @@ public class ConnectEntity {
                     break;
                 case MSG_RESET_DEVICE:
                     writeResetDevice();
+                    break;
+                case MSG_SET_DEFAULT_CHANNEL_MAX:
+                    writeSetDefaultChannelMax();
                     break;
             }
         }
@@ -592,7 +596,7 @@ public class ConnectEntity {
      */
     public void setChannel(final int channel, final int priority, final String pwdStr) {
         ChannelInfo channelInfo = null;
-        if (pwdStr == null) {
+        if (pwdStr.isEmpty()) {
             channelInfo = new ChannelInfo(channel, priority, null);
         } else {
             String[] listPwdStr = pwdStr.split(",");
@@ -692,6 +696,42 @@ public class ConnectEntity {
         }
     }
 
+    /**
+     * 设置默认频道最大数量
+     */
+    public void setDefaultChannelMax(){
+        sendMsg(MSG_SET_DEFAULT_CHANNEL_MAX, null, 0);
+    }
+
+    /**
+     * 写入设置默认频道最大数量
+     *
+     * @param
+     */
+    public void writeSetDefaultChannelMax() {
+        mHandler.removeMessages(MSG_SET_DEFAULT_CHANNEL_MAX);
+        byte[] data = new byte[6];
+
+        data[0] = (byte) 0xFE;
+        data[1] = (byte) 0x95;
+        //length
+        data[2] = 0x03;
+        //port
+        data[3] = PrivatePorts.SET_SYSTEM;
+        //power
+        data[4] = (byte) mDeviceSystemInfo.power;
+        //max channel
+        data[5] = 30;
+        mWriteC.setValue(data);
+
+        boolean writeSuccess = mBluetoothGatt.writeCharacteristic(mWriteC);
+        if (!writeSuccess) {
+            sendMsg(MSG_SET_DEFAULT_CHANNEL_MAX, null, DELAY_REPEAT_WRITE);
+        }else {
+            mState = ConnectStates.WORKED;
+            NotifyManager.getManager().notifyStateChange(mState);
+        }
+    }
 
     /**
      * 设置名称
@@ -1008,15 +1048,20 @@ public class ConnectEntity {
                 writeGetSystemInfo();
                 break;
             //设备系统信息
-            //03 06 05 11 dd0f 00001e00000000000000000000004700000000000000
+            //03 06 05 11 dd0f 00 001e00000000000000000000004700000000000000
             case PrivatePorts.GET_SYSTEM_INFO:
                 mHandler.removeMessages(MSG_GET_SYSTEM_INFO);
-                mState = ConnectStates.WORKED;
                 int voltage = (int) ByteU.bytesToLong(new byte[]{mGroupPkg.listData.get(5), mGroupPkg.listData.get(4)});
                 mDeviceSystemInfo = new DeviceSystemInfo(mGroupPkg.listData.get(0),
                         mGroupPkg.listData.get(1), mGroupPkg.listData.get(2), mGroupPkg.listData.get(3),
-                        voltage, mGroupPkg.listData.get(7));
-                NotifyManager.getManager().notifyStateChange(mState);
+                        voltage, mGroupPkg.listData.get(7), mGroupPkg.listData.get(8));
+
+                if (mDeviceSystemInfo.maxChannel != 30){
+                    setDefaultChannelMax();
+                }else {
+                    mState = ConnectStates.WORKED;
+                    NotifyManager.getManager().notifyStateChange(mState);
+                }
                 //每10分钟读一次
                 sendMsg(MSG_GET_SYSTEM_INFO, null, 1000 * 10 * 60);
                 break;
