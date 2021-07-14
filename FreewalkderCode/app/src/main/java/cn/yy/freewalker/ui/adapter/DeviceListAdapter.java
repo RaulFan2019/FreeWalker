@@ -92,15 +92,18 @@ public class DeviceListAdapter extends BaseAdapter {
             case ConnectStates.CONNECTING:
                 holder.tvDeviceStatus.setText(mContext.getString(R.string.device_status_connecting));
                 holder.tvDeviceStatus.setTextColor(mContext.getResources().getColor(R.color.tv_accent));
+                holder.tvSettings.setVisibility(View.GONE);
                 break;
             case ConnectStates.DISCONNECT:
             case ConnectStates.CONNECT_FAIL:
                 holder.tvDeviceStatus.setText(mContext.getString(R.string.device_status_disconnect));
                 holder.tvDeviceStatus.setTextColor(mContext.getResources().getColor(R.color.tv_thirdly));
+                holder.tvSettings.setVisibility(View.GONE);
                 break;
             case ConnectStates.WORKED:
                 holder.tvDeviceStatus.setText(mContext.getString(R.string.device_status_worked));
                 holder.tvDeviceStatus.setTextColor(mContext.getResources().getColor(R.color.tv_accent));
+                holder.tvSettings.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -116,6 +119,7 @@ public class DeviceListAdapter extends BaseAdapter {
     private static class ViewHolder {
         public TextView tvDeviceName;
         public TextView tvDeviceStatus;
+        public TextView tvSettings;
         public View vDevice;
         public View vMore;
         public ViewGroup deleteHolder;
@@ -123,6 +127,7 @@ public class DeviceListAdapter extends BaseAdapter {
         ViewHolder(View view) {
             tvDeviceName = view.findViewById(R.id.tv_device_name);
             tvDeviceStatus = view.findViewById(R.id.tv_device_status);
+            tvSettings = view.findViewById(R.id.tv_settings);
             vDevice = view.findViewById(R.id.v_device);
             deleteHolder = view.findViewById(R.id.ll_holder);
             vMore = view.findViewById(R.id.v_more);

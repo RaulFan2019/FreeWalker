@@ -89,7 +89,7 @@ public class RecordSelectChannelActivity extends BaseActivity {
         for (int i = 0; i < 30; i++) {
             ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(BM.getManager().getConnectMac(), i);
             if (channelDbEntity == null) {
-                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), BM.getManager().getConnectMac(), i, "", 5);
+                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), BM.getManager().getConnectMac(), i, "", 3);
                 DBDataChannel.save(channelDbEntity);
             }
             listChannel.add(channelDbEntity);

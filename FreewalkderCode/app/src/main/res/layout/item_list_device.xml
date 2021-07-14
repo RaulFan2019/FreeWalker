@@ -44,6 +44,13 @@
         android:background="@drawable/icon_device_black"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/tv_settings"
+        style="@style/DeviceSettingsTvValue"
+        android:layout_gravity="center_vertical"
+        android:text="@string/device_tx_settings"
+        android:textColor="@color/accent"/>
+
     <View
         android:id="@+id/v_more"
         style="@style/DeviceSettingsIconMore"

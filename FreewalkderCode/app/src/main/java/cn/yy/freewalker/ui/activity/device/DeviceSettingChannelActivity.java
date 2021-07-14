@@ -99,8 +99,8 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
     @Override
     protected void initData() {
         mDialogBuilder = new DialogBuilder();
-        for (int i = 0; i < 10; i++) {
-            listAuthSelect.add(i + "");
+        for (int i = 0; i < 5; i++) {
+            listAuthSelect.add(String.valueOf(i + 1));
         }
         mUser = DBDataUser.getLoginUser(DeviceSettingChannelActivity.this);
 
@@ -108,7 +108,7 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
         for (int i = 0; i < 30; i++) {
             ChannelDbEntity channelDbEntity = DBDataChannel.getChannel(BM.getManager().getConnectMac(), i);
             if (channelDbEntity == null) {
-                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), BM.getManager().getConnectMac(), i, "", 5);
+                channelDbEntity = new ChannelDbEntity(System.currentTimeMillis(), BM.getManager().getConnectMac(), i, "", 3);
                 DBDataChannel.save(channelDbEntity);
             }
             listChannel.add(channelDbEntity);
@@ -157,9 +157,9 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
     @Override
     protected void onResume() {
         super.onResume();
-        if (BM.getManager().getConnectState() < ConnectStates.WORKED){
+        if (BM.getManager().getConnectState() < ConnectStates.WORKED) {
             finish();
-            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_has_disconnect),-1);
+            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_has_disconnect), -1);
         }
         BM.getManager().registerConnectListener(this);
     }
@@ -230,7 +230,7 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
                     getString(R.string.device_action_setting_channel_auth), listAuthSelect, listChannel.get(mChanelIndex).priority);
             mDialogBuilder.setPickViewDialogListener(index -> {
                 ChannelDbEntity channelDbEntity = listChannel.get(mChanelIndex);
-                channelDbEntity.priority = index;
+                channelDbEntity.priority = index + 1;
                 listChannel.set(mChanelIndex, channelDbEntity);
                 DBDataChannel.update(channelDbEntity);
                 BM.getManager().setChannel(listChannel.get(mChanelIndex).channel,
@@ -245,9 +245,9 @@ public class DeviceSettingChannelActivity extends BaseActivity implements Channe
 
     @Override
     public void connectStateChange(int state) {
-        if (state < ConnectStates.WORKED){
+        if (state < ConnectStates.WORKED) {
             finish();
-            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_has_disconnect),-1);
+            new ToastView(DeviceSettingChannelActivity.this, getString(R.string.device_has_disconnect), -1);
         }
     }
 }

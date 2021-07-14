@@ -50,6 +50,7 @@
 
     <string name="device_title_settings">My Device</string>
 
+    <string name="device_tx_settings">To Configure</string>
     <string name="device_tx_settings_device">Device Name</string>
     <string name="device_tx_settings_earphone">Earphone Name</string>
     <string name="device_tx_settings_ota_update">Firmeare Upgarde</string>
