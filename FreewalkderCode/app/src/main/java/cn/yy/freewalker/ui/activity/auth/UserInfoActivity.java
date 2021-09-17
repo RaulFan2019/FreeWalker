@@ -13,7 +13,6 @@ import androidx.cardview.widget.CardView;
 
 import com.alibaba.fastjson.JSON;
 import com.gyf.immersionbar.ImmersionBar;
-
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
